@@ -104,6 +104,14 @@ public class PopulationManager {
 //		gaussians[3] = new FuzzyTermType("Three", FuzzyTermType.TYPE_triangularShape, new float[] {0.375f, 0.625f, 1f});
 //		gaussians[4] = new FuzzyTermType("Four", FuzzyTermType.TYPE_triangularShape, new float[] {0.625f, 1f, 1f});
 
+//		FuzzyTermType[] gaussians = new FuzzyTermType[6];
+//		gaussians[0] = new FuzzyTermType("don't care", FuzzyTermType.TYPE_rectangularShape, new float[] {0f, 1f});
+//		gaussians[1] = new FuzzyTermType("SS", FuzzyTermType.TYPE_triangularShape, new float[] {0f, 0f, 0.25f});
+//		gaussians[2] = new FuzzyTermType("S", FuzzyTermType.TYPE_triangularShape, new float[] {0f, 0.25f, 0.5f});
+//		gaussians[3] = new FuzzyTermType("M", FuzzyTermType.TYPE_triangularShape, new float[] {0.25f, 0.5f, 0.75f});
+//		gaussians[4] = new FuzzyTermType("L", FuzzyTermType.TYPE_triangularShape, new float[] {0.5f, 0.75f, 1f});
+//		gaussians[4] = new FuzzyTermType("LL", FuzzyTermType.TYPE_triangularShape, new float[] {0.75f, 1f, 1f});
+
 		for(int i = 0; i < setting.Ndim; i++) {
 			for(int j = 0; j < setting.Fdiv; j++) {
 				inputVariable[i].addFuzzyTerm(gaussians[j]);
