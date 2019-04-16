@@ -63,6 +63,11 @@ public class SettingForFML {
 //		gaissoams[3] = new FuzzyTermType("L_G", FuzzyTermType.TYPE_gaussianShape, new float[] {0.75f, 0.0625f});
 		gaussians[4] = new FuzzyTermType("LL_G", FuzzyTermType.TYPE_leftGaussianShape, new float[] {1f, 0.105f});
 
+//		gaussians[0] = new FuzzyTermType("don't care", FuzzyTermType.TYPE_rectangularShape, new float[] {0f, 1f});
+//		gaussians[1] = new FuzzyTermType("One", FuzzyTermType.TYPE_triangularShape, new float[] {0f, 0f, 0.375f});
+//		gaussians[2] = new FuzzyTermType("Two", FuzzyTermType.TYPE_triangularShape, new float[] {0f, 0.375f, 0.625f});
+//		gaussians[3] = new FuzzyTermType("Three", FuzzyTermType.TYPE_triangularShape, new float[] {0.375f, 0.625f, 1f});
+//		gaussians[4] = new FuzzyTermType("Four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.625f, 1f, 1f});
 
 //		for(int i = 0; i < Ndim; i++) {
 //			for(int j = 0; j < Fdiv; j++) {

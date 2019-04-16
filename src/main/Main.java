@@ -31,6 +31,7 @@ public class Main {
 
 		//結果書き出し
 		String resultFileName = "results/20190416_gaussian/";
+//		String resultFileName = "results/20190416_triangle/";
 		Output out = new Output(resultFileName);
 		ResultMaster resultMaster = new ResultMaster(resultFileName);
 

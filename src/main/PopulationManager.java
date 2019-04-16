@@ -83,11 +83,11 @@ public class PopulationManager {
 		FuzzyVariableType[] inputVariable = new FuzzyVariableType[setting.Ndim];
 		inputVariable[0] = new FuzzyVariableType("Move", 0, 1);
 		inputVariable[1] = new FuzzyVariableType("DBSN", 0, 1);
-		inputVariable[2] = new FuzzyVariableType("DWSN", -1, 1);
+		inputVariable[2] = new FuzzyVariableType("DWSN", 0, 1);
 		inputVariable[3] = new FuzzyVariableType("DBWR", 0, 1);
-		inputVariable[4] = new FuzzyVariableType("DWWR", -1, 1);
+		inputVariable[4] = new FuzzyVariableType("DWWR", 0, 1);
 		inputVariable[5] = new FuzzyVariableType("DBTMR", 0, 1);
-		inputVariable[6] = new FuzzyVariableType("DWTMR", -1, 1);
+		inputVariable[6] = new FuzzyVariableType("DWTMR", 0, 1);
 		FuzzyTermType[] gaussians = new FuzzyTermType[5];
 		gaussians[0] = new FuzzyTermType("SS_G", FuzzyTermType.TYPE_rightGaussianShape, new float[] {0f, 0.105f});
 		gaussians[1] = new FuzzyTermType("S_G", FuzzyTermType.TYPE_gaussianShape, new float[] {0.25f, 0.105f});

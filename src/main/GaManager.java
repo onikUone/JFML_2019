@@ -33,9 +33,9 @@ public class GaManager {
 		int ruleNum = setRule.length;
 		float[][] memberships = makeMemberships(tra, popManager, ruleNum);
 
-		float[] newConcList = null;
-		for(int i = 0; i < 10; i++) {
-			newConcList = calcConclusion(tra, memberships, 10, setting);
+		float[] newConcList = concList;
+		for(int i = 0; i < 200; i++) {
+			newConcList = calcConclusion(tra, memberships, newConcList, 10, setting);
 			popManager.generateAllRuleFS(setRule, newConcList, setting);
 
 			float[] yTra = reasoning(tra, popManager, setting);
@@ -77,15 +77,14 @@ public class GaManager {
 //		}
 	}
 
-	public float[] calcConclusion(DataSetInfo tra, float[][] memberships, int generation, SettingForFML setting) {
+	public float[] calcConclusion(DataSetInfo tra, float[][] memberships, float[] preConcList, int generation, SettingForFML setting) {
 		int dataSize = memberships.length;
 		int ruleNum = memberships[0].length;
 		Pattern[] line = new Pattern[dataSize];
 		float memberSum;
 		float y;
 		float diff;
-		float[] newConcList = new float[ruleNum];
-		Arrays.fill(newConcList, 0.5f);
+		float[] newConcList = preConcList;
 
 		for(int data_i = 0; data_i < dataSize; data_i++) {
 			line[data_i] = tra.getPattern(data_i);
