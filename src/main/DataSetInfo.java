@@ -8,7 +8,7 @@ import java.util.List;
 public class DataSetInfo {
 
 	//Field ******************************************
-	int Ndim = 6;
+	int Ndim;
 	int DataSize;
 	ArrayList<String> Attribute = new ArrayList<String>();
 
@@ -45,19 +45,22 @@ public class DataSetInfo {
 		List<String[]> lines = new ArrayList<String[]>();
 		BufferedReader in = new BufferedReader(new FileReader(_filePath));
 		String line;
-		String[] x = new String[this.Ndim];
+		String[] x = null;
 		String y;
 
 		//ファイル読込
 		while( (line = in.readLine()) != null ) {
-			for(int i = 0; i < this.Ndim; i++) {
+			int Ndim = line.split(",").length - 2;
+			x = new String[Ndim];
+			for(int i = 0; i < Ndim; i++) {
 				x[i] = line.split(",")[i];
 			}
-			y = line.split(",")[this.Ndim];
+			y = line.split(",")[Ndim];
 			this.patterns.add(new Pattern(x, y));
 			datasize++;
 		}
 		this.DataSize = datasize;
+		this.Ndim = patterns.get(0).getNdim();
 	}
 
 	public static void inputConcList(String _filePath, double[] _concList) throws IOException {

@@ -5,51 +5,56 @@ import java.io.Serializable;
 public class Pattern implements Serializable {
 
 	//Field ************************************
-	double[] x;	//パターン
-	double y;	//教師ラベル
+	int Ndim;
+	float[] x;	//パターン
+	float y;	//教師ラベル
 	// *****************************************
 
 	//Constructor
 	public Pattern(){}
 
-	public Pattern(double[] _pattern) {
-		int Ndim = _pattern.length - 1;
+	public Pattern(float[] _pattern) {
+		Ndim = _pattern.length - 1;
 		x = _pattern;
 		y = _pattern[Ndim];
 	}
 
 	public Pattern(String[] _x, String _y) {
-		int Ndim = _x.length;
-		x = new double[Ndim];
+		this.Ndim = _x.length;
+		this.x = new float[Ndim];
 		for(int i = 0; i < Ndim; i++) {
-			x[i] = Double.parseDouble(_x[i]);
+			this.x[i] = Float.parseFloat(_x[i]);
 		}
-		y = Double.parseDouble(_y);
+		this.y = Float.parseFloat(_y);
 	}
 
 	public Pattern(String[] _pattern) {
 		int Ndim = _pattern.length - 1;
-		x = new double[Ndim];
+		x = new float[Ndim];
 		for(int i = 0; i < Ndim; i++) {
-			x[i] = Double.parseDouble(_pattern[i]);
+			x[i] = Float.parseFloat(_pattern[i]);
 		}
-		y = Double.parseDouble(_pattern[Ndim]);
+		y = Float.parseFloat(_pattern[Ndim]);
 	}
 
 	//Method
-	public double getDimValue(int i) {
+	public int getNdim() {
+		return this.Ndim;
+	}
+
+	public float getDimValue(int i) {
 		return x[i];
 	}
 
-	public void setDimValue(int i, double _newValue) {
+	public void setDimValue(int i, float _newValue) {
 		this.x[i] = _newValue;
 	}
 
-	public double[] getX() {
+	public float[] getX() {
 		return this.x;
 	}
 
-	public double getY() {
+	public float getY() {
 		return this.y;
 	}
 
