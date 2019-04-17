@@ -110,7 +110,21 @@ public class PopulationManager {
 //		gaussians[2] = new FuzzyTermType("S", FuzzyTermType.TYPE_triangularShape, new float[] {0f, 0.25f, 0.5f});
 //		gaussians[3] = new FuzzyTermType("M", FuzzyTermType.TYPE_triangularShape, new float[] {0.25f, 0.5f, 0.75f});
 //		gaussians[4] = new FuzzyTermType("L", FuzzyTermType.TYPE_triangularShape, new float[] {0.5f, 0.75f, 1f});
+//		gaussians[5] = new FuzzyTermType("LL", FuzzyTermType.TYPE_triangularShape, new float[] {0.75f, 1f, 1f});
+
+//		FuzzyTermType[] gaussians = new FuzzyTermType[5];
+//		gaussians[0] = new FuzzyTermType("SS", FuzzyTermType.TYPE_triangularShape, new float[] {0f, 0f, 0.25f});
+//		gaussians[1] = new FuzzyTermType("S", FuzzyTermType.TYPE_triangularShape, new float[] {0f, 0.25f, 0.5f});
+//		gaussians[2] = new FuzzyTermType("M", FuzzyTermType.TYPE_triangularShape, new float[] {0.25f, 0.5f, 0.75f});
+//		gaussians[3] = new FuzzyTermType("L", FuzzyTermType.TYPE_triangularShape, new float[] {0.5f, 0.75f, 1f});
 //		gaussians[4] = new FuzzyTermType("LL", FuzzyTermType.TYPE_triangularShape, new float[] {0.75f, 1f, 1f});
+
+//		FuzzyTermType[] gaussians = new FuzzyTermType[3];
+//		gaussians = new FuzzyTermType[3];
+//		gaussians[0] = new FuzzyTermType("small", FuzzyTermType.TYPE_triangularShape, new float[] {0f, 0f, 0.5f});
+//		gaussians[1] = new FuzzyTermType("medium", FuzzyTermType.TYPE_triangularShape, new float[] {0f, 0.5f, 1f});
+//		gaussians[2] = new FuzzyTermType("large", FuzzyTermType.TYPE_triangularShape, new float[] {0.5f, 1f, 1f});
+
 
 		for(int i = 0; i < setting.Ndim; i++) {
 			for(int j = 0; j < setting.Fdiv; j++) {

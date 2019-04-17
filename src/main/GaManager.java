@@ -34,7 +34,11 @@ public class GaManager {
 		float[][] memberships = makeMemberships(tra, popManager, ruleNum);
 
 		float[] newConcList = concList;
-		for(int i = 0; i < 200; i++) {
+		for(int i = 0; i < 10000; i++) {
+			if(i % 10 == 0) {
+				System.out.println(String.valueOf(i * 10));
+			}
+			System.out.print(".");
 			newConcList = calcConclusion(tra, memberships, newConcList, 10, setting);
 			popManager.generateAllRuleFS(setRule, newConcList, setting);
 

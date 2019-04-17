@@ -31,8 +31,11 @@ public class Main {
 
 		//結果書き出し
 		String resultFileName = "results/20190416_gaussian/";
+//		String resultFileName = "results/20190416_gaussian_loop/";
 //		String resultFileName = "results/20190416_triangle/";
-//		String resultFileName = "results/20190416_triangle_5div/";
+//		String resultFileName = "results/20190416_triangle_5div_existDC/";
+//		String resultFileName = "results/20190416_triangle_5div_nonDC/";
+//		String resultFileName = "results/20190416_triangle_3div_nonDC/";
 		Output out = new Output(resultFileName);
 		ResultMaster resultMaster = new ResultMaster(resultFileName);
 
