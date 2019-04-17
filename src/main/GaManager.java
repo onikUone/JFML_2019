@@ -53,7 +53,6 @@ public class GaManager {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println();
 		}
 
 //		int generation = setting.generation;
