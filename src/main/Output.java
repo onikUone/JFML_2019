@@ -47,6 +47,21 @@ public class Output {
 		pw.close();
 	}
 
+
+	//ガウシアン分布をみるためのtest用
+	public static void writeGaussian(float[][] array, String fileName) throws IOException{
+		FileWriter fw = new FileWriter(fileName, true);
+		PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
+
+		for(int i = 0; i < array.length; i++) {
+			for(int j = 0; j < array[0].length; j++) {
+				pw.print(String.valueOf(array[i][j]) + ",");
+			}
+			pw.println("");
+		}
+		pw.close();
+	}
+
 //	public static void writeConc(RuleSet _ruleSet, String _fileName) throws IOException {
 //		FileWriter fw = new FileWriter(_fileName, true);
 //		PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );

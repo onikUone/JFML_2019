@@ -21,10 +21,10 @@ public class PopulationManager {
 
 	//個体群
 	int popSize;
-	public ArrayList<Population> currentPops = new ArrayList<Population>();
-	public ArrayList<Population> newPops = new ArrayList<Population>();
-	public ArrayList<Population> margePops = new ArrayList<Population>();
-	Population all;
+	public ArrayList<RuleSet> currentPops = new ArrayList<RuleSet>();
+	public ArrayList<RuleSet> newPops = new ArrayList<RuleSet>();
+	public ArrayList<RuleSet> margePops = new ArrayList<RuleSet>();
+	Rule all;
 
 	//データセット情報
 	int Ndim;
@@ -45,25 +45,71 @@ public class PopulationManager {
 		this.ruleNum = setting.ruleNum;
 	}
 
+	public PopulationManager(DataSetInfo tra, DataSetInfo tst, SettingForGA setting) {
+		this.uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
+		this.popSize = setting.popSize;
+		this.Ndim = setting.Ndim;
+		this.traDataSize = tra.getDataSize();
+		this.tstDataSize = tst.getDataSize();
+		this.ruleNum = setting.ruleNum;
+	}
+
 	// ************************************************************
 
 	//Methods *****************************************************
 
 	//初期個体群生成
-	public void generateInitialPopulation(SettingForFML setting) {
+	public void generateInitialPopulation(SettingForGA setting) {
 
-		this.currentPops.clear();
+		RuleSet ruleSet = null;
+		Rule rule = null;
+		float[] param = new float[2 * Ndim];
 
-		//popSizeの個体インスタンス生成
+		//ランダムに組み合わせを生成
+		int[] ruleIdx = new int[Ndim];
 		for(int pop_i = 0; pop_i < popSize; pop_i++) {
-			this.currentPops.add(new Population(this.uniqueRnd, this.Ndim, setting));
-			this.currentPops.get(pop_i).getFS().setKnowledgeBase(setting.getKnowledgeBase());
+			ruleSet = new RuleSet(setting);
+
+			for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+				rule = new Rule(setting);
+
+				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+					ruleIdx[dim_i] = (int)(this.uniqueRnd.nextDoubleIE() * setting.Fdiv);
+				}
+
+				param[0] = setting.MoveNo[ ruleIdx[0] ][0];
+				param[1] = setting.MoveNo[ ruleIdx[0] ][1];
+				param[2] = setting.DBSN[ ruleIdx[1] ][0];
+				param[3] = setting.DBSN[ ruleIdx[1] ][1];
+				param[4] = setting.DWSN[ ruleIdx[2] ][0];
+				param[5] = setting.DWSN[ ruleIdx[2] ][1];
+				param[6] = setting.DBWR[ ruleIdx[3] ][0];
+				param[7] = setting.DBWR[ ruleIdx[3] ][1];
+				param[8] = setting.DWWR[ ruleIdx[4] ][0];
+				param[9] = setting.DWWR[ ruleIdx[4] ][1];
+				param[10] = setting.DBTMR[ ruleIdx[5] ][0];
+				param[11] = setting.DBTMR[ ruleIdx[5] ][1];
+				param[12] = setting.DWTMR[ ruleIdx[6] ][0];
+				param[13] = setting.DWTMR[ ruleIdx[6] ][1];
+				rule.setParams(param);
+
+				ruleSet.rules.add(rule);
+			}
+
+			this.currentPops.add(ruleSet);
 		}
 
+	}
+
+	//param → FMLシステム生成
+	public void param2fml() {
 
 
 
 	}
+
+
+
 
 	//全ルール探索識別器生成
 	public void generateAllRuleFS(int[][] setRule, float[] concList, SettingForFML setting) {
@@ -74,7 +120,7 @@ public class PopulationManager {
 //			currentPops.add(new Population(this.uniqueRnd, this.Ndim, setting) );
 //		}
 
-		this.all = new Population(this.uniqueRnd, setting.Ndim, setting);
+		this.all = new Rule(this.uniqueRnd, setting.Ndim, setting);
 
 		//FMLのFuzzyInferenceSystem 生成
 		FuzzyInferenceSystem fs = new FuzzyInferenceSystem();
@@ -186,12 +232,12 @@ public class PopulationManager {
 
 	}
 
-	public void renewConclusion(float[] concList, PopulationManager popManager) {
-		popManager.all.getFS().getKnowledgeBase().getVariable("EBWR").getTerms().clear();
-		for(int rule_i = 0; rule_i < concList.length; rule_i++) {
-			((TskVariableType)popManager.all.getFS().getKnowledgeBase().getVariable("EBWR")).addTskTerm(new TskTermType("Conclusion" + String.valueOf(rule_i), 0, new float[] {concList[rule_i]}));
-		}
-	}
+//	public void renewConclusion(float[] concList, PopulationManager popManager) {
+//		popManager.all.getFS().getKnowledgeBase().getVariable("EBWR").getTerms().clear();
+//		for(int rule_i = 0; rule_i < concList.length; rule_i++) {
+//			((TskVariableType)popManager.all.getFS().getKnowledgeBase().getVariable("EBWR")).addTskTerm(new TskTermType("Conclusion" + String.valueOf(rule_i), 0, new float[] {concList[rule_i]}));
+//		}
+//	}
 
 
 	// ************************************************************

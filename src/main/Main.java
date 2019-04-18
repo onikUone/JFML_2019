@@ -49,7 +49,7 @@ public class Main {
 		PopulationManager popManager = new PopulationManager(rnd, tra, tst, setting);
 
 		GaManager gaManager = new GaManager();
-		gaManager.gaFrame(setting, popManager, setRule, concList, tra, tst, resultMaster);
+//		gaManager.gaFrame(setting, popManager, setRule, concList, tra, tst, resultMaster);
 
 
 		System.out.println();
