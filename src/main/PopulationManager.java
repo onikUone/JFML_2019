@@ -76,21 +76,22 @@ public class PopulationManager {
 				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
 					ruleIdx[dim_i] = (int)(this.uniqueRnd.nextDoubleIE() * setting.Fdiv);
 				}
+				rule.setRule(ruleIdx);
 
-				param[0] = setting.MoveNo[ ruleIdx[0] ][0];
-				param[1] = setting.MoveNo[ ruleIdx[0] ][1];
-				param[2] = setting.DBSN[ ruleIdx[1] ][0];
-				param[3] = setting.DBSN[ ruleIdx[1] ][1];
-				param[4] = setting.DWSN[ ruleIdx[2] ][0];
-				param[5] = setting.DWSN[ ruleIdx[2] ][1];
-				param[6] = setting.DBWR[ ruleIdx[3] ][0];
-				param[7] = setting.DBWR[ ruleIdx[3] ][1];
-				param[8] = setting.DWWR[ ruleIdx[4] ][0];
-				param[9] = setting.DWWR[ ruleIdx[4] ][1];
-				param[10] = setting.DBTMR[ ruleIdx[5] ][0];
-				param[11] = setting.DBTMR[ ruleIdx[5] ][1];
-				param[12] = setting.DWTMR[ ruleIdx[6] ][0];
-				param[13] = setting.DWTMR[ ruleIdx[6] ][1];
+				param[0] = setting.MoveNo_param[ ruleIdx[0] ][0];
+				param[1] = setting.MoveNo_param[ ruleIdx[0] ][1];
+				param[2] = setting.DBSN_param[ ruleIdx[1] ][0];
+				param[3] = setting.DBSN_param[ ruleIdx[1] ][1];
+				param[4] = setting.DWSN_param[ ruleIdx[2] ][0];
+				param[5] = setting.DWSN_param[ ruleIdx[2] ][1];
+				param[6] = setting.DBWR_param[ ruleIdx[3] ][0];
+				param[7] = setting.DBWR_param[ ruleIdx[3] ][1];
+				param[8] = setting.DWWR_param[ ruleIdx[4] ][0];
+				param[9] = setting.DWWR_param[ ruleIdx[4] ][1];
+				param[10] = setting.DBTMR_param[ ruleIdx[5] ][0];
+				param[11] = setting.DBTMR_param[ ruleIdx[5] ][1];
+				param[12] = setting.DWTMR_param[ ruleIdx[6] ][0];
+				param[13] = setting.DWTMR_param[ ruleIdx[6] ][1];
 				rule.setParams(param);
 
 				ruleSet.rules.add(rule);
@@ -98,6 +99,12 @@ public class PopulationManager {
 
 			this.currentPops.add(ruleSet);
 		}
+
+	}
+
+	//ruleIdx → FMLシステム
+	//ルールインデックスからFMLを作ることでXML(KnowledgeBase)のサイズを小さくできる
+	public void makeFML() {
 
 	}
 

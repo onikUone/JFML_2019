@@ -21,6 +21,7 @@ public class GaManager {
 		//初期個体群生成
 		popManager.currentPops.clear();
 		popManager.generateInitialPopulation(setting);
+		popManager.makeFML();
 		popManager.param2fml();
 
 		System.out.println("");
