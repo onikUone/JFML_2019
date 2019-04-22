@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import jfml.FuzzyInferenceSystem;
 import jfml.knowledgebase.KnowledgeBaseType;
 import jfml.knowledgebase.variable.FuzzyVariableType;
+import jfml.knowledgebase.variable.KnowledgeBaseVariable;
 import jfml.knowledgebase.variable.TskVariableType;
 import jfml.rule.AntecedentType;
 import jfml.rule.ClauseType;
@@ -29,6 +30,7 @@ public class PopulationManager {
 	//データセット情報
 	int Ndim;
 	int traDataSize;
+	int evaDataSize;
 	int tstDataSize;
 
 	int ruleNum;
@@ -45,11 +47,12 @@ public class PopulationManager {
 		this.ruleNum = setting.ruleNum;
 	}
 
-	public PopulationManager(DataSetInfo tra, DataSetInfo tst, SettingForGA setting) {
+	public PopulationManager(DataSetInfo tra, DataSetInfo tst, DataSetInfo eva, SettingForGA setting) {
 		this.uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
 		this.popSize = setting.popSize;
 		this.Ndim = setting.Ndim;
 		this.traDataSize = tra.getDataSize();
+		this.evaDataSize = eva.getDataSize();
 		this.tstDataSize = tst.getDataSize();
 		this.ruleNum = setting.ruleNum;
 	}
@@ -104,8 +107,10 @@ public class PopulationManager {
 
 	//ruleIdx → FMLシステム
 	//ルールインデックスからFMLを作ることでXML(KnowledgeBase)のサイズを小さくできる
-	public void makeFML() {
-
+	public void makeFML(SettingForGA setting) {
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+			this.currentPops.get(pop_i).makeFS(setting);
+		}
 	}
 
 	//param → FMLシステム生成
@@ -113,6 +118,54 @@ public class PopulationManager {
 
 
 
+	}
+
+	public void calcConclusion(DataSetInfo tra, int generation) {
+		int dataSize = tra.getDataSize();
+		int Ndim = tra.getNdim();
+
+		Pattern line;
+		float y;
+		float diff;
+		float memberSum;
+		float[] memberships;
+
+		KnowledgeBaseVariable[] input = new KnowledgeBaseVariable[Ndim];
+
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+
+			input[0] = currentPops.get(pop_i).fs.getVariable("MoveNo");
+			input[1] = currentPops.get(pop_i).fs.getVariable("DBSN");
+			input[2] = currentPops.get(pop_i).fs.getVariable("DWSN");
+			input[3] = currentPops.get(pop_i).fs.getVariable("DBWR");
+			input[4] = currentPops.get(pop_i).fs.getVariable("DWWR");
+			input[5] = currentPops.get(pop_i).fs.getVariable("DBTMR");
+			input[6] = currentPops.get(pop_i).fs.getVariable("DWTMR");
+
+			for(int gene_i = 0; gene_i < generation; gene_i++) {
+
+				for(int data_i = 0; data_i < dataSize; data_i++) {
+					line = tra.getPattern(data_i);
+
+					if(line.getDimValue(2) >= 0) {
+						for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+							input[dim_i].setValue( line.getDimValue(dim_i) );
+						}
+					} else {
+						input[0].setValue(line.getDimValue(0));
+						input[1].setValue(line.getDimValue(1));
+						input[2].setValue(line.getDimValue(1));
+						input[3].setValue(line.getDimValue(3));
+						input[4].setValue(1f - line.getDimValue(3));
+						input[5].setValue(line.getDimValue(5));
+						input[6].setValue(line.getDimValue(5));
+					}
+
+					currentPops.get(pop_i).fs.evaluate();
+					//TODO
+				}
+			}
+		}
 	}
 
 
@@ -235,7 +288,7 @@ public class PopulationManager {
 
 		fs.addRuleBase(ruleBase);
 
-		this.all.setFS(fs);
+//		this.all.setFS(fs);
 
 	}
 

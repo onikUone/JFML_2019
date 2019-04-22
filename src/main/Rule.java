@@ -23,6 +23,7 @@ public class Rule {
 	public Rule(SettingForGA setting) {
 		this.uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
 		this.params = new float[2 * setting.Ndim];
+		this.rule = new int[setting.Ndim];
 	}
 	// ************************************************************
 

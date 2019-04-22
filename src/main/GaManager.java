@@ -16,13 +16,16 @@ public class GaManager {
 
 	//Methods *******************************************
 
-	public void gaFrame2(SettingForGA setting, PopulationManager popManager, DataSetInfo tra, DataSetInfo tst) {
+	public void gaFrame2(SettingForGA setting, PopulationManager popManager, DataSetInfo tra, DataSetInfo tst, DataSetInfo eva) {
 
 		//初期個体群生成
 		popManager.currentPops.clear();
 		popManager.generateInitialPopulation(setting);
-		popManager.makeFML();
-		popManager.param2fml();
+		popManager.makeFML(setting);	//各currentPopsのfsを生成
+
+		//TODO conclusion学習メソッド(traを使用して学習)
+		popManager.calcConclusion(tra, 1);
+
 
 		System.out.println("");
 	}
@@ -61,7 +64,7 @@ public class GaManager {
 //				e.printStackTrace();
 //			}
 //		}
-
+//
 //		int generation = setting.generation;
 //		for(int gene_i = 0; gene_i < generation; gene_i++) {
 //			if(gene_i % 10 == 0) {
