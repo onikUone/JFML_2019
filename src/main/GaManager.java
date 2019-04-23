@@ -18,22 +18,45 @@ public class GaManager {
 	//Methods *******************************************
 
 	public void gaFrame(SettingForGA setting, PopulationManager popManager, DataSetInfo tra, DataSetInfo tst, DataSetInfo eva) {
+		Date start = new Date();
+		System.out.println(start);
+
 
 		//初期個体群生成
 		popManager.currentPops.clear();
 		popManager.generateInitialPopulation(setting);
 		popManager.makeFML(setting);	//各currentPopsのfsを生成
+		popManager.calcConclusion(setting, tra, setting.calcGeneration);	//結論部学習
+		popManager.outputCurrentFML("gene_0_initial/FML", 0, setting);	//FML出力
+		popManager.outputCurrentMSE("gene_0_initial/MSE", 0, tst, setting);	//MSE出力
+		popManager.outputCurrentCount("gene_0_initial/Count", 0, setting);
+		float[] evaMSE = popManager.calcMSE(eva, setting);
+		popManager.setEvaAsFitness(evaMSE);
 
-		Date now = new Date();
-		System.out.println(now);
+		for(int gene_i = 0; gene_i < setting.gaGeneration; gene_i++) {
+			System.out.print(".");
+			//1. 子個体生成
+			popManager.newPops.clear();
+			popManager.crossOverAndMichiganOpe(setting);
+			popManager.newPopsMutation(setting);
+			popManager.calcConclusionForChild(setting, tra, setting.calcGeneration);
 
-		popManager.calcConclusion(setting, tra, setting.generation);
+			//2. 個体評価 = evaのMSE計算
+			evaMSE = popManager.calcMseForChild(eva, setting);
+			popManager.setEvaAsFitnessForChild(evaMSE);
 
-		Date fin = new Date();
-		System.out.println(fin);
+			//3. 世代更新
+			popManager.populationUpdate(setting);
 
-		//TODO GA操作 単目的最適化
+			//4. 現世代FML出力
+			String dir = "gene_" + String.valueOf(gene_i+1);
+			popManager.outputCurrentFML(dir + "/FML", gene_i+1, setting);
+			popManager.outputCurrentMSE(dir + "/MSE", gene_i+1, tst, setting);
+			popManager.outputCurrentCount(dir + "/Count", gene_i+1, setting);
+		}
 
+		Date end = new Date();
+		System.out.println(end);
 		System.out.println("");
 	}
 

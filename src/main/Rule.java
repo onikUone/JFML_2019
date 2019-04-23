@@ -25,11 +25,32 @@ public class Rule {
 		this.params = new float[2 * setting.Ndim];
 		this.rule = new int[setting.Ndim];
 	}
+
+	//Deep Copy
+	public Rule(Rule rule) {
+		setParams(rule.params);
+		setRule(rule.rule);
+		this.uniqueRnd = new MersenneTwisterFast(rule.uniqueRnd.nextInt());
+	}
 	// ************************************************************
 
 	//Methods *****************************************************
 
+	public void mutation(int dim, SettingForGA setting) {
+		int newFuzzySet = 0;
+		int count = 0;
+		do {
+			if(count > 10) {
+				break;
+			}
 
+			newFuzzySet = uniqueRnd.nextInt(setting.Fdiv);
+
+		} while(newFuzzySet == this.rule[dim]);
+
+		this.rule[dim] = newFuzzySet;
+
+	}
 
 	public void setParams(float[] _params) {
 		for(int i = 0; i < _params.length; i++) {

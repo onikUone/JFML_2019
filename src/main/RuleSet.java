@@ -21,6 +21,9 @@ public class RuleSet {
 	MersenneTwisterFast uniqueRnd;
 	public ArrayList<Rule> rules = new ArrayList<Rule>();
 	float[] concList;
+	float fitness = 100f;
+
+	int[][] count;
 	// ************************************************************
 
 	//Constructor *************************************************
@@ -30,9 +33,48 @@ public class RuleSet {
 		Arrays.fill(this.concList, 0.5f);
 	}
 
+	//Deep Copy
+	public RuleSet(RuleSet ruleSet, SettingForGA setting) {
+		this.rules.clear();
+		this.concList = new float[ruleSet.concList.length];
+		for(int i = 0; i < ruleSet.rules.size(); i++) {
+			this.rules.add(ruleSet.rules.get(i));
+		}
+		for(int i = 0; i < ruleSet.concList.length; i++) {
+			this.concList[i] = ruleSet.concList[i];
+		}
+		this.fitness = ruleSet.getFitness();
+		this.uniqueRnd = new MersenneTwisterFast(ruleSet.uniqueRnd.nextInt());
+		makeFS(setting);
+	}
+
 	// ************************************************************
 
 	//Methods *****************************************************
+
+	public void countUsedFuzzySet(SettingForGA setting) {
+		int Ndim = setting.Ndim;
+		int Fdiv = setting.Fdiv;
+
+		this.count = new int[Ndim][Fdiv];
+
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			Arrays.fill(this.count[dim_i], 0);
+			for(int div_i = 0; div_i < Fdiv; div_i++) {
+
+				for(int rule_i = 0; rule_i < this.rules.size(); rule_i++) {
+					if(this.rules.get(rule_i).rule[dim_i] == div_i) {
+						this.count[dim_i][div_i]++;
+					}
+				}
+			}
+		}
+	}
+
+	//ruleIdx番目のルールのdim番目の条件部に突然変異操作を行う
+	public void micMutation(int ruleIdx, int dim, SettingForGA setting) {
+		rules.get(ruleIdx).mutation(dim, setting);
+	}
 
 	public void makeFS(SettingForGA setting) {
 		int ruleNum = setting.ruleNum;
@@ -174,6 +216,15 @@ public class RuleSet {
 			this.concList[i] = newConcList[i];
 		}
 	}
+
+	public void setFitness(float _fitness) {
+		this.fitness = _fitness;
+	}
+
+	public float getFitness() {
+		return this.fitness;
+	}
+
 
 	// ************************************************************
 

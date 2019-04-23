@@ -11,12 +11,23 @@ public class SettingForGA {
 	int Ndim;
 
 	int Fdiv = 6;
-	int generation = 3000;
+	int gaGeneration = 1000;	//GA世代数
+	int calcGeneration = 300;	//結論部学習エポック数
 	int popSize = 100;
 	int ruleNum = 100;	//1個体あたりのルール数
 	float eta = 0.5f;
 	int seed = 2019;
-	String resultFileName = "results/20190418";
+	String resultFileName = "results/20190423/" +
+							"gaGene" + String.valueOf(gaGeneration) +
+							"_calcGene" + String.valueOf(calcGeneration) +
+							"_pop" + String.valueOf(popSize) +
+							"_rule" + String.valueOf(ruleNum) +
+							"_seed" + String.valueOf(seed);
+
+	//GA設定
+	float rateCrossOver = 0.5f;
+	float rateMutation = 0.5f;
+
 
 	FuzzyVariableType[] inputVariable;
 	TskVariableType EBWR;
