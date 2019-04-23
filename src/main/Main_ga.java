@@ -26,7 +26,7 @@ public class Main_ga {
 		PopulationManager popManager = new PopulationManager(tra, tst, eva, setting);
 		GaManager gaManager = new GaManager();
 
-		gaManager.gaFrame2(setting, popManager, tra, tst, eva);
+		gaManager.gaFrame(setting, popManager, tra, tst, eva);
 
 	}
 

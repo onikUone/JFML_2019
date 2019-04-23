@@ -169,6 +169,12 @@ public class RuleSet {
 
 	}
 
+	public void setConcList(float[] newConcList) {
+		for(int i = 0; i < newConcList.length; i++) {
+			this.concList[i] = newConcList[i];
+		}
+	}
+
 	// ************************************************************
 
 }

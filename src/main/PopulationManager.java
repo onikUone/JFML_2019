@@ -120,7 +120,8 @@ public class PopulationManager {
 
 	}
 
-	public void calcConclusion(DataSetInfo tra, int generation) {
+	//毎回FMLインスタンスを作り直す
+	public void calcConclusion2(SettingForGA setting, DataSetInfo tra, int generation) {
 		int dataSize = tra.getDataSize();
 		int Ndim = tra.getNdim();
 
@@ -128,25 +129,27 @@ public class PopulationManager {
 		float y;
 		float diff;
 		float memberSum;
-		float[] memberships;
+		float[] memberships = new float[ruleNum];
+		float[] newConcList = new float[ruleNum];
 
 		KnowledgeBaseVariable[] input = new KnowledgeBaseVariable[Ndim];
+		KnowledgeBaseVariable out;
 
 		for(int pop_i = 0; pop_i < popSize; pop_i++) {
-
-			input[0] = currentPops.get(pop_i).fs.getVariable("MoveNo");
-			input[1] = currentPops.get(pop_i).fs.getVariable("DBSN");
-			input[2] = currentPops.get(pop_i).fs.getVariable("DWSN");
-			input[3] = currentPops.get(pop_i).fs.getVariable("DBWR");
-			input[4] = currentPops.get(pop_i).fs.getVariable("DWWR");
-			input[5] = currentPops.get(pop_i).fs.getVariable("DBTMR");
-			input[6] = currentPops.get(pop_i).fs.getVariable("DWTMR");
 
 			for(int gene_i = 0; gene_i < generation; gene_i++) {
 
 				for(int data_i = 0; data_i < dataSize; data_i++) {
 					line = tra.getPattern(data_i);
+					memberSum = 0;
 
+					input[0] = currentPops.get(pop_i).fs.getVariable("MoveNo");
+					input[1] = currentPops.get(pop_i).fs.getVariable("DBSN");
+					input[2] = currentPops.get(pop_i).fs.getVariable("DWSN");
+					input[3] = currentPops.get(pop_i).fs.getVariable("DBWR");
+					input[4] = currentPops.get(pop_i).fs.getVariable("DWWR");
+					input[5] = currentPops.get(pop_i).fs.getVariable("DBTMR");
+					input[6] = currentPops.get(pop_i).fs.getVariable("DWTMR");
 					if(line.getDimValue(2) >= 0) {
 						for(int dim_i = 0; dim_i < Ndim; dim_i++) {
 							input[dim_i].setValue( line.getDimValue(dim_i) );
@@ -162,13 +165,101 @@ public class PopulationManager {
 					}
 
 					currentPops.get(pop_i).fs.evaluate();
-					//TODO
+
+					for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+						//読み込んだデータに対してのメンバシップ値を保持
+						memberships[rule_i] = ((TskVariableType) currentPops.get(pop_i).fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getW();
+						//現在の結論部の値を保持
+						newConcList[rule_i] = ((TskVariableType) currentPops.get(pop_i).fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getZ();
+						memberSum += memberships[rule_i];
+					}
+
+					//修正値計算
+					out = currentPops.get(pop_i).fs.getVariable("EBWR");
+					y =  out.getValue();
+					diff = (float) line.getY() - y;
+					for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+						newConcList[rule_i] += setting.eta * diff * memberships[rule_i] / memberSum;
+					}
+
+					currentPops.get(pop_i).setConcList(newConcList);
+					currentPops.get(pop_i).makeFS(setting);
+
 				}
 			}
 		}
 	}
 
+	//メンバシップ値を先に保存しといて学習を行う
+	public void calcConclusion(SettingForGA setting, DataSetInfo tra, int generation) {
+		int dataSize = tra.getDataSize();
+		int Ndim = tra.getNdim();
 
+		Pattern[] line = new Pattern[dataSize];
+		float y;
+		float diff;
+		float memberSum;
+		float[][] memberships = new float[dataSize][ruleNum];
+		float[] newConcList = new float[ruleNum];
+
+		KnowledgeBaseVariable[] input = new KnowledgeBaseVariable[Ndim];
+		KnowledgeBaseVariable out;
+
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+			for(int data_i = 0; data_i < dataSize; data_i++) {
+				line[data_i] = tra.getPattern(data_i);
+
+
+				input[0] = currentPops.get(pop_i).fs.getVariable("MoveNo");
+				input[1] = currentPops.get(pop_i).fs.getVariable("DBSN");
+				input[2] = currentPops.get(pop_i).fs.getVariable("DWSN");
+				input[3] = currentPops.get(pop_i).fs.getVariable("DBWR");
+				input[4] = currentPops.get(pop_i).fs.getVariable("DWWR");
+				input[5] = currentPops.get(pop_i).fs.getVariable("DBTMR");
+				input[6] = currentPops.get(pop_i).fs.getVariable("DWTMR");
+				if(line[data_i].getDimValue(2) >= 0) {
+					for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+						input[dim_i].setValue( line[data_i].getDimValue(dim_i) );
+					}
+				} else {
+					input[0].setValue(line[data_i].getDimValue(0));
+					input[1].setValue(line[data_i].getDimValue(1));
+					input[2].setValue(line[data_i].getDimValue(1));
+					input[3].setValue(line[data_i].getDimValue(3));
+					input[4].setValue(1f - line[data_i].getDimValue(3));
+					input[5].setValue(line[data_i].getDimValue(5));
+					input[6].setValue(line[data_i].getDimValue(5));
+				}
+
+				currentPops.get(pop_i).fs.evaluate();
+				for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+					//読み込んだデータに対してのメンバシップ値を保持
+					memberships[data_i][rule_i] = ((TskVariableType) currentPops.get(pop_i).fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getW();
+					//現在の結論部の値を保持
+					newConcList[rule_i] = ((TskVariableType) currentPops.get(pop_i).fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getZ();
+				}
+			}
+
+			//修正値計算
+			for(int gene_i = 0; gene_i < generation; gene_i++) {
+				for(int data_i = 0; data_i < dataSize; data_i++) {
+					memberSum = 0;
+					y = 0f;
+					for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+						memberSum += memberships[data_i][rule_i];
+						y += memberships[data_i][rule_i] * newConcList[rule_i];
+					}
+					y /= memberSum;
+					diff = line[data_i].getY() - y;
+					for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+						newConcList[rule_i] += setting.eta * diff * memberships[data_i][rule_i] / memberSum;
+					}
+				}
+			}
+			currentPops.get(pop_i).setConcList(newConcList);
+			currentPops.get(pop_i).makeFS(setting);
+		}
+	}
 
 
 	//全ルール探索識別器生成

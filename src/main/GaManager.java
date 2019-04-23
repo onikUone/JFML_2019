@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Date;
 import java.util.concurrent.ForkJoinPool;
 
 public class GaManager {
@@ -16,16 +17,22 @@ public class GaManager {
 
 	//Methods *******************************************
 
-	public void gaFrame2(SettingForGA setting, PopulationManager popManager, DataSetInfo tra, DataSetInfo tst, DataSetInfo eva) {
+	public void gaFrame(SettingForGA setting, PopulationManager popManager, DataSetInfo tra, DataSetInfo tst, DataSetInfo eva) {
 
 		//初期個体群生成
 		popManager.currentPops.clear();
 		popManager.generateInitialPopulation(setting);
 		popManager.makeFML(setting);	//各currentPopsのfsを生成
 
-		//TODO conclusion学習メソッド(traを使用して学習)
-		popManager.calcConclusion(tra, 1);
+		Date now = new Date();
+		System.out.println(now);
 
+		popManager.calcConclusion(setting, tra, setting.generation);
+
+		Date fin = new Date();
+		System.out.println(fin);
+
+		//TODO GA操作 単目的最適化
 
 		System.out.println("");
 	}
