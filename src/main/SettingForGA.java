@@ -141,60 +141,60 @@ public class SettingForGA {
 
 //		//20190425
 //		MoveNo = new FuzzyTermType[6];
-//		MoveNo[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.21f});
-//		MoveNo[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.21f});
-//		MoveNo[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.21f});
-//		MoveNo[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.21f});
-//		MoveNo[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.21f});
-//		MoveNo[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.21f});
+//		MoveNo[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.1f});
+//		MoveNo[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.1f});
+//		MoveNo[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.1f});
+//		MoveNo[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.1f});
+//		MoveNo[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.1f});
+//		MoveNo[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.1f});
 //
 //		DBSN = new FuzzyTermType[6];
-//		DBSN[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.21f});
-//		DBSN[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.21f});
-//		DBSN[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.21f});
-//		DBSN[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.21f});
-//		DBSN[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.21f});
-//		DBSN[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.21f});
+//		DBSN[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.1f});
+//		DBSN[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.1f});
+//		DBSN[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.1f});
+//		DBSN[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.1f});
+//		DBSN[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.1f});
+//		DBSN[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.1f});
 //
 //		DWSN = new FuzzyTermType[6];
-//		DWSN[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.21f});
-//		DWSN[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.21f});
-//		DWSN[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.21f});
-//		DWSN[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.21f});
-//		DWSN[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.21f});
-//		DWSN[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.21f});
+//		DWSN[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.1f});
+//		DWSN[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.1f});
+//		DWSN[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.1f});
+//		DWSN[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.1f});
+//		DWSN[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.1f});
+//		DWSN[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.1f});
 //
 //		DBWR = new FuzzyTermType[6];
-//		DBWR[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.21f});
-//		DBWR[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.21f});
-//		DBWR[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.21f});
-//		DBWR[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.21f});
-//		DBWR[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.21f});
-//		DBWR[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.21f});
+//		DBWR[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.1f});
+//		DBWR[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.1f});
+//		DBWR[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.1f});
+//		DBWR[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.1f});
+//		DBWR[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.1f});
+//		DBWR[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.1f});
 //
 //		DWWR = new FuzzyTermType[6];
-//		DWWR[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.21f});
-//		DWWR[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.21f});
-//		DWWR[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.21f});
-//		DWWR[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.21f});
-//		DWWR[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.21f});
-//		DWWR[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.21f});
+//		DWWR[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.1f});
+//		DWWR[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.1f});
+//		DWWR[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.1f});
+//		DWWR[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.1f});
+//		DWWR[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.1f});
+//		DWWR[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.1f});
 //
 //		DBTMR = new FuzzyTermType[6];
-//		DBTMR[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.21f});
-//		DBTMR[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.21f});
-//		DBTMR[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.21f});
-//		DBTMR[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.21f});
-//		DBTMR[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.21f});
-//		DBTMR[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.21f});
+//		DBTMR[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.1f});
+//		DBTMR[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.1f});
+//		DBTMR[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.1f});
+//		DBTMR[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.1f});
+//		DBTMR[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.1f});
+//		DBTMR[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.1f});
 //
 //		DWTMR = new FuzzyTermType[6];
-//		DWTMR[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.21f});
-//		DWTMR[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.21f});
-//		DWTMR[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.21f});
-//		DWTMR[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.21f});
-//		DWTMR[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.21f});
-//		DWTMR[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.21f});
+//		DWTMR[0] = new FuzzyTermType("left", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.1f});
+//		DWTMR[1] = new FuzzyTermType("right", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.1f});
+//		DWTMR[2] = new FuzzyTermType("one", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.1f});
+//		DWTMR[3] = new FuzzyTermType("two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.1f});
+//		DWTMR[4] = new FuzzyTermType("three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.1f});
+//		DWTMR[5] = new FuzzyTermType("four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.1f});
 
 
 
