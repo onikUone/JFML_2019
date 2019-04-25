@@ -3,6 +3,9 @@ package main;
 import java.util.Date;
 import java.util.concurrent.ForkJoinPool;
 
+import jfml.FuzzyInferenceSystem;
+import jfml.knowledgebase.variable.KnowledgeBaseVariable;
+
 public class GaManager {
 
 	//Fields ********************************************
@@ -26,6 +29,12 @@ public class GaManager {
 		popManager.currentPops.clear();
 		popManager.generateInitialPopulation(setting);
 		popManager.makeFML(setting);	//各currentPopsのfsを生成
+
+//		//MSEの学習推移見る用
+//		popManager.calcConclusion2(setting, tra, tst, setting.calcGeneration);	//結論部学習
+//		popManager.outputCurrentFML("calcGene" + String.valueOf(setting.calcGeneration) + "/FML", 0, setting);	//FML出力
+//		popManager.outputCurrentCount("calcGene" + String.valueOf(setting.calcGeneration) + "/Count", 0, setting);
+
 		popManager.calcConclusion(setting, tra, setting.calcGeneration);	//結論部学習
 		popManager.outputCurrentFML("gene_0_initial/FML", 0, setting);	//FML出力
 		popManager.outputCurrentMSE("gene_0_initial/MSE", 0, tst, setting);	//MSE出力
@@ -258,49 +267,49 @@ public class GaManager {
 //
 //	}
 //
-//	public float[] reasoning(DataSetInfo dataset, PopulationManager popManager, SettingForFML setting) {
-//		Pattern line;
-//		float[] y = new float[dataset.getDataSize()];
-//
-//		KnowledgeBaseVariable[] inputVariables = new KnowledgeBaseVariable[setting.Ndim];
-//		KnowledgeBaseVariable out;
-//
-//		for(int data_i = 0; data_i < dataset.getPatterns().size(); data_i++) {
-//			line = dataset.getPattern(data_i);
-//
-//			inputVariables[0] = popManager.all.fs.getVariable("Move");
-//			inputVariables[1] = popManager.all.fs.getVariable("DBSN");
-//			inputVariables[2] = popManager.all.fs.getVariable("DWSN");
-//			inputVariables[3] = popManager.all.fs.getVariable("DBWR");
-//			inputVariables[4] = popManager.all.fs.getVariable("DWWR");
-//			inputVariables[5] = popManager.all.fs.getVariable("DBTMR");
-//			inputVariables[6] = popManager.all.fs.getVariable("DWTMR");
-//
-//			if(line.getDimValue(2) >= 0) {
-//				inputVariables[0].setValue((float)line.getDimValue(0));
-//				inputVariables[1].setValue((float)line.getDimValue(1));
-//				inputVariables[2].setValue((float)line.getDimValue(2));
-//				inputVariables[3].setValue((float)line.getDimValue(3));
-//				inputVariables[4].setValue((float)line.getDimValue(4));
-//				inputVariables[5].setValue((float)line.getDimValue(5));
-//				inputVariables[6].setValue((float)line.getDimValue(6));
-//			} else {	//欠損値
-//				inputVariables[0].setValue((float)line.getDimValue(0));
-//				inputVariables[1].setValue((float)line.getDimValue(1));
-//				inputVariables[2].setValue((float)line.getDimValue(1));
-//				inputVariables[3].setValue((float)line.getDimValue(3));
-//				inputVariables[4].setValue(1f - (float)line.getDimValue(3));
-//				inputVariables[5].setValue((float)line.getDimValue(5));
-//				inputVariables[6].setValue((float)line.getDimValue(5));
-//			}
-//
-//			popManager.all.fs.evaluate();
-//			out = popManager.all.fs.getVariable("EBWR");
-//			y[data_i] = out.getValue();
-//		}
-//
-//		return y;
-//	}
+	public static float[] reasoning(DataSetInfo dataset, FuzzyInferenceSystem fs, SettingForGA setting) {
+		Pattern line;
+		float[] y = new float[dataset.getDataSize()];
+
+		KnowledgeBaseVariable[] inputVariables = new KnowledgeBaseVariable[setting.Ndim];
+		KnowledgeBaseVariable out;
+
+		for(int data_i = 0; data_i < dataset.getPatterns().size(); data_i++) {
+			line = dataset.getPattern(data_i);
+
+			inputVariables[0] = fs.getVariable("MoveNo");
+			inputVariables[1] = fs.getVariable("DBSN");
+			inputVariables[2] = fs.getVariable("DWSN");
+			inputVariables[3] = fs.getVariable("DBWR");
+			inputVariables[4] = fs.getVariable("DWWR");
+			inputVariables[5] = fs.getVariable("DBTMR");
+			inputVariables[6] = fs.getVariable("DWTMR");
+
+			if(line.getDimValue(2) >= 0) {
+				inputVariables[0].setValue((float)line.getDimValue(0));
+				inputVariables[1].setValue((float)line.getDimValue(1));
+				inputVariables[2].setValue((float)line.getDimValue(2));
+				inputVariables[3].setValue((float)line.getDimValue(3));
+				inputVariables[4].setValue((float)line.getDimValue(4));
+				inputVariables[5].setValue((float)line.getDimValue(5));
+				inputVariables[6].setValue((float)line.getDimValue(6));
+			} else {	//欠損値
+				inputVariables[0].setValue((float)line.getDimValue(0));
+				inputVariables[1].setValue((float)line.getDimValue(1));
+				inputVariables[2].setValue((float)line.getDimValue(1));
+				inputVariables[3].setValue((float)line.getDimValue(3));
+				inputVariables[4].setValue(1f - (float)line.getDimValue(3));
+				inputVariables[5].setValue((float)line.getDimValue(5));
+				inputVariables[6].setValue((float)line.getDimValue(5));
+			}
+
+			fs.evaluate();
+			out = fs.getVariable("EBWR");
+			y[data_i] = out.getValue();
+		}
+
+		return y;
+	}
 
 	// **************************************************
 }

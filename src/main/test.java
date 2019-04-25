@@ -32,12 +32,21 @@ public class test {
 		inputVariable[5] = new FuzzyVariableType("Four_v", 0, 1);
 
 		FuzzyTermType[] gaussians = new FuzzyTermType[6];
+//		//20190423
+//		gaussians[0] = new FuzzyTermType("LEFT", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.21f});
+//		gaussians[1] = new FuzzyTermType("RIGHT", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.21f});
+//		gaussians[2] = new FuzzyTermType("One", FuzzyTermType.TYPE_gaussianShape, new float[] {0.66f, 0.1f});
+//		gaussians[3] = new FuzzyTermType("Two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.72f, 0.1f});
+//		gaussians[4] = new FuzzyTermType("Three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.78f, 0.1f});
+//		gaussians[5] = new FuzzyTermType("Four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.84f, 0.1f});
+
+		//20190425
 		gaussians[0] = new FuzzyTermType("LEFT", FuzzyTermType.TYPE_gaussianShape, new float[] {0f, 0.21f});
 		gaussians[1] = new FuzzyTermType("RIGHT", FuzzyTermType.TYPE_gaussianShape, new float[] {1f, 0.21f});
-		gaussians[2] = new FuzzyTermType("One", FuzzyTermType.TYPE_gaussianShape, new float[] {0.66f, 0.1f});
-		gaussians[3] = new FuzzyTermType("Two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.72f, 0.1f});
-		gaussians[4] = new FuzzyTermType("Three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.78f, 0.1f});
-		gaussians[5] = new FuzzyTermType("Four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.84f, 0.1f});
+		gaussians[2] = new FuzzyTermType("One", FuzzyTermType.TYPE_gaussianShape, new float[] {0.2f, 0.21f});
+		gaussians[3] = new FuzzyTermType("Two", FuzzyTermType.TYPE_gaussianShape, new float[] {0.4f, 0.21f});
+		gaussians[4] = new FuzzyTermType("Three", FuzzyTermType.TYPE_gaussianShape, new float[] {0.6f, 0.21f});
+		gaussians[5] = new FuzzyTermType("Four", FuzzyTermType.TYPE_gaussianShape, new float[] {0.8f, 0.21f});
 
 		KnowledgeBaseType kb = new KnowledgeBaseType();
 

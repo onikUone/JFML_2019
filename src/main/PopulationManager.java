@@ -269,6 +269,90 @@ public class PopulationManager implements Serializable{
 		}
 	}
 
+	public void calcConclusion2(SettingForGA setting, DataSetInfo tra, DataSetInfo tst, int generation) {
+		int dataSize = tra.getDataSize();
+		int Ndim = tra.getNdim();
+
+		Pattern[] line = new Pattern[dataSize];
+		float y;
+		float diff;
+		float memberSum;
+		float[][] memberships = new float[dataSize][ruleNum];
+		float[] newConcList = new float[ruleNum];
+
+//		float[] mseTra = new float[setting.popSize];
+//		float[] mseTst = new float[setting.popSize];
+
+		KnowledgeBaseVariable[] input = new KnowledgeBaseVariable[Ndim];
+		KnowledgeBaseVariable out;
+
+		ResultMaster resultMaster = new ResultMaster();
+
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+			resultMaster.addMSE();
+			for(int data_i = 0; data_i < dataSize; data_i++) {
+				line[data_i] = tra.getPattern(data_i);
+
+
+				input[0] = currentPops.get(pop_i).fs.getVariable("MoveNo");
+				input[1] = currentPops.get(pop_i).fs.getVariable("DBSN");
+				input[2] = currentPops.get(pop_i).fs.getVariable("DWSN");
+				input[3] = currentPops.get(pop_i).fs.getVariable("DBWR");
+				input[4] = currentPops.get(pop_i).fs.getVariable("DWWR");
+				input[5] = currentPops.get(pop_i).fs.getVariable("DBTMR");
+				input[6] = currentPops.get(pop_i).fs.getVariable("DWTMR");
+				if(line[data_i].getDimValue(2) >= 0) {
+					for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+						input[dim_i].setValue( line[data_i].getDimValue(dim_i) );
+					}
+				} else {
+					input[0].setValue(line[data_i].getDimValue(0));
+					input[1].setValue(line[data_i].getDimValue(1));
+					input[2].setValue(line[data_i].getDimValue(1));
+					input[3].setValue(line[data_i].getDimValue(3));
+					input[4].setValue(1f - line[data_i].getDimValue(3));
+					input[5].setValue(line[data_i].getDimValue(5));
+					input[6].setValue(line[data_i].getDimValue(5));
+				}
+
+				currentPops.get(pop_i).fs.evaluate();
+				for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+					//読み込んだデータに対してのメンバシップ値を保持
+					memberships[data_i][rule_i] = ((TskVariableType) currentPops.get(pop_i).fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getW();
+					//現在の結論部の値を保持
+					newConcList[rule_i] = ((TskVariableType) currentPops.get(pop_i).fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getZ();
+				}
+			}
+
+			//修正値計算
+			for(int gene_i = 0; gene_i < generation; gene_i++) {
+				for(int data_i = 0; data_i < dataSize; data_i++) {
+					memberSum = 0;
+					y = 0f;
+					for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+						memberSum += memberships[data_i][rule_i];
+						y += memberships[data_i][rule_i] * newConcList[rule_i];
+					}
+					y /= memberSum;
+					diff = line[data_i].getY() - y;
+					for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+						newConcList[rule_i] += setting.eta * diff * memberships[data_i][rule_i] / memberSum;
+					}
+				}
+
+				currentPops.get(pop_i).setConcList(newConcList);
+				currentPops.get(pop_i).makeFS(setting);
+
+				float[] yTra = GaManager.reasoning(tra, currentPops.get(pop_i).fs, setting);
+				float[] yTst = GaManager.reasoning(tst, currentPops.get(pop_i).fs, setting);
+				float mseTra = calcMSE(tra, yTra, setting);
+				float mseTst = calcMSE(tst, yTst, setting);
+				resultMaster.setMSE(mseTra, mseTst);
+			}
+		}
+		resultMaster.writeMSE("calcGene" + String.valueOf(setting.calcGeneration) + "/writeMSE", setting);
+	}
+
 	//メンバシップ値を先に保存しといて学習を行う
 	//こちらの方が早い
 	public void calcConclusionForChild(SettingForGA setting, DataSetInfo tra, int generation) {
@@ -409,6 +493,20 @@ public class PopulationManager implements Serializable{
 			}
 			mse[pop_i] /= dataset.getDataSize();
 		}
+		return mse;
+	}
+
+	//与えられたy[]からMSE計算
+	public float calcMSE(DataSetInfo dataset, float[] y, SettingForGA setting) {
+		float mse = 0f;
+		float diff;
+
+		for(int data_i = 0; data_i < y.length; data_i++) {
+			diff = y[data_i] - dataset.getPattern(data_i).getY();
+			mse += diff * diff;
+		}
+		mse /= dataset.getDataSize();
+
 		return mse;
 	}
 

@@ -18,15 +18,15 @@ public class Output {
 	// ************************************************
 
 	//Methods *****************************************
-	public static void writeList(ArrayList<Float> _list, String _fileName) throws IOException {
-		FileWriter fw = new FileWriter(_fileName, true);
-		PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
-
-		for(int i = 0; i < _list.size(); i++) {
-			pw.println(_list.get(i));
-		}
-		pw.close();
-	}
+//	public static void writeList(ArrayList<Float> _list, String _fileName) throws IOException {
+//		FileWriter fw = new FileWriter(_fileName, true);
+//		PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
+//
+//		for(int i = 0; i < _list.size(); i++) {
+//			pw.println(_list.get(i));
+//		}
+//		pw.close();
+//	}
 
 	public static void writeArray(double[] y, String _fileName) throws IOException {
 		FileWriter fw = new FileWriter(_fileName, true);
@@ -60,6 +60,26 @@ public class Output {
 				pw.println("");
 			}
 
+			pw.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//resultManager MSEリスト用
+	public static void writeList(ArrayList<ArrayList<Float>> _list, String _fileName) {
+		try {
+			FileWriter fw = new FileWriter(_fileName, true);
+			PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
+
+
+
+			for(int i = 0; i < _list.get(0).size(); i++) {
+				for(int j = 0; j < _list.size(); j++) {
+					pw.print(_list.get(j).get(i) + ",");
+				}
+				pw.println("");
+			}
 			pw.close();
 		} catch(IOException e) {
 			e.printStackTrace();
