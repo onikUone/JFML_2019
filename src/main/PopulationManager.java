@@ -33,6 +33,7 @@ public class PopulationManager implements Serializable{
 	public ArrayList<RuleSet> currentPops = new ArrayList<RuleSet>();
 	public ArrayList<RuleSet> newPops = new ArrayList<RuleSet>();
 	public ArrayList<RuleSet> margePops = new ArrayList<RuleSet>();
+	RuleSet one;
 	Rule all;
 
 	//データセット情報
@@ -63,6 +64,15 @@ public class PopulationManager implements Serializable{
 		this.Ndim = setting.Ndim;
 		this.traDataSize = tra.getDataSize();
 		this.evaDataSize = eva.getDataSize();
+		this.tstDataSize = tst.getDataSize();
+		this.ruleNum = setting.ruleNum;
+	}
+
+	public PopulationManager(DataSetInfo tra, DataSetInfo tst, SettingForGA setting) {
+		this.uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
+		this.popSize = setting.popSize;
+		this.Ndim = setting.Ndim;
+		this.traDataSize = tra.getDataSize();
 		this.tstDataSize = tst.getDataSize();
 		this.ruleNum = setting.ruleNum;
 	}
@@ -737,6 +747,7 @@ public class PopulationManager implements Serializable{
 		}
 	}
 
+
 	public class PopulationComparator implements Comparator<RuleSet> {
 		@Override
 		public int compare(RuleSet a, RuleSet b) {
@@ -752,6 +763,11 @@ public class PopulationManager implements Serializable{
 				return -1;
 			}
 		}
+	}
+
+	public void setFS(FuzzyInferenceSystem _fs, SettingForGA setting) {
+		this.one = new RuleSet(setting);
+		this.one.setFS(_fs);
 	}
 
 

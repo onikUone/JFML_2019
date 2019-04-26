@@ -86,6 +86,21 @@ public class Output {
 		}
 	}
 
+	public static void writeList(ArrayList<Float> mseTra, ArrayList<Float> mseTst, String _fileName) {
+		try {
+			FileWriter fw = new FileWriter(_fileName, true);
+			PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
+
+			for(int i = 0; i < mseTra.size(); i++) {
+				pw.println(String.valueOf(mseTra.get(i)) + "," + String.valueOf(mseTst.get(i)));
+			}
+
+			pw.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	//ガウシアン分布をみるためのtest用
 	public static void writeGaussian(float[][] array, String fileName) throws IOException{
 		FileWriter fw = new FileWriter(fileName, true);

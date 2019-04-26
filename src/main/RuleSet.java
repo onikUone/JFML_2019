@@ -6,6 +6,7 @@ import java.util.Arrays;
 import jfml.FuzzyInferenceSystem;
 import jfml.knowledgebase.KnowledgeBaseType;
 import jfml.knowledgebase.variable.FuzzyVariableType;
+import jfml.knowledgebase.variable.KnowledgeBaseVariable;
 import jfml.knowledgebase.variable.TskVariableType;
 import jfml.rule.AntecedentType;
 import jfml.rule.ClauseType;
@@ -51,6 +52,154 @@ public class RuleSet {
 	// ************************************************************
 
 	//Methods *****************************************************
+
+
+	public void calcConclusion(SettingForGA setting, DataSetInfo tra, DataSetInfo tst, int generation) {
+		int dataSize = tra.getDataSize();
+		int Ndim = tra.getNdim();
+		int ruleNum = setting.ruleNum;
+
+		Pattern[] line = new Pattern[dataSize];
+		float[] yTra = new float[dataSize];
+		float[] yTst = new float[tst.getDataSize()];
+		float diff;
+		float memberSumTra;
+		float memberSumTst;
+		float[][] membershipsTra = new float[dataSize][ruleNum];
+		float[][] membershipsTst = new float[tst.getDataSize()][ruleNum];
+		float[] newConcList = new float[ruleNum];
+		ArrayList<Float> mseTra = new ArrayList<Float>();
+		ArrayList<Float> mseTst = new ArrayList<Float>();
+
+
+		KnowledgeBaseVariable[] inputTra = new KnowledgeBaseVariable[Ndim];
+		KnowledgeBaseVariable[] inputTst = new KnowledgeBaseVariable[Ndim];
+		KnowledgeBaseVariable out;
+
+		ResultMaster resultMaster = new ResultMaster();
+		resultMaster.addMSE();
+
+		for(int data_i = 0; data_i < dataSize; data_i++) {
+			line[data_i] = tra.getPattern(data_i);
+
+			inputTra[0] = this.fs.getVariable("MoveNo");
+			inputTra[1] = this.fs.getVariable("DBSN");
+			inputTra[2] = this.fs.getVariable("DWSN");
+			inputTra[3] = this.fs.getVariable("DBWR");
+			inputTra[4] = this.fs.getVariable("DWWR");
+			inputTra[5] = this.fs.getVariable("DBTMR");
+			inputTra[6] = this.fs.getVariable("DWTMR");
+
+			if(line[data_i].getDimValue(2) >= 0) {
+				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+					inputTra[dim_i].setValue(line[data_i].getDimValue(dim_i));
+				}
+			} else {
+				inputTra[0].setValue(line[data_i].getDimValue(0));
+				inputTra[1].setValue(line[data_i].getDimValue(1));
+				inputTra[2].setValue(line[data_i].getDimValue(1));
+				inputTra[3].setValue(line[data_i].getDimValue(3));
+				inputTra[4].setValue(1f - line[data_i].getDimValue(3));
+				inputTra[5].setValue(line[data_i].getDimValue(5));
+				inputTra[6].setValue(line[data_i].getDimValue(5));
+			}
+
+			this.fs.evaluate();
+			for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+				//読み込んだデータに対してのメンバシップ値を保持
+				membershipsTra[data_i][rule_i] = ((TskVariableType) this.fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getW();
+				//現在の結論部の値を保持
+				newConcList[rule_i] = ((TskVariableType) this.fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getZ();
+			}
+		}
+
+		for(int data_i = 0; data_i < tst.getDataSize(); data_i++) {
+			line[data_i] = tst.getPattern(data_i);
+
+			inputTst[0] = this.fs.getVariable("MoveNo");
+			inputTst[1] = this.fs.getVariable("DBSN");
+			inputTst[2] = this.fs.getVariable("DWSN");
+			inputTst[3] = this.fs.getVariable("DBWR");
+			inputTst[4] = this.fs.getVariable("DWWR");
+			inputTst[5] = this.fs.getVariable("DBTMR");
+			inputTst[6] = this.fs.getVariable("DWTMR");
+
+			if(line[data_i].getDimValue(2) >= 0) {
+				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+					inputTst[dim_i].setValue(line[data_i].getDimValue(dim_i));
+				}
+			} else {
+				inputTst[0].setValue(line[data_i].getDimValue(0));
+				inputTst[1].setValue(line[data_i].getDimValue(1));
+				inputTst[2].setValue(line[data_i].getDimValue(1));
+				inputTst[3].setValue(line[data_i].getDimValue(3));
+				inputTst[4].setValue(1f - line[data_i].getDimValue(3));
+				inputTst[5].setValue(line[data_i].getDimValue(5));
+				inputTst[6].setValue(line[data_i].getDimValue(5));
+			}
+
+			this.fs.evaluate();
+			for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+				//読み込んだデータに対してのメンバシップ値を保持
+				membershipsTst[data_i][rule_i] = ((TskVariableType) this.fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getW();
+			}
+		}
+
+		for(int gene_i = 0; gene_i < generation; gene_i++) {
+			for(int data_i = 0; data_i < dataSize; data_i++) {
+				memberSumTra = 0f;
+				yTra[data_i] = 0f;
+				for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+					memberSumTra += membershipsTra[data_i][rule_i];
+					yTra[data_i] += membershipsTra[data_i][rule_i] * newConcList[rule_i];
+				}
+				yTra[data_i] /= memberSumTra;
+				//修正量計算
+				diff = line[data_i].getY() - yTra[data_i];
+				for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+					newConcList[rule_i] += setting.eta * diff * membershipsTra[data_i][rule_i] / memberSumTra;
+				}
+			}
+
+			//出力
+			if(gene_i % 10 == 0) {
+				for(int data_i = 0; data_i < tst.getDataSize(); data_i++) {
+					memberSumTst = 0f;
+					yTst[data_i] = 0f;
+					for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+						memberSumTst += membershipsTst[data_i][rule_i];
+						yTst[data_i] += membershipsTst[data_i][rule_i] * newConcList[rule_i];
+					}
+					yTst[data_i] /= memberSumTst;
+				}
+
+				mseTra.add(calcMSE(tra, yTra, setting));
+				mseTst.add(calcMSE(tst, yTst, setting));
+				String file = setting.resultFileName + "/MSE/gene" + String.valueOf(gene_i+1) + ".csv";
+				Output.writeList(mseTra, mseTst, file);
+			}
+		}
+
+	}
+
+	//与えられたy[]からMSE計算
+	public float calcMSE(DataSetInfo dataset, float[] y, SettingForGA setting) {
+		float mse = 0f;
+		float diff;
+
+		for(int data_i = 0; data_i < y.length; data_i++) {
+			diff = y[data_i] - dataset.getPattern(data_i).getY();
+			mse += diff * diff;
+		}
+		mse /= dataset.getDataSize();
+
+		return mse;
+	}
+
+
+	public void setFS(FuzzyInferenceSystem _fs) {
+		this.fs = _fs;
+	}
 
 	public void countUsedFuzzySet(SettingForGA setting) {
 		int Ndim = setting.Ndim;

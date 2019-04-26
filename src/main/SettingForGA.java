@@ -17,12 +17,13 @@ public class SettingForGA {
 	int ruleNum = 100;	//1個体あたりのルール数
 	float eta = 0.5f;
 	int seed = 2020;
-	String resultFileName = "results/20190425/" +
-							"gaGene" + String.valueOf(gaGeneration) +
-							"_calcGene" + String.valueOf(calcGeneration) +
-							"_pop" + String.valueOf(popSize) +
-							"_rule" + String.valueOf(ruleNum) +
-							"_seed" + String.valueOf(seed);
+//	String resultFileName = "results/20190426_continueCalc/" +
+//							"gaGene" + String.valueOf(gaGeneration) +
+//							"_calcGene" + String.valueOf(calcGeneration) +
+//							"_pop" + String.valueOf(popSize) +
+//							"_rule" + String.valueOf(ruleNum) +
+//							"_seed" + String.valueOf(seed);
+	String resultFileName = "results/20190426_continueCalc";
 
 	//GA設定
 	float rateCrossOver = 0.5f;

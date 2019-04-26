@@ -18,8 +18,12 @@ public class DataSetInfo {
 	//Constructor *************************************
 	public DataSetInfo() {}
 
-	public DataSetInfo(String _filePath) throws IOException{
-		inputFile(_filePath);
+	public DataSetInfo(String _filePath) {
+		try {
+			inputFile(_filePath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 //		normalize(patterns, 0);
 //		normalize(patterns, 1);
 	}
