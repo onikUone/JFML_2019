@@ -33,7 +33,7 @@ public class FmlGaManager {
 			System.out.println(".");
 
 			//1. 子個体生成
-
+//TODO
 			//2. 子個体の個体評価 = evaのMSE計算
 			//3. 世代更新
 
