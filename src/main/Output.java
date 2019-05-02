@@ -28,6 +28,7 @@ public class Output {
 //		pw.close();
 //	}
 
+
 	public static void writeArray(double[] y, String _fileName) throws IOException {
 		FileWriter fw = new FileWriter(_fileName, true);
 		PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );

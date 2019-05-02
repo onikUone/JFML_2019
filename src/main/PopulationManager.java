@@ -36,6 +36,11 @@ public class PopulationManager implements Serializable{
 	RuleSet one;
 	Rule all;
 
+	//new個体群
+	public ArrayList<FMLpopulation> currentFML = new ArrayList<FMLpopulation>();
+	public ArrayList<FMLpopulation> newFML = new ArrayList<FMLpopulation>();
+	public ArrayList<FMLpopulation> margeFML = new ArrayList<FMLpopulation>();
+
 	//データセット情報
 	int Ndim;
 	int traDataSize;
@@ -80,6 +85,21 @@ public class PopulationManager implements Serializable{
 	// ************************************************************
 
 	//Methods *****************************************************
+
+	public void generateInitialFML(SettingForGA setting) {
+		int popSize = setting.popFML;
+
+		//初期個体群生成
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+			this.currentFML.add( new FMLpopulation(setting) );
+			this.currentFML.get(pop_i).initializeFuzzyParams(setting);
+//			this.currentFML.get(pop_i).outputFuzzyParams(pop_i);
+			this.currentFML.get(pop_i).generateFS(setting);
+
+		}
+
+
+	}
 
 	//初期個体群生成
 	public void generateInitialPopulation(SettingForGA setting) {

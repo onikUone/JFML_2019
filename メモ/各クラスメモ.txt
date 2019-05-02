@@ -1,0 +1,21 @@
+ + class FS
+	- void generateRuleIdx(SettingForGA setting)
+	- void setFuzzyParams(float[][][] _fuzzyParams)
+	- void makeFS(SettingForGA setting)
+	- void calcConclusion(SettingForGA setting, DataSetInfo tra)
+	- float[] reasoning(SettingForGA setting, DataSetInfo dataset)
+	- void setFitness(float _fitness)
+
+
+ + class FMLpopulation
+ 	- void initializeFuzzyParams(SettingForGA setting)
+ 	- generateFS(SettingForGA setting)
+ 	- outputFuzzyParams(int pop_i)
+	- void outputCurrentFML(String folderName, int nowGene, SettingForGA setting)
+	- void crossOver(SettingForGA setting)
+ 	
++ class FmlManager
+	- void generateInitialFML(SettingForGA setting)
+	
+	
+	 
