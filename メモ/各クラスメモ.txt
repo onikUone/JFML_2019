@@ -5,6 +5,10 @@
 	- void calcConclusion(SettingForGA setting, DataSetInfo tra)
 	- float[] reasoning(SettingForGA setting, DataSetInfo dataset)
 	- void setFitness(float _fitness)
+	- void deepAddRule(int[] rule)
+	- void setRuleNum(int _ruleNum)
+	- void resetConcList()
+	- void mutation(int dim, SettingForGA setting)
 
 
  + class FMLpopulation
@@ -13,9 +17,16 @@
  	- outputFuzzyParams(int pop_i)
 	- void outputCurrentFML(String folderName, int nowGene, SettingForGA setting)
 	- void crossOver(SettingForGA setting)
+	- int[] sampringWithout(int num, int ruleNum)
+	- int binaryT4(SettingForGA setting)
+	- void mutation(SettingForGA setting)
+	- void populationUpdate(SettingForGA setting)
  	
 + class FmlManager
 	- void generateInitialFML(SettingForGA setting)
 	
 	
-	 
+TODO
+	evaをランダムに作成する
+	FuzzyParamsの最適化GAの評価方法を考える
+	

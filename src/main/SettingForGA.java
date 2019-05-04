@@ -12,28 +12,30 @@ public class SettingForGA {
 
 	int Fdiv = 6;
 	int gaGeneration = 1000;	//GA世代数
+	int popSize = 100;
+	int ruleNum = 100;	//1個体あたりのルール数
+
 	int fsGeneration = 1000;	//ルール最適化 世代数
 	int fmlGeneration = 1000;	//ファジィ集合最適化 世代数
 	int calcGeneration = 50;	//結論部学習エポック数
-	int popSize = 100;
 	int popFML = 1;
-	int popFS = 10;
-	int ruleNum = 100;	//1個体あたりのルール数
+	int popFS = 100;
 	int ruleMax = 500;
 	int ruleMin = 100;
+
 	float eta = 0.5f;
-	int seed = 2020;
+	int seed = 2021;
 //	String resultFileName = "results/20190502/" +
 //							"gaGene" + String.valueOf(gaGeneration) +
 //							"_calcGene" + String.valueOf(calcGeneration) +
 //							"_pop" + String.valueOf(popSize) +
 //							"_rule" + String.valueOf(ruleNum) +
 //							"_seed" + String.valueOf(seed);
-	String resultFileName = "results/20190502";
+	String resultFileName = "results/20190504_seed" + String.valueOf(seed);
 
 	//GA設定
-	float rateCrossOver = 0.5f;
-	float rateMutation = 0.5f;
+	float rateCrossOver = 0.9f;
+	float rateMutation = 0.1f;
 
 
 	FuzzyVariableType[] inputVariable;

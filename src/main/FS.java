@@ -16,7 +16,7 @@ import jfml.rulebase.TskRuleBaseType;
 import jfml.term.FuzzyTermType;
 import jfml.term.TskTermType;
 
-public class FS {
+public class FS{
 
 	//field
 	FuzzyInferenceSystem fs;
@@ -38,8 +38,54 @@ public class FS {
 		this.uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
 	}
 
+	//DeepCopy
+	public FS(FS oldFS, SettingForGA setting){
+		this.uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
+		setFuzzyParams(oldFS.fuzzyParams);
+		setRuleNum(oldFS.ruleNum);
+		this.concList = new float[oldFS.ruleNum];
+		for(int rule_i = 0; rule_i < oldFS.ruleNum; rule_i++) {
+			deepAddRule(oldFS.rules.get(rule_i));
+			this.concList[rule_i] = oldFS.concList[rule_i];
+		}
+		this.fitness = oldFS.fitness;
+		makeFS(setting);
+	}
+
 
 	//method
+
+	public void deepAddRule(int[] rule) {
+		int[] newRule = new int[rule.length];
+		for(int i = 0; i < rule.length; i++) {
+			newRule[i] = rule[i];
+		}
+		this.rules.add(newRule);
+	}
+
+	public void setRuleNum(int _ruleNum) {
+		this.ruleNum = _ruleNum;
+	}
+
+	public void resetConcList() {
+		this.concList = new float[this.ruleNum];
+		Arrays.fill(this.concList, 0.5f);
+	}
+
+	public void mutation(int rule_i, int mutDim, SettingForGA setting) {
+		int newFuzzySet = 0;
+		int count = 0;
+		do {
+			if(count > 10) {
+				break;
+			}
+
+			newFuzzySet = uniqueRnd.nextInt(setting.Fdiv);
+		} while(newFuzzySet == this.rules.get(rule_i)[mutDim]);
+
+		this.rules.get(rule_i)[mutDim] = newFuzzySet;
+
+	}
 
 	public void generateRuleIdx(SettingForGA setting) {
 		//[ruleMin, ruleMax]のランダム値
@@ -64,7 +110,7 @@ public class FS {
 		this.fuzzyParams = _fuzzyParams;
 	}
 
-	//this.rulesからFMLを生成するメソッド
+	//this.rules:ArrayList<int[]>からFMLを生成するメソッド
 	public void makeFS(SettingForGA setting) {
 		int Ndim = setting.Ndim;
 		int Fdiv = setting.Fdiv;
