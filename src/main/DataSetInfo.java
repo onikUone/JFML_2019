@@ -38,9 +38,20 @@ public class DataSetInfo {
 		this.Ndim = _Ndim;
 		this.patterns = _patterns;
 	}
+
+	public DataSetInfo(int _Ndim) {
+		this.Ndim = _Ndim;
+	}
 	// ************************************************
 
 	//Method ******************************************
+
+	public void copyAttribute(ArrayList<String> _attribute) {
+		for(int i = 0; i < _attribute.size(); i++) {
+			String str = _attribute.get(i);
+			this.Attribute.add(str);
+		}
+	}
 
 	public void inputFile(String _filePath) throws IOException {
 		int datasize = 0;

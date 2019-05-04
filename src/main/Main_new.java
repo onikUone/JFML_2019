@@ -6,7 +6,8 @@ public class Main_new {
 
 	public static void main(String[] args) {
 		//読み込みファイル名
-		String traFileName = "DataSets/traData_raw_3.csv";
+		String traFileName = "DataSets/traData_raw_3.csv";	//evaをもともと抜いている
+//		String traFileName = "DataSets/traData_raw_2.csv";	//evaを抜いていない
 		String evaFileName = "DataSets/evaData_raw_2.csv";
 		String tstFileName = "DataSets/tstData_raw_2.csv";
 
@@ -16,12 +17,12 @@ public class Main_new {
 		DataSetInfo tst = new DataSetInfo(tstFileName);
 		SettingForGA setting = new SettingForGA(tra);
 
-		System.out.println("データセットいじりここまで");
-
-
 		FmlManager fmlManager = new FmlManager(tra, tst, eva, setting);
 		FmlGaManager gaManager = new FmlGaManager();
 
+		//eva生成
+		DataSetInfo evaTst = gaManager.pickEva(setting, tra);
+		System.out.println(evaTst);
 
 		Date start = new Date();
 		System.out.println(start);

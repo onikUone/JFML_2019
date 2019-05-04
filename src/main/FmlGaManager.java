@@ -80,6 +80,45 @@ public class FmlGaManager {
 
 	}
 
+	//自身のいくつかのpatternsをクリアして、新しいリストにしてreturnするメソッド
+	public DataSetInfo pickEva(SettingForGA setting, DataSetInfo tra){
+		DataSetInfo eva = new DataSetInfo(tra.getNdim());
+		eva.copyAttribute(tra.Attribute);
+		MersenneTwisterFast uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
+		int evaSize = setting.evaSize;
+		int idx;
+
+		for(int eva_i = 0; eva_i < evaSize; eva_i++) {
+
+			do {
+				idx = uniqueRnd.nextInt( tra.patterns.size() );
+			} while( tra.getPattern(idx).getDimValue(2) < 0 );
+			eva.addPattern( tra.getPattern(idx) );
+			tra.patterns.remove(idx);
+		}
+
+		tra.setDataSize(tra.patterns.size());
+		eva.setDataSize(eva.patterns.size());
+
+		return eva;
+	}
+
+	public int[] sampringWithout(int num, int evaSize, SettingForGA setting) {
+		int[] ans = new int[num];
+		MersenneTwisterFast uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
+		for(int i = 0; i < num; i++) {
+			boolean isSame = false;
+			ans[i] = uniqueRnd.nextInt(evaSize);
+			for(int j = 0; j < i; j++) {
+				isSame = true;
+			}
+			if(isSame) {
+				i--;
+			}
+		}
+		return ans;
+	}
+
 	public void outputMSE(ArrayList<FS> fsList, String folderName, int nowGene, DataSetInfo tst, SettingForGA setting) {
 		//ディレクトリ生成
 		String sep = File.separator;

@@ -15,6 +15,7 @@ public class SettingForGA {
 	int popSize = 100;
 	int ruleNum = 100;	//1個体あたりのルール数
 
+	int evaSize = 250;
 	int fsGeneration = 1000;	//ルール最適化 世代数
 	int fmlGeneration = 1000;	//ファジィ集合最適化 世代数
 	int calcGeneration = 50;	//結論部学習エポック数
