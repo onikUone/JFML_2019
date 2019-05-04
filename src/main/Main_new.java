@@ -16,6 +16,9 @@ public class Main_new {
 		DataSetInfo tst = new DataSetInfo(tstFileName);
 		SettingForGA setting = new SettingForGA(tra);
 
+		System.out.println("データセットいじりここまで");
+
+
 		FmlManager fmlManager = new FmlManager(tra, tst, eva, setting);
 		FmlGaManager gaManager = new FmlGaManager();
 
