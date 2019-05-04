@@ -29,4 +29,5 @@
 TODO
 	evaをランダムに作成する
 	FuzzyParamsの最適化GAの評価方法を考える
-	
+	一定のタイミングでFMLpoulationのfuzzyParamsを更新して、currentFSに反映させる
+		このとき、あまり使われていないファジィ集合を更新する？
