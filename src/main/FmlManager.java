@@ -40,8 +40,15 @@ public class FmlManager {
 		for(int pop_i = 0; pop_i < popSize; pop_i++) {
 			this.currentFML.add( new FMLpopulation(setting) );
 			this.currentFML.get(pop_i).initializeFuzzyParams(setting);
-//			this.currentFML.get(pop_i).outputFuzzyParams(pop_i);
 			this.currentFML.get(pop_i).generateFS(setting);
 		}
+	}
+
+	//fuzzyParams子個体 生成メソッド
+	public void makeNewFuzzyParams() {
+		//1. currentFMLからcontribute(もしくはFMLpopulation.fitness)によるバイナリトーナメントで親個体を二つ選択する
+		//2. 親個体から一点交叉によってfuzzyParamsを生成する
+		//3. 突然変異操作
+
 	}
 }

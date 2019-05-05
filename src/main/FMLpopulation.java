@@ -21,6 +21,9 @@ public class FMLpopulation implements Serializable{
 	int evaDataSize;
 	int tstDataSize;
 
+	float[][] contribute;
+	float fitness;	//TODO contributeの総和？
+
 	MersenneTwisterFast uniqueRnd;
 
 
@@ -72,6 +75,18 @@ public class FMLpopulation implements Serializable{
 			this.currentFS.get(pop_i).makeFS(setting);
 		}
 
+	}
+
+	public void setContribute(float[][] _contribute) {
+		int Ndim = _contribute.length;
+		int Fdiv = _contribute[0].length;
+		this.contribute = new float[Ndim][Fdiv];
+
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			for(int div_i = 0; div_i < Fdiv; div_i++) {
+				this.contribute[dim_i][div_i] = _contribute[dim_i][div_i];
+			}
+		}
 	}
 
 	//子個体生成

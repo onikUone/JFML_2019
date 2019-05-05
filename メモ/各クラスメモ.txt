@@ -9,6 +9,7 @@
 	- void setRuleNum(int _ruleNum)
 	- void resetConcList()
 	- void mutation(int dim, SettingForGA setting)
+	- void calcContribute(int _dim, int _div, SettingForGA setting, DataSetInfo tra, DataSetInfo eva)
 
 
  + class FMLpopulation
@@ -21,6 +22,7 @@
 	- int binaryT4(SettingForGA setting)
 	- void mutation(SettingForGA setting)
 	- void populationUpdate(SettingForGA setting)
+	- void calcContribute(SettingForGA setting, DataSetInfo eva)
  	
 + class FmlManager
 	- void generateInitialFML(SettingForGA setting)

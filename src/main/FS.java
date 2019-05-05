@@ -48,12 +48,64 @@ public class FS{
 			deepAddRule(oldFS.rules.get(rule_i));
 			this.concList[rule_i] = oldFS.concList[rule_i];
 		}
+		this.count = new int[oldFS.count.length][oldFS.count[0].length];
+		for(int dim_i = 0; dim_i < this.count.length; dim_i++) {
+			for(int div_i = 0; div_i < this.count[0].length; div_i++) {
+				this.count[dim_i][div_i] = oldFS.count[dim_i][div_i];
+			}
+		}
 		this.fitness = oldFS.fitness;
 		makeFS(setting);
 	}
 
 
 	//method
+
+	//dim次元目のルールがdivの部分をdon't careにしたときのMSEを計算
+	public float calcContribute(int _dim, int _div, SettingForGA setting, DataSetInfo tra, DataSetInfo eva) {
+
+		FS fs = new FS(this, setting);
+		int ruleNum = fs.rules.size();
+		int Ndim = setting.Ndim;
+
+		//rulesの一時保存
+		for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+			//don't careに変更
+			if(fs.rules.get(rule_i)[_dim] == _div) {
+				fs.rules.get(rule_i)[_dim] = -1;
+			}
+		}
+
+		fs.makeFS(setting);
+		fs.calcConclusion(setting, tra);
+		float[] y = fs.reasoning(setting, eva);
+		float mse = FmlGaManager.calcMSE(y, eva);
+
+		return mse;
+	}
+
+	public void countFuzzySet(SettingForGA setting) {
+		int Ndim = setting.Ndim;
+		int Fdiv = setting.Fdiv;
+		int ruleNum = this.rules.size();
+
+		this.count = new int[Ndim][Fdiv];
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			Arrays.fill(this.count[dim_i], 0);
+		}
+
+		for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+
+			for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+
+				int set = this.rules.get(rule_i)[dim_i];
+				this.count[dim_i][set]++;
+
+			}
+
+		}
+
+	}
 
 	public void deepAddRule(int[] rule) {
 		int[] newRule = new int[rule.length];
@@ -140,11 +192,14 @@ public class FS{
 		FuzzyTermType[][] gaussians = new FuzzyTermType[Ndim][Fdiv];
 		String[] name = {"VerySmall", "Small", "S-Medium", "L-Medium", "Large", "VeryLarge"};
 
+		FuzzyTermType dontCare = new FuzzyTermType("Don't Care", FuzzyTermType.TYPE_rectangularShape, new float[] {0f, 1f});
+
 		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
 			for(int div_i = 0; div_i < Fdiv; div_i++) {
 				gaussians[dim_i][div_i] = new FuzzyTermType(name[div_i], FuzzyTermType.TYPE_gaussianShape, this.fuzzyParams[dim_i][div_i]);
 				inputVariable[dim_i].addFuzzyTerm(gaussians[dim_i][div_i]);
 			}
+			inputVariable[dim_i].addFuzzyTerm(dontCare);
 			kb.addVariable(inputVariable[dim_i]);
 		}
 
@@ -170,6 +225,10 @@ public class FS{
 			//前件部 生成
 			ant = new AntecedentType();
 			for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+				if(this.rules.get(rule_i)[dim_i] == -1) {
+					ant.addClause(new ClauseType(inputVariable[dim_i], dontCare));
+					continue;
+				}
 				ant.addClause(new ClauseType(inputVariable[dim_i], gaussians[dim_i][this.rules.get(rule_i)[dim_i]]));
 			}
 

@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 
 import jfml.JFML;
 
@@ -18,25 +20,47 @@ public class FmlGaManager {
 	//method
 	public void gaFrame(SettingForGA setting, FmlManager fmlManager, DataSetInfo tra, DataSetInfo tst, DataSetInfo eva) {
 		System.out.println("---- GA Frame Start ----");
+		int popSize = setting.popFML;
 
 		//初期個体群生成
 		fmlManager.generateInitialFML(setting);
+		//GA FS実行 (= contribute獲得)
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+			gaFsFrame(setting, pop_i, 0, fmlManager.currentFML.get(pop_i), tra, tst, eva);
+		}
+		for(int gene_i = 0; gene_i < setting.fmlGeneration; gene_i++) {
+
+			//1. 子個体群(= 新しいfuzzyParamを持つnewFML)の生成
+			fmlManager.makeNewFuzzyParams();
+			//2. gaFsFrameの実行
+			for(int pop_i = 0; pop_i < popSize; pop_i++) {
+				gaFsFrame(setting, pop_i, gene_i+1, fmlManager.newFML.get(pop_i), tra, tst, eva);
+			}
+			//3. 個体群更新
+		}
+
 
 
 
 		System.out.println("---- GA Frame Finish ----");
 	}
 
-	public void gaFsFrame(SettingForGA setting, FMLpopulation fmlPopulation, DataSetInfo tra, DataSetInfo tst, DataSetInfo eva) {
-		System.out.println("---- GA for FS Start ----");
-		outputFuzzyParams("$memo", fmlPopulation.fuzzyParams, setting);
+	public void gaFsFrame(SettingForGA setting, int popFML, int nowGene, FMLpopulation fmlPopulation, DataSetInfo tra, DataSetInfo tst, DataSetInfo eva) {
+		System.out.println();
+		System.out.println("---- popFML:" + String.valueOf(popFML) + "  gene:" + String.valueOf(nowGene) + " ----");
+		Date start = new Date();
+		System.out.println(start);
+
+		String dirName = "fmlGene_" + String.valueOf(nowGene) + "/FMLpop" + String.valueOf(popFML);
+
+		outputFuzzyParams(dirName + "/$memo_fs", fmlPopulation.fuzzyParams, setting);
 
 		//初期個体群評価
 //		fmlPopulation.outputCurrentFML("fsGene_0/FML", 0, setting);
 //		fmlPopulation.outputCurrentMSE("fsGene_0/MSE", 0, tst, setting);
 		evaluateFS(fmlPopulation.currentFS, setting, tra, eva);
-		outputFML(fmlPopulation.currentFS, "fsGene_0_initial/FML", 0, setting);
-		outputMSE(fmlPopulation.currentFS, "fsGene_0_initial/MSE", 0, tst, setting);
+		outputFML(fmlPopulation.currentFS, dirName + "/fsGene_0_initial/FML", 0, setting);
+		outputMSE(fmlPopulation.currentFS, dirName + "/fsGene_0_initial/MSE", 0, tst, setting);
 
 		//進化計算開始
 		for(int gene_i = 0; gene_i < setting.fsGeneration; gene_i++) {
@@ -53,17 +77,53 @@ public class FmlGaManager {
 			fmlPopulation.populationUpdate(setting);
 
 			//4. 現世代出力
-			outputFML(fmlPopulation.currentFS, "fsGene_" + String.valueOf(gene_i+1) + "/FML", gene_i+1, setting);
-			outputMSE(fmlPopulation.currentFS, "fsGene_" + String.valueOf(gene_i+1) + "/MSE", gene_i+1, tst, setting);
+			outputFML(fmlPopulation.currentFS, dirName + "/fsGene_" + String.valueOf(gene_i+1) + "/FML", gene_i+1, setting);
+			outputMSE(fmlPopulation.currentFS, dirName + "/fsGene_" + String.valueOf(gene_i+1) + "/MSE", gene_i+1, tst, setting);
+		}
+		System.out.println();
+
+		fmlPopulation.setContribute( calcContribute(fmlPopulation.currentFS, setting, tra, eva) );
+
+		Date end = new Date();
+		System.out.println(end);
+		System.out.println("---- GA for FS Finish ----");
+	}
+
+	//
+	public float[][] calcContribute(ArrayList<FS> fsList, SettingForGA setting, DataSetInfo tra, DataSetInfo eva) {
+
+		int popSize = fsList.size();
+		int Ndim = setting.Ndim;
+		int Fdiv = setting.Fdiv;
+
+		float[][] contribute = new float[Ndim][Fdiv];
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			Arrays.fill(contribute[dim_i], 0f);
 		}
 
-		System.out.println("---- GA for FS Finish ----");
+		float newMSE;
+		float originMSE;
+
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+			originMSE = fsList.get(pop_i).fitness;
+
+			for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+				for(int div_i = 0; div_i < Fdiv; div_i++) {
+					newMSE = fsList.get(pop_i).calcContribute(dim_i, div_i, setting, tra, eva);
+					if( (newMSE - originMSE) > 0 ) {
+						contribute[dim_i][div_i] += (newMSE - originMSE);
+					}
+				}
+			}
+		}
+
+		return contribute;
 	}
 
 	//与えられたArrayList<FS>に対してevaのMSEを評価値としてセットする
 	//この中で結論部の学習は行われる
 	public void evaluateFS(ArrayList<FS> fsList, SettingForGA setting, DataSetInfo tra, DataSetInfo eva) {
-		int popSize = setting.popFS;
+		int popSize = fsList.size();
 		float[] y;
 		float mse;
 
@@ -76,6 +136,9 @@ public class FmlGaManager {
 			mse = calcMSE(y, eva);
 			//mseをFS個体の評価値としてセット
 			fsList.get(pop_i).setFitness(mse);
+
+			//使われているファジィ集合をカウントする
+			fsList.get(pop_i).countFuzzySet(setting);
 		}
 
 	}
@@ -100,6 +163,9 @@ public class FmlGaManager {
 		tra.setDataSize(tra.patterns.size());
 		eva.setDataSize(eva.patterns.size());
 
+		outputEVA(eva, "$dataset", setting);
+		outputTRA(tra, "$dataset", setting);
+
 		return eva;
 	}
 
@@ -117,6 +183,60 @@ public class FmlGaManager {
 			}
 		}
 		return ans;
+	}
+
+	public void outputEVA(DataSetInfo eva, String folderName, SettingForGA setting) {
+		//ディレクトリ生成
+		String sep = File.separator;
+		String dirName = setting.resultFileName + sep + folderName;
+		File newdir = new File(dirName);
+		newdir.mkdirs();
+
+		int dataSize = eva.getDataSize();
+		int Ndim = eva.getNdim();
+		String fileName = dirName + sep + "evaDataSet.csv";
+		try {
+			FileWriter fw = new FileWriter(fileName, true);
+			PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
+
+			for(int data_i = 0; data_i < dataSize; data_i++) {
+				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+					pw.print(eva.getPattern(data_i).getDimValue(dim_i) +  ",");
+				}
+				pw.println(eva.getPattern(data_i).getY());
+			}
+
+			pw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void outputTRA(DataSetInfo tra, String folderName, SettingForGA setting) {
+		//ディレクトリ生成
+		String sep = File.separator;
+		String dirName = setting.resultFileName + sep + folderName;
+		File newdir = new File(dirName);
+		newdir.mkdirs();
+
+		int dataSize = tra.getDataSize();
+		int Ndim = tra.getNdim();
+		String fileName = dirName + sep + "traDataSet.csv";
+		try {
+			FileWriter fw = new FileWriter(fileName, true);
+			PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
+
+			for(int data_i = 0; data_i < dataSize; data_i++) {
+				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+					pw.print(tra.getPattern(data_i).getDimValue(dim_i) +  ",");
+				}
+				pw.println(tra.getPattern(data_i).getY());
+			}
+
+			pw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void outputMSE(ArrayList<FS> fsList, String folderName, int nowGene, DataSetInfo tst, SettingForGA setting) {

@@ -6,30 +6,26 @@ public class Main_new {
 
 	public static void main(String[] args) {
 		//読み込みファイル名
-		String traFileName = "DataSets/traData_raw_3.csv";	//evaをもともと抜いている
-//		String traFileName = "DataSets/traData_raw_2.csv";	//evaを抜いていない
+//		String traFileName = "DataSets/traData_raw_3.csv";	//evaをもともと抜いている
+		String traFileName = "DataSets/traData_raw_2.csv";	//evaを抜いていない
 		String evaFileName = "DataSets/evaData_raw_2.csv";
 		String tstFileName = "DataSets/tstData_raw_2.csv";
 
 		//データセット読み込み
 		DataSetInfo tra = new DataSetInfo(traFileName);
-		DataSetInfo eva = new DataSetInfo(evaFileName);
+//		DataSetInfo eva = new DataSetInfo(evaFileName);
 		DataSetInfo tst = new DataSetInfo(tstFileName);
 		SettingForGA setting = new SettingForGA(tra);
 
-		FmlManager fmlManager = new FmlManager(tra, tst, eva, setting);
 		FmlGaManager gaManager = new FmlGaManager();
+		DataSetInfo eva = gaManager.pickEva(setting, tra);
 
-		//eva生成
-		DataSetInfo evaTst = gaManager.pickEva(setting, tra);
-		System.out.println(evaTst);
+		FmlManager fmlManager = new FmlManager(tra, tst, eva, setting);
 
 		Date start = new Date();
 		System.out.println(start);
 
-		fmlManager.generateInitialFML(setting);
-
-		gaManager.gaFsFrame(setting, fmlManager.currentFML.get(0), tra, tst, eva);
+		gaManager.gaFrame(setting, fmlManager, tra, tst, eva);
 
 
 		Date end = new Date();
