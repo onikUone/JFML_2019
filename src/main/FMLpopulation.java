@@ -38,6 +38,30 @@ public class FMLpopulation implements Serializable{
 		this.fuzzyParams = new float[Ndim][Fdiv][2];	//各属性にFdiv種類のファジィ集合を定める（mとs）
 	}
 
+	//Deep Copy
+	public FMLpopulation(FMLpopulation oldFML, SettingForGA setting) {
+		this.Ndim = oldFML.Ndim;
+		this.Fdiv = oldFML.Fdiv;
+		this.traDataSize = oldFML.traDataSize;
+		this.evaDataSize = oldFML.evaDataSize;
+		this.tstDataSize = oldFML.tstDataSize;
+
+		this.fuzzyParams = new float[Ndim][Fdiv][2];
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			for(int div_i = 0; div_i < Fdiv; div_i++) {
+				this.fuzzyParams[dim_i][div_i][0] = oldFML.fuzzyParams[dim_i][div_i][0];
+				this.fuzzyParams[dim_i][div_i][1] = oldFML.fuzzyParams[dim_i][div_i][1];
+			}
+		}
+		this.uniqueRnd = new MersenneTwisterFast(oldFML.uniqueRnd.nextInt());
+
+		int popSize = oldFML.currentFS.size();
+		this.currentFS.clear();
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+			this.currentFS.add(new FS(oldFML.currentFS.get(pop_i), setting));
+		}
+	}
+
 
 	//method
 
@@ -77,6 +101,20 @@ public class FMLpopulation implements Serializable{
 
 	}
 
+	public void setFuzzyParams(float[][][] _fuzzyParams) {
+		int Ndim = _fuzzyParams.length;
+		int Fdiv = _fuzzyParams[0].length;
+		this.fuzzyParams = new float[Ndim][Fdiv][2];
+
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			for(int div_i = 0; div_i < Fdiv; div_i++) {
+				this.fuzzyParams[dim_i][div_i][0] = _fuzzyParams[dim_i][div_i][0];
+				this.fuzzyParams[dim_i][div_i][1] = _fuzzyParams[dim_i][div_i][1];
+			}
+		}
+
+	}
+
 	public void setContribute(float[][] _contribute) {
 		int Ndim = _contribute.length;
 		int Fdiv = _contribute[0].length;
@@ -87,6 +125,23 @@ public class FMLpopulation implements Serializable{
 				this.contribute[dim_i][div_i] = _contribute[dim_i][div_i];
 			}
 		}
+	}
+
+	public void calcFitness() {
+		//contributeの総和をfitnessとする
+		this.fitness = 0f;
+		int Ndim = this.contribute.length;
+		int Fdiv = this.contribute[0].length;
+
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			for(int div_i = 0; div_i < Fdiv; div_i++) {
+				this.fitness += this.contribute[dim_i][div_i];
+			}
+		}
+	}
+
+	public float getFitness() {
+		return this.fitness;
 	}
 
 	//子個体生成

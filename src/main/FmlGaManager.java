@@ -28,10 +28,10 @@ public class FmlGaManager {
 		for(int pop_i = 0; pop_i < popSize; pop_i++) {
 			gaFsFrame(setting, pop_i, 0, fmlManager.currentFML.get(pop_i), tra, tst, eva);
 		}
-		for(int gene_i = 0; gene_i < setting.fmlGeneration; gene_i++) {
 
+		for(int gene_i = 0; gene_i < setting.fmlGeneration; gene_i++) {
 			//1. 子個体群(= 新しいfuzzyParamを持つnewFML)の生成
-			fmlManager.makeNewFuzzyParams();
+			fmlManager.makeNewFML(setting);
 			//2. gaFsFrameの実行
 			for(int pop_i = 0; pop_i < popSize; pop_i++) {
 				gaFsFrame(setting, pop_i, gene_i+1, fmlManager.newFML.get(pop_i), tra, tst, eva);
@@ -47,7 +47,7 @@ public class FmlGaManager {
 
 	public void gaFsFrame(SettingForGA setting, int popFML, int nowGene, FMLpopulation fmlPopulation, DataSetInfo tra, DataSetInfo tst, DataSetInfo eva) {
 		System.out.println();
-		System.out.println("---- popFML:" + String.valueOf(popFML) + "  gene:" + String.valueOf(nowGene) + " ----");
+		System.out.println("------ popFML:" + String.valueOf(popFML) + "  gene:" + String.valueOf(nowGene) + " ------");
 		Date start = new Date();
 		System.out.println(start);
 
@@ -83,10 +83,11 @@ public class FmlGaManager {
 		System.out.println();
 
 		fmlPopulation.setContribute( calcContribute(fmlPopulation.currentFS, setting, tra, eva) );
+		fmlPopulation.calcFitness();
 
 		Date end = new Date();
 		System.out.println(end);
-		System.out.println("---- GA for FS Finish ----");
+		System.out.println("------ GA for FS Finish ------");
 	}
 
 	//
