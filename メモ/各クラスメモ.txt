@@ -57,3 +57,5 @@
 
 TODO
 	contributeが良いfuzzyParamsを集めて、突然変異だけで子個体（newFuzzyParams）を生成する方法
+
+	最終世代のFMLを読み込んで、traの学習を進めるプログラムの生成
