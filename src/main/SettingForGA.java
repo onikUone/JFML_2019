@@ -32,8 +32,12 @@ public class SettingForGA {
 	int ruleMax = 500;
 	int ruleMin = 100;
 
+//	int fsGeneration = 5;	//ルール最適化 世代数
+//	int popFML = 3;
+//	int popFS = 5;
+
 	float eta = 0.5f;
-	int seed = 2019;
+	int seed = 2021;
 
 	//GA設定
 	float rateCrossOver = 0.9f;
@@ -46,41 +50,11 @@ public class SettingForGA {
 //							"_pop" + String.valueOf(popSize) +
 //							"_rule" + String.valueOf(ruleNum) +
 //							"_seed" + String.valueOf(seed);
-	String resultFileName = "results/20190506_Ndim6_seed" + String.valueOf(seed);
-
-
-	public void outputSetting() {
-		//ディレクトリ作成
-		String sep = File.separator;
-		String dirName = resultFileName + sep + "$setting";
-		File newdir = new File(dirName);
-		newdir.mkdirs();
-
-		String fileName = dirName + sep + "settings.csv";
-		try {
-			FileWriter fw = new FileWriter(fileName, true);
-			PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
-
-			pw.println("Ndim" + "," + Ndim);
-			pw.println("Fdiv" + "," + Fdiv);
-			pw.println("evaSize" + "," + evaSize);
-			pw.println("fsGeneration" + "," + fsGeneration);
-			pw.println("fmlGeneration" + "," + fmlGeneration);
-			pw.println("calcGeneration" + "," + calcGeneration);
-			pw.println("popFML" + "," + popFML);
-			pw.println("popFS" + "," + popFS);
-			pw.println("ruleMax" + "," + ruleMax);
-			pw.println("ruleMin" + "," + ruleMin);
-			pw.println("eta" + "," + eta);
-			pw.println("seed" + "," + seed);
-			pw.println("rateCrossOver" + "," + rateCrossOver);
-			pw.println("rateMutation" + "," + rateMutation);
-
-			pw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	String resultFileName = "results/20190506" +
+//							"_Ndim" + String.valueOf(Ndim) +
+//							"_evaSize" + String.valueOf(evaSize) +
+//							"_seed" + String.valueOf(seed);
+	String resultFileName;
 
 
 	FuzzyVariableType[] inputVariable;
@@ -109,6 +83,11 @@ public class SettingForGA {
 		this.Ndim = tra.getNdim();
 		this.rnd = new MersenneTwisterFast(this.seed);
 		this.resultMaster = new ResultMaster(this.resultFileName);
+
+		this.resultFileName = "results/20190507_second" +
+							"_Ndim" + String.valueOf(Ndim) +
+							"_evaSize" + String.valueOf(evaSize) +
+							"_seed" + String.valueOf(seed);
 
 //		//input variable
 //		inputVariable = new FuzzyVariableType[this.Ndim];
@@ -252,6 +231,39 @@ public class SettingForGA {
 
 
 
+	}
+
+	public void outputSetting() {
+		//ディレクトリ作成
+		String sep = File.separator;
+		String dirName = resultFileName + sep + "$setting";
+		File newdir = new File(dirName);
+		newdir.mkdirs();
+
+		String fileName = dirName + sep + "settings.csv";
+		try {
+			FileWriter fw = new FileWriter(fileName, true);
+			PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
+
+			pw.println("Ndim" + "," + Ndim);
+			pw.println("Fdiv" + "," + Fdiv);
+			pw.println("evaSize" + "," + evaSize);
+			pw.println("fsGeneration" + "," + fsGeneration);
+			pw.println("fmlGeneration" + "," + fmlGeneration);
+			pw.println("calcGeneration" + "," + calcGeneration);
+			pw.println("popFML" + "," + popFML);
+			pw.println("popFS" + "," + popFS);
+			pw.println("ruleMax" + "," + ruleMax);
+			pw.println("ruleMin" + "," + ruleMin);
+			pw.println("eta" + "," + eta);
+			pw.println("seed" + "," + seed);
+			pw.println("rateCrossOver" + "," + rateCrossOver);
+			pw.println("rateMutation" + "," + rateMutation);
+
+			pw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// **************************************************

@@ -1,7 +1,5 @@
 package main;
 
-import static java.util.Comparator.*;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -52,15 +50,86 @@ public class FmlManager implements Serializable{
 	public void makeNewFML(SettingForGA setting) {
 		int popSize = setting.popFML;
 		for(int child_i = 0; child_i < popSize; child_i++) {
-			//1. currentFMLからcontribute(もしくはFMLpopulation.fitness)によるバイナリトーナメントで親個体を二つ選択する
-			this.crossover(setting);
+			//20190506_first
+//			//1. currentFMLからcontribute(もしくはFMLpopulation.fitness)によるバイナリトーナメントで親個体を二つ選択する
+//			this.binaryT4Choice(setting);
+
+			//20190507_second
+			//1. currentFMLからバイナリトーナメントで親個体を二つ選択し，fuzzyParamsの実数値交叉を行う
+			this.crossOver(setting);
+
 			//2. 突然変異操作
 			this.mutation(this.newFML, setting);
 		}
 	}
 
-	//子個体生成
-	public void crossover(SettingForGA setting) {
+	//子個体生成（一点交叉）
+	public void crossOver(SettingForGA setting) {
+		int mom, dad;
+		int Nmom, Ndad;
+
+		this.newFML.clear();
+
+		int popSize = setting.popFML;
+		int Ndim = setting.Ndim;
+		int Fdiv = setting.Fdiv;
+
+		for(int child_i = 0; child_i < popSize; child_i++) {
+			//親選択
+			mom = binaryT4(setting);
+			dad = binaryT4(setting);
+
+			if(uniqueRnd.nextDoubleIE() > setting.rateCrossOver) {
+				//交叉操作を行わない場合
+				int parent;
+				if(uniqueRnd.nextBoolean()) {
+					parent = mom;
+				} else {
+					parent = dad;
+				}
+				//子個体生成
+				this.newFML.add( new FMLpopulation(this.currentFML.get(parent), setting) );
+			} else {
+				int crossPoint = uniqueRnd.nextInt(setting.Ndim - 1) + 1;	//交叉点
+				boolean firstParent = uniqueRnd.nextBoolean();	//先頭をどちらの親にするか
+				float[][][] newFuzzyParams = new float[Ndim][Fdiv][2];
+				boolean[][] mutationFlg = new boolean[Ndim][Fdiv];
+				int parent;
+
+				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+					if(dim_i < crossPoint) {	//交叉前 先頭
+						if(firstParent) {
+							parent = mom;
+						} else {
+							parent = dad;
+						}
+					} else {	//交叉後 後尾
+						if(firstParent) {
+							parent = dad;
+						} else {
+							parent = mom;
+						}
+					}
+
+					for(int div_i = 0; div_i < Fdiv; div_i++) {
+						newFuzzyParams[dim_i][div_i][0] = this.currentFML.get(parent).fuzzyParams[dim_i][div_i][0];
+						newFuzzyParams[dim_i][div_i][1] = this.currentFML.get(parent).fuzzyParams[dim_i][div_i][1];
+						mutationFlg[dim_i][div_i] = false;
+					}
+
+				}
+
+				FMLpopulation newPop = new FMLpopulation(setting);
+				newPop.setFuzzyParams(newFuzzyParams);
+				newPop.setMutationFlg(mutationFlg);
+				newPop.generateFS(setting);
+				this.newFML.add(newPop);
+			}
+		}
+	}
+
+	//子個体生成（受け継ぐfuzzyParamsをバイナリトーナメントで選択）
+	public void binaryT4Choice(SettingForGA setting) {
 		int mom, dad;
 		int Nmom, Ndad;
 
@@ -167,7 +236,7 @@ public class FmlManager implements Serializable{
 		this.currentFML.clear();
 		this.newFML.clear();
 		//fitnessの値が高い順にソート
-		this.margeFML.sort(comparing(FMLpopulation::getFitness).reversed());
+		this.margeFML.sort(java.util.Comparator.comparing(FMLpopulation::getFitness).reversed());
 
 		//fitnessの値が良い順にpopFMLだけ次世代に個体を格納
 		for(int pop_i = 0; pop_i < setting.popFML; pop_i++) {
@@ -238,6 +307,7 @@ public class FmlManager implements Serializable{
 		return ans;
 	}
 
+
 	public float[][][]  makeNewFuzzyParams(SettingForGA setting, FMLpopulation mom, FMLpopulation dad) {
 		int Ndim = setting.Ndim;
 		int Fdiv = setting.Fdiv;
@@ -300,6 +370,97 @@ public class FmlManager implements Serializable{
 
 		return winner;
 	}
+
+//	//子個体生成(親個体のcontributeが高いfuzzyParamsを基準に突然変異で探索)
+//	public void choiceHighContribute(SettingForGA setting) {
+//		int mom, dad;
+//		int Nmom, Ndad;
+//
+//		this.newFML.clear();
+//
+//		int popSize = setting.popFML;
+//		int Ndim = setting.Ndim;
+//		int Fdiv = setting.Fdiv;
+//
+//		for(int child_i = 0; child_i < popSize; child_i++) {
+//			//親選択
+//			mom = binaryT4(setting);
+//			dad = binaryT4(setting);
+//
+//			if(uniqueRnd.nextDoubleIE() > setting.rateCrossOver) {
+//				//交叉操作を行わない場合
+//				int parent;
+//				if(uniqueRnd.nextBoolean()) {
+//					parent = mom;
+//				} else {
+//					parent = dad;
+//				}
+//				//子個体生成
+//				this.newFML.add( new FMLpopulation(this.currentFML.get(parent), setting) );
+//			} else {
+//				float[][][] testFuzzyParams = new float[Ndim][Fdiv][2];
+//				float[][][] newFuzzyParams = new float[Ndim][Fdiv][2];
+//				boolean[][] mutationFlg = new boolean[Ndim][Fdiv];
+//
+//				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+//					Nmom = uniqueRnd.nextInt(Fdiv);
+//					Ndad = Fdiv - Nmom;
+//
+//					ArrayList<FuzzySet> momFuzzySet = new ArrayList<FuzzySet>();
+//					ArrayList<FuzzySet> dadFuzzySet = new ArrayList<FuzzySet>();
+//					ArrayList<FuzzySet> parentFuzzySet = new ArrayList<FuzzySet>();
+//					for(int div_i = 0; div_i < Fdiv; div_i++) {
+//						momFuzzySet.add(new FuzzySet(this.currentFML.get(mom).fuzzyParams[dim_i][div_i], this.currentFML.get(mom).contribute[dim_i][div_i]));
+//						dadFuzzySet.add(new FuzzySet(this.currentFML.get(dad).fuzzyParams[dim_i][div_i], this.currentFML.get(dad).contribute[dim_i][div_i]));
+//					}
+//					for(int div_i = 0; div_i < Fdiv; div_i++) {
+//						parentFuzzySet.add(new FuzzySet(this.currentFML.get(mom).fuzzyParams[dim_i][div_i], this.currentFML.get(mom).contribute[dim_i][div_i]));
+//					}
+//					for(int div_i = 0; div_i < Fdiv; div_i++) {
+//						parentFuzzySet.add(new FuzzySet(this.currentFML.get(dad).fuzzyParams[dim_i][div_i], this.currentFML.get(dad).contribute[dim_i][div_i]));
+//					}
+//					momFuzzySet.sort(comparing(FuzzySet::getContribute).reversed());
+//					dadFuzzySet.sort(comparing(FuzzySet::getContribute).reversed());
+//					parentFuzzySet.sort(comparing(FuzzySet::getContribute).reversed());
+//
+//					for(int mom_i = 0; mom_i < Nmom; mom_i++) {
+//						newFuzzyParams[dim_i][mom_i][0] = momFuzzySet.get(mom_i).fuzzyParam[0];
+//						newFuzzyParams[dim_i][mom_i][1] = momFuzzySet.get(mom_i).fuzzyParam[1];
+//						mutationFlg[dim_i][mom_i] = true;
+//					}
+//					for(int dad_i = 0; dad_i < Ndad; dad_i++) {
+//						newFuzzyParams[dim_i][dad_i + Nmom][0] = dadFuzzySet.get(dad_i).fuzzyParam[0];
+//						newFuzzyParams[dim_i][dad_i + Nmom][1] = dadFuzzySet.get(dad_i).fuzzyParam[1];
+//						mutationFlg[dim_i][dad_i + Nmom] = true;
+//					}
+//					for(int div_i = 0; div_i < Fdiv; div_i++) {
+//						testFuzzyParams[dim_i][div_i][0] = parentFuzzySet.get(div_i).fuzzyParam[0];
+//						testFuzzyParams[dim_i][div_i][1] = parentFuzzySet.get(div_i).fuzzyParam[1];
+//						mutationFlg[dim_i][div_i] = true;
+//					}
+//
+//				}
+//			}
+//		}
+//
+//	}
+
+//	public class fuzzySetComparator implements Comparator<FuzzySet>{
+//		@Override
+//		public int compare(FuzzySet a, FuzzySet b) {
+//			float no1 = a.getContribute();
+//			float no2 = b.getContribute();
+//
+//			//昇順でソート
+//			if(no1 > no2) {
+//				return 1;
+//			} else if(no1 == no2) {
+//				return 0;
+//			} else {
+//				return -1;
+//			}
+//		}
+//	}
 }
 
 

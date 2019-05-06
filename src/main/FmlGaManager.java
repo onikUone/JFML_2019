@@ -297,10 +297,10 @@ public class FmlGaManager {
 			FileWriter fw = new FileWriter(fileName, true);
 			PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
 
-			pw.println("MSE,fitness");
+			pw.println("MSE,fitness,ruleNum");
 
 			for(int pop_i = 0; pop_i < popSize; pop_i++) {
-				pw.println(mse[pop_i] + "," + fsList.get(pop_i).fitness);
+				pw.println(mse[pop_i] + "," + fsList.get(pop_i).fitness + "," + fsList.get(pop_i).ruleNum);
 			}
 
 			pw.close();

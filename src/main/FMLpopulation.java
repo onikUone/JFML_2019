@@ -78,16 +78,17 @@ public class FMLpopulation implements Serializable{
 	//ファジィ集合ランダム生成
 	public void initializeFuzzyParams(SettingForGA setting) {
 		float posMin = 0f;
+		float h = 1f / setting.Fdiv;	//刻み幅
 
 		for(int dim_i = 0; dim_i < this.Ndim; dim_i++) {
 			posMin = 0f;
 			for(int div_i = 0; div_i < this.Fdiv; div_i++) {
 				//中心位置
-				float rnd = posMin + this.uniqueRnd.nextFloatIE();
+				float rnd = posMin + this.uniqueRnd.nextFloatIE() * h;
 				while(rnd <= 0 || rnd >= 1) {
-					rnd = posMin + this.uniqueRnd.nextFloatIE();
+					rnd = posMin + this.uniqueRnd.nextFloatIE() * h;
 				}
-				posMin = rnd;
+				posMin += h;
 				this.fuzzyParams[dim_i][div_i][0] = rnd;
 				//分散値
 				rnd = this.uniqueRnd.nextFloatIE();
@@ -160,8 +161,8 @@ public class FMLpopulation implements Serializable{
 			deltaS = uniqueRnd.nextFloatII() / 10; //[0, 0.1]の範囲の乱数
 		} else {
 			//中心・分散どちらも変更
-			deltaM = uniqueRnd.nextFloatII() * 2 / 10;	//[0, 0.2]の範囲の乱数
-			deltaS = uniqueRnd.nextFloatII() / 10;
+			deltaM = uniqueRnd.nextFloatII() / 10;	//[0, 0.1]の範囲の乱数
+			deltaS = uniqueRnd.nextFloatII() / 10;	//[0, 0.1]の範囲の乱数
 		}
 
 		deltaM *= direction;
