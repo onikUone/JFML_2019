@@ -1,5 +1,11 @@
 package main;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import jfml.knowledgebase.variable.FuzzyVariableType;
 import jfml.knowledgebase.variable.TskVariableType;
 import jfml.term.FuzzyTermType;
@@ -10,22 +16,24 @@ public class SettingForGA {
 	ResultMaster resultMaster;
 	int Ndim;
 
-	int Fdiv = 6;
+	int Fdiv = 5;
+	String[] fuzzySetName = {"VerySmall", "Small", "Medium", "Large", "VeryLarge"};
+
 	int gaGeneration = 1000;	//GA世代数
 	int popSize = 100;
 	int ruleNum = 100;	//1個体あたりのルール数
 
-	int evaSize = 250;
-	int fsGeneration = 5;	//ルール最適化 世代数
-	int fmlGeneration = 50;	//ファジィ集合最適化 世代数
+	int evaSize = 500;
+	int fsGeneration = 20;	//ルール最適化 世代数
+	int fmlGeneration = 100;	//ファジィ集合最適化 世代数
 	int calcGeneration = 50;	//結論部学習エポック数
-	int popFML = 5;
-	int popFS = 3;
+	int popFML = 10;
+	int popFS = 30;
 	int ruleMax = 500;
 	int ruleMin = 100;
 
 	float eta = 0.5f;
-	int seed = 2021;
+	int seed = 2019;
 
 	//GA設定
 	float rateCrossOver = 0.9f;
@@ -38,9 +46,41 @@ public class SettingForGA {
 //							"_pop" + String.valueOf(popSize) +
 //							"_rule" + String.valueOf(ruleNum) +
 //							"_seed" + String.valueOf(seed);
-	String resultFileName = "results/20190505_seed" + String.valueOf(seed);
+	String resultFileName = "results/20190506_Ndim6_seed" + String.valueOf(seed);
 
 
+	public void outputSetting() {
+		//ディレクトリ作成
+		String sep = File.separator;
+		String dirName = resultFileName + sep + "$setting";
+		File newdir = new File(dirName);
+		newdir.mkdirs();
+
+		String fileName = dirName + sep + "settings.csv";
+		try {
+			FileWriter fw = new FileWriter(fileName, true);
+			PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
+
+			pw.println("Ndim" + "," + Ndim);
+			pw.println("Fdiv" + "," + Fdiv);
+			pw.println("evaSize" + "," + evaSize);
+			pw.println("fsGeneration" + "," + fsGeneration);
+			pw.println("fmlGeneration" + "," + fmlGeneration);
+			pw.println("calcGeneration" + "," + calcGeneration);
+			pw.println("popFML" + "," + popFML);
+			pw.println("popFS" + "," + popFS);
+			pw.println("ruleMax" + "," + ruleMax);
+			pw.println("ruleMin" + "," + ruleMin);
+			pw.println("eta" + "," + eta);
+			pw.println("seed" + "," + seed);
+			pw.println("rateCrossOver" + "," + rateCrossOver);
+			pw.println("rateMutation" + "," + rateMutation);
+
+			pw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	FuzzyVariableType[] inputVariable;

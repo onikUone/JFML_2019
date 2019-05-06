@@ -1155,7 +1155,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>VeryLarge</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -1499,7 +1499,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>Large</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -1799,7 +1799,7 @@
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
-                    <term>L-Medium</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
@@ -1911,7 +1911,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>Small</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
@@ -2315,7 +2315,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>Large</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -2339,7 +2339,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>S-Medium</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -2515,7 +2515,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>Large</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -5579,7 +5579,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>VeryLarge</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -5787,7 +5787,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>Large</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -5831,7 +5831,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>L-Medium</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
@@ -6019,7 +6019,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>L-Medium</term>
+                    <term>VeryLarge</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -6683,7 +6683,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>VeryLarge</term>
+                    <term>VerySmall</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -6763,7 +6763,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>L-Medium</term>
+                    <term>VerySmall</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -6835,7 +6835,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>VerySmall</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -7915,7 +7915,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>S-Medium</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -8363,7 +8363,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>L-Medium</term>
+                    <term>Large</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -8915,7 +8915,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>Large</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -9311,7 +9311,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>S-Medium</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
@@ -9459,7 +9459,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>L-Medium</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -9867,7 +9867,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>Small</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -10031,7 +10031,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>S-Medium</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
@@ -10595,7 +10595,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>Small</term>
+                    <term>VeryLarge</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -10963,7 +10963,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>VerySmall</term>
+                    <term>S-Medium</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -13751,7 +13751,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>S-Medium</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>

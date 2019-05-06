@@ -29,6 +29,7 @@ public class FmlGaManager {
 			gaFsFrame(setting, pop_i, 0, fmlManager.currentFML.get(pop_i), tra, tst, eva);
 		}
 
+		//進化計算開始
 		for(int gene_i = 0; gene_i < setting.fmlGeneration; gene_i++) {
 			//1. 子個体群(= 新しいfuzzyParamを持つnewFML)の生成
 			fmlManager.makeNewFML(setting);
@@ -37,10 +38,8 @@ public class FmlGaManager {
 				gaFsFrame(setting, pop_i, gene_i+1, fmlManager.newFML.get(pop_i), tra, tst, eva);
 			}
 			//3. 個体群更新
+			fmlManager.populationUpdate(setting);
 		}
-
-
-
 
 		System.out.println("---- GA Frame Finish ----");
 	}
@@ -84,10 +83,11 @@ public class FmlGaManager {
 
 		fmlPopulation.setContribute( calcContribute(fmlPopulation.currentFS, setting, tra, eva) );
 		fmlPopulation.calcFitness();
+		outputCONTRI(fmlPopulation, dirName + "/$memo_fs", setting);
 
 		Date end = new Date();
 		System.out.println(end);
-		System.out.println("------ GA for FS Finish ------");
+		System.out.println("------------------------------");
 	}
 
 	//
@@ -150,13 +150,21 @@ public class FmlGaManager {
 		eva.copyAttribute(tra.Attribute);
 		MersenneTwisterFast uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
 		int evaSize = setting.evaSize;
-		int idx;
+		int idx = -1;
 
 		for(int eva_i = 0; eva_i < evaSize; eva_i++) {
 
-			do {
-				idx = uniqueRnd.nextInt( tra.patterns.size() );
-			} while( tra.getPattern(idx).getDimValue(2) < 0 );
+			if(tra.Ndim == 7) {
+				do {
+					idx = uniqueRnd.nextInt( tra.patterns.size() );
+				} while( tra.getPattern(idx).getDimValue(2) < 0 );
+			} else if(tra.Ndim == 6) {
+				do {
+					idx = uniqueRnd.nextInt( tra.patterns.size() );
+				} while( tra.getPattern(idx).getDimValue(1) < 0 );
+			}
+
+
 			eva.addPattern( tra.getPattern(idx) );
 			tra.patterns.remove(idx);
 		}
@@ -184,6 +192,34 @@ public class FmlGaManager {
 			}
 		}
 		return ans;
+	}
+
+	public void outputCONTRI(FMLpopulation fmlPopulation, String folderName, SettingForGA setting) {
+		//ディレクトリ生成
+		String sep = File.separator;
+		String dirName = setting.resultFileName + sep + folderName;
+		File newdir = new File(dirName);
+		newdir.mkdirs();
+
+		int Ndim = setting.Ndim;
+		int Fdiv = setting.Fdiv;
+		String fileName = dirName + sep + "contribute.csv";
+
+		try {
+			FileWriter fw = new FileWriter(fileName, true);
+			PrintWriter pw = new PrintWriter( new BufferedWriter(fw) );
+
+			for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+				for(int div_i = 0; div_i < Fdiv; div_i++) {
+					pw.print(fmlPopulation.contribute[dim_i][div_i] + ",");
+				}
+				pw.println();
+			}
+			pw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void outputEVA(DataSetInfo eva, String folderName, SettingForGA setting) {

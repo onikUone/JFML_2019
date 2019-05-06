@@ -164,106 +164,106 @@
         </fuzzyVariable>
         <tskVariable name="EBWR" scale="" type="output" combination="WA">
             <tskTerm name="Conclusion0" order="0">
-                <tskValue>0.49942634</tskValue>
+                <tskValue>0.49976036</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion1" order="0">
-                <tskValue>0.5905792</tskValue>
+                <tskValue>0.90401363</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion2" order="0">
-                <tskValue>0.6384601</tskValue>
+                <tskValue>0.63166904</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion3" order="0">
-                <tskValue>0.47781423</tskValue>
+                <tskValue>0.49721673</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion4" order="0">
-                <tskValue>0.47455353</tskValue>
+                <tskValue>0.47903946</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion5" order="0">
-                <tskValue>0.54726297</tskValue>
+                <tskValue>0.5046359</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion6" order="0">
-                <tskValue>0.10671428</tskValue>
+                <tskValue>0.084451966</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion7" order="0">
-                <tskValue>1.5706776</tskValue>
+                <tskValue>1.2880386</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion8" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion9" order="0">
-                <tskValue>0.47525698</tskValue>
+                <tskValue>0.4796148</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion10" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion11" order="0">
-                <tskValue>0.42341936</tskValue>
+                <tskValue>0.8318308</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion12" order="0">
-                <tskValue>0.5001457</tskValue>
+                <tskValue>0.50013196</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion13" order="0">
                 <tskValue>0.115159385</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion14" order="0">
-                <tskValue>0.5004539</tskValue>
+                <tskValue>0.50065005</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion15" order="0">
-                <tskValue>1.2499297</tskValue>
+                <tskValue>1.0412892</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion16" order="0">
-                <tskValue>0.8429974</tskValue>
+                <tskValue>-0.0397033</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion17" order="0">
-                <tskValue>1.1682793</tskValue>
+                <tskValue>1.3531789</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion18" order="0">
-                <tskValue>0.5000476</tskValue>
+                <tskValue>0.5000536</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion19" order="0">
-                <tskValue>0.38539416</tskValue>
+                <tskValue>0.4055897</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion20" order="0">
-                <tskValue>0.61517394</tskValue>
+                <tskValue>0.6189922</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion21" order="0">
-                <tskValue>0.4997562</tskValue>
+                <tskValue>0.4998615</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion22" order="0">
-                <tskValue>0.5000062</tskValue>
+                <tskValue>0.50000656</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion23" order="0">
-                <tskValue>0.50000274</tskValue>
+                <tskValue>0.49999842</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion24" order="0">
-                <tskValue>0.4999742</tskValue>
+                <tskValue>0.49999008</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion25" order="0">
-                <tskValue>-1.3785706</tskValue>
+                <tskValue>-1.0759519</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion26" order="0">
-                <tskValue>0.4650536</tskValue>
+                <tskValue>0.47062007</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion27" order="0">
-                <tskValue>0.49985188</tskValue>
+                <tskValue>0.49986944</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion28" order="0">
-                <tskValue>-0.6095915</tskValue>
+                <tskValue>-0.001532602</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion29" order="0">
-                <tskValue>0.5001386</tskValue>
+                <tskValue>0.50005066</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion30" order="0">
                 <tskValue>0.45405653</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion31" order="0">
-                <tskValue>0.49999785</tskValue>
+                <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion32" order="0">
-                <tskValue>0.53885394</tskValue>
+                <tskValue>0.44080013</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion33" order="0">
-                <tskValue>-0.15193292</tskValue>
+                <tskValue>-0.6032805</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion34" order="0">
                 <tskValue>0.5</tskValue>
@@ -272,67 +272,67 @@
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion36" order="0">
-                <tskValue>0.49999994</tskValue>
+                <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion37" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion38" order="0">
-                <tskValue>-0.063186996</tskValue>
+                <tskValue>-0.16207579</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion39" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion40" order="0">
-                <tskValue>0.49997857</tskValue>
+                <tskValue>0.49998277</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion41" order="0">
-                <tskValue>0.50001854</tskValue>
+                <tskValue>0.50000787</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion42" order="0">
-                <tskValue>0.50001025</tskValue>
+                <tskValue>0.50001043</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion43" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion44" order="0">
-                <tskValue>0.121842176</tskValue>
+                <tskValue>0.049009018</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion45" order="0">
-                <tskValue>0.3238037</tskValue>
+                <tskValue>0.49987411</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion46" order="0">
-                <tskValue>-0.09559268</tskValue>
+                <tskValue>0.086312726</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion47" order="0">
-                <tskValue>0.60866207</tskValue>
+                <tskValue>0.5409548</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion48" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion49" order="0">
-                <tskValue>0.50001127</tskValue>
+                <tskValue>0.50035274</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion50" order="0">
-                <tskValue>0.1282924</tskValue>
+                <tskValue>-0.012496463</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion51" order="0">
-                <tskValue>-0.7244586</tskValue>
+                <tskValue>-1.4172351</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion52" order="0">
-                <tskValue>0.49960226</tskValue>
+                <tskValue>0.49937564</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion53" order="0">
-                <tskValue>0.49998957</tskValue>
+                <tskValue>0.5002284</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion54" order="0">
-                <tskValue>-0.08986476</tskValue>
+                <tskValue>-0.010324128</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion55" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion56" order="0">
-                <tskValue>0.50008905</tskValue>
+                <tskValue>0.5000812</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion57" order="0">
                 <tskValue>0.5</tskValue>
@@ -341,70 +341,70 @@
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion59" order="0">
-                <tskValue>0.49409857</tskValue>
+                <tskValue>0.4951551</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion60" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion61" order="0">
-                <tskValue>0.515284</tskValue>
+                <tskValue>0.50798464</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion62" order="0">
-                <tskValue>1.1045594</tskValue>
+                <tskValue>0.9735071</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion63" order="0">
-                <tskValue>0.49769226</tskValue>
+                <tskValue>0.49408287</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion64" order="0">
-                <tskValue>0.49185446</tskValue>
+                <tskValue>0.49904597</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion65" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion66" order="0">
-                <tskValue>0.50000125</tskValue>
+                <tskValue>0.5000014</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion67" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion68" order="0">
-                <tskValue>0.5922292</tskValue>
+                <tskValue>0.547411</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion69" order="0">
-                <tskValue>0.4454551</tskValue>
+                <tskValue>0.31891444</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion70" order="0">
-                <tskValue>0.5497788</tskValue>
+                <tskValue>0.552283</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion71" order="0">
-                <tskValue>0.49680367</tskValue>
+                <tskValue>0.49736342</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion72" order="0">
-                <tskValue>-0.10701348</tskValue>
+                <tskValue>0.41030893</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion73" order="0">
-                <tskValue>-2.1152167</tskValue>
+                <tskValue>-2.7593026</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion74" order="0">
-                <tskValue>0.31171808</tskValue>
+                <tskValue>0.35274115</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion75" order="0">
-                <tskValue>0.4908249</tskValue>
+                <tskValue>0.4958629</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion76" order="0">
-                <tskValue>0.7006025</tskValue>
+                <tskValue>0.91324794</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion77" order="0">
-                <tskValue>-0.15474445</tskValue>
+                <tskValue>-0.37067595</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion78" order="0">
-                <tskValue>-0.13547164</tskValue>
+                <tskValue>-0.09629753</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion79" order="0">
-                <tskValue>0.36985984</tskValue>
+                <tskValue>0.43456107</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion80" order="0">
-                <tskValue>0.48710877</tskValue>
+                <tskValue>0.48946106</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion81" order="0">
                 <tskValue>0.5</tskValue>
@@ -413,133 +413,133 @@
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion83" order="0">
-                <tskValue>0.4996297</tskValue>
+                <tskValue>0.49985135</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion84" order="0">
-                <tskValue>0.50602084</tskValue>
+                <tskValue>0.50318956</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion85" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion86" order="0">
-                <tskValue>0.5199177</tskValue>
+                <tskValue>0.42471516</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion87" order="0">
-                <tskValue>0.791018</tskValue>
+                <tskValue>0.5097334</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion88" order="0">
-                <tskValue>0.43426985</tskValue>
+                <tskValue>0.44540155</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion89" order="0">
-                <tskValue>0.4638241</tskValue>
+                <tskValue>0.47388458</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion90" order="0">
-                <tskValue>0.48537084</tskValue>
+                <tskValue>0.48792037</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion91" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion92" order="0">
-                <tskValue>0.4982313</tskValue>
+                <tskValue>0.49847764</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion93" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion94" order="0">
-                <tskValue>0.46365547</tskValue>
+                <tskValue>0.4700614</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion95" order="0">
-                <tskValue>-0.2045443</tskValue>
+                <tskValue>0.70705414</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion96" order="0">
-                <tskValue>0.5000137</tskValue>
+                <tskValue>0.5000031</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion97" order="0">
-                <tskValue>0.49978614</tskValue>
+                <tskValue>0.49985284</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion98" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion99" order="0">
-                <tskValue>0.4994267</tskValue>
+                <tskValue>0.5003772</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion100" order="0">
-                <tskValue>-0.016340798</tskValue>
+                <tskValue>0.041245565</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion101" order="0">
-                <tskValue>0.50089496</tskValue>
+                <tskValue>0.5002768</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion102" order="0">
-                <tskValue>0.449487</tskValue>
+                <tskValue>0.45831454</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion103" order="0">
-                <tskValue>2.1368456</tskValue>
+                <tskValue>2.1450362</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion104" order="0">
-                <tskValue>0.49994445</tskValue>
+                <tskValue>0.4999545</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion105" order="0">
-                <tskValue>0.47973105</tskValue>
+                <tskValue>0.4833149</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion106" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion107" order="0">
-                <tskValue>0.5091399</tskValue>
+                <tskValue>0.5004224</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion108" order="0">
-                <tskValue>0.49923083</tskValue>
+                <tskValue>0.50479573</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion109" order="0">
-                <tskValue>0.49999976</tskValue>
+                <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion110" order="0">
-                <tskValue>1.6800245</tskValue>
+                <tskValue>1.8666037</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion111" order="0">
-                <tskValue>0.47814167</tskValue>
+                <tskValue>0.48180145</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion112" order="0">
-                <tskValue>0.504341</tskValue>
+                <tskValue>0.49915564</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion113" order="0">
-                <tskValue>0.51827204</tskValue>
+                <tskValue>0.5094215</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion114" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion115" order="0">
-                <tskValue>0.5000577</tskValue>
+                <tskValue>0.50180775</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion116" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion117" order="0">
-                <tskValue>0.5091308</tskValue>
+                <tskValue>0.52074975</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion118" order="0">
-                <tskValue>0.4999811</tskValue>
+                <tskValue>0.49999344</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion119" order="0">
-                <tskValue>0.5550909</tskValue>
+                <tskValue>0.5732462</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion120" order="0">
-                <tskValue>0.5</tskValue>
+                <tskValue>0.49999997</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion121" order="0">
-                <tskValue>0.5127074</tskValue>
+                <tskValue>0.5021545</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion122" order="0">
-                <tskValue>0.4988945</tskValue>
+                <tskValue>0.50015473</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion123" order="0">
-                <tskValue>1.135925</tskValue>
+                <tskValue>1.0704783</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion124" order="0">
-                <tskValue>0.04156787</tskValue>
+                <tskValue>0.06621467</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion125" order="0">
-                <tskValue>0.49999735</tskValue>
+                <tskValue>0.50000006</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion126" order="0">
                 <tskValue>0.5</tskValue>
@@ -548,196 +548,196 @@
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion128" order="0">
-                <tskValue>0.49948663</tskValue>
+                <tskValue>0.4884973</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion129" order="0">
-                <tskValue>0.47429368</tskValue>
+                <tskValue>0.47951326</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion130" order="0">
-                <tskValue>0.5023448</tskValue>
+                <tskValue>0.50144213</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion131" order="0">
-                <tskValue>0.26762658</tskValue>
+                <tskValue>0.6019177</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion132" order="0">
-                <tskValue>0.5027719</tskValue>
+                <tskValue>0.49899632</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion133" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion134" order="0">
-                <tskValue>-0.64889294</tskValue>
+                <tskValue>-0.49596378</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion135" order="0">
-                <tskValue>0.51523787</tskValue>
+                <tskValue>0.49653077</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion136" order="0">
-                <tskValue>0.49976918</tskValue>
+                <tskValue>0.49986875</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion137" order="0">
-                <tskValue>0.13176087</tskValue>
+                <tskValue>0.15561728</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion138" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion139" order="0">
-                <tskValue>0.99738544</tskValue>
+                <tskValue>0.7720254</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion140" order="0">
-                <tskValue>0.41259196</tskValue>
+                <tskValue>0.45457724</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion141" order="0">
-                <tskValue>1.0177613</tskValue>
+                <tskValue>1.1868292</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion142" order="0">
-                <tskValue>0.49999893</tskValue>
+                <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion143" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion144" order="0">
-                <tskValue>0.50022566</tskValue>
+                <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion145" order="0">
-                <tskValue>0.48331928</tskValue>
+                <tskValue>0.4921216</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion146" order="0">
-                <tskValue>1.0929651</tskValue>
+                <tskValue>1.1821605</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion147" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion148" order="0">
-                <tskValue>0.49986708</tskValue>
+                <tskValue>0.50001425</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion149" order="0">
-                <tskValue>0.5002444</tskValue>
+                <tskValue>0.5001284</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion150" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion151" order="0">
-                <tskValue>0.041281503</tskValue>
+                <tskValue>0.053823918</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion152" order="0">
-                <tskValue>0.3295779</tskValue>
+                <tskValue>0.3830578</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion153" order="0">
-                <tskValue>0.57919276</tskValue>
+                <tskValue>0.6428497</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion154" order="0">
-                <tskValue>0.4693322</tskValue>
+                <tskValue>0.4676479</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion155" order="0">
-                <tskValue>0.73288083</tskValue>
+                <tskValue>1.0687475</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion156" order="0">
                 <tskValue>0.4815545</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion157" order="0">
-                <tskValue>0.33271414</tskValue>
+                <tskValue>0.36302796</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion158" order="0">
-                <tskValue>0.47411713</tskValue>
+                <tskValue>0.47794315</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion159" order="0">
-                <tskValue>0.5001809</tskValue>
+                <tskValue>0.50022393</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion160" order="0">
-                <tskValue>0.058029745</tskValue>
+                <tskValue>0.14955653</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion161" order="0">
-                <tskValue>0.6646056</tskValue>
+                <tskValue>0.79866666</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion162" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion163" order="0">
-                <tskValue>0.3940828</tskValue>
+                <tskValue>0.40742746</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion164" order="0">
-                <tskValue>0.5000122</tskValue>
+                <tskValue>0.50001144</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion165" order="0">
                 <tskValue>0.49999994</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion166" order="0">
-                <tskValue>0.50001806</tskValue>
+                <tskValue>0.5000162</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion167" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion168" order="0">
-                <tskValue>0.86722755</tskValue>
+                <tskValue>0.74871683</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion169" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion170" order="0">
-                <tskValue>0.49978265</tskValue>
+                <tskValue>0.49987647</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion171" order="0">
-                <tskValue>0.4483551</tskValue>
+                <tskValue>0.45497057</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion172" order="0">
-                <tskValue>0.49768806</tskValue>
+                <tskValue>0.49966928</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion173" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion174" order="0">
-                <tskValue>0.49991786</tskValue>
+                <tskValue>0.5019048</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion175" order="0">
-                <tskValue>1.7340635</tskValue>
+                <tskValue>1.0648949</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion176" order="0">
-                <tskValue>0.4749625</tskValue>
+                <tskValue>0.4882208</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion177" order="0">
-                <tskValue>0.8602836</tskValue>
+                <tskValue>0.8431366</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion178" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion179" order="0">
-                <tskValue>0.4940816</tskValue>
+                <tskValue>0.49924043</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion180" order="0">
-                <tskValue>0.5002202</tskValue>
+                <tskValue>0.50093657</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion181" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion182" order="0">
-                <tskValue>0.478263</tskValue>
+                <tskValue>0.4820385</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion183" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion184" order="0">
-                <tskValue>-0.14639194</tskValue>
+                <tskValue>-0.01499569</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion185" order="0">
-                <tskValue>0.49213254</tskValue>
+                <tskValue>0.49351943</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion186" order="0">
-                <tskValue>2.6731691</tskValue>
+                <tskValue>2.4492865</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion187" order="0">
-                <tskValue>0.5348336</tskValue>
+                <tskValue>0.70285004</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion188" order="0">
-                <tskValue>0.45787692</tskValue>
+                <tskValue>0.4653794</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion189" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion190" order="0">
-                <tskValue>0.50056005</tskValue>
+                <tskValue>0.5004058</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion191" order="0">
-                <tskValue>0.49025717</tskValue>
+                <tskValue>0.49239424</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion192" order="0">
                 <tskValue>0.5</tskValue>
@@ -749,34 +749,34 @@
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion195" order="0">
-                <tskValue>0.47424233</tskValue>
+                <tskValue>0.4778112</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion196" order="0">
-                <tskValue>-0.1489182</tskValue>
+                <tskValue>-0.012010314</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion197" order="0">
-                <tskValue>0.50001484</tskValue>
+                <tskValue>0.5000059</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion198" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion199" order="0">
-                <tskValue>0.4935783</tskValue>
+                <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion200" order="0">
-                <tskValue>1.4118029</tskValue>
+                <tskValue>1.3803982</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion201" order="0">
-                <tskValue>0.76781374</tskValue>
+                <tskValue>0.5631892</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion202" order="0">
-                <tskValue>0.42318422</tskValue>
+                <tskValue>0.4210321</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion203" order="0">
                 <tskValue>0.5</tskValue>
             </tskTerm>
             <tskTerm name="Conclusion204" order="0">
-                <tskValue>0.006346822</tskValue>
+                <tskValue>0.023212167</tskValue>
             </tskTerm>
         </tskVariable>
     </knowledgeBase>
@@ -841,7 +841,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>VerySmall</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -849,7 +849,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>Small</term>
+                    <term>VerySmall</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -1009,7 +1009,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>VeryLarge</term>
+                    <term>Large</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -1025,7 +1025,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>L-Medium</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -1049,7 +1049,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>L-Medium</term>
+                    <term>Large</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -1305,7 +1305,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>Large</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -1469,7 +1469,7 @@
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
-                    <term>Large</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
@@ -1509,7 +1509,7 @@
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
-                    <term>S-Medium</term>
+                    <term>VeryLarge</term>
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
@@ -1641,7 +1641,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>VeryLarge</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -1797,7 +1797,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>Small</term>
+                    <term>VeryLarge</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
@@ -2001,7 +2001,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>VeryLarge</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -2025,7 +2025,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>Small</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -2265,7 +2265,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>Large</term>
+                    <term>VeryLarge</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -2397,7 +2397,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>VerySmall</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
@@ -2529,7 +2529,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>S-Medium</term>
+                    <term>L-Medium</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -2593,7 +2593,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>Small</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -2849,7 +2849,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>S-Medium</term>
+                    <term>Large</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -2881,7 +2881,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>VeryLarge</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -3037,7 +3037,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>VerySmall</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
@@ -3553,7 +3553,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>Large</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -3745,7 +3745,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>VerySmall</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -3985,7 +3985,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>S-Medium</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -4209,7 +4209,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>L-Medium</term>
+                    <term>VeryLarge</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -4269,7 +4269,7 @@
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
-                    <term>Large</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
@@ -4353,7 +4353,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>Large</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -4673,7 +4673,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>L-Medium</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -4789,7 +4789,7 @@
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
-                    <term>Small</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
@@ -4845,7 +4845,7 @@
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
-                    <term>Large</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
@@ -5009,7 +5009,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>S-Medium</term>
+                    <term>Small</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -5081,7 +5081,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>Small</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -5089,7 +5089,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>Small</term>
+                    <term>VeryLarge</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -5165,7 +5165,7 @@
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
-                    <term>Large</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
@@ -5197,7 +5197,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>L-Medium</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
@@ -5673,7 +5673,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>VerySmall</term>
+                    <term>VeryLarge</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -5765,7 +5765,7 @@
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
-                    <term>VerySmall</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
@@ -5809,7 +5809,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>L-Medium</term>
+                    <term>S-Medium</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -5905,7 +5905,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>VeryLarge</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -5993,7 +5993,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>S-Medium</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -6033,7 +6033,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>Small</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -6153,7 +6153,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>VeryLarge</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -6305,11 +6305,11 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>S-Medium</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
-                    <term>Large</term>
+                    <term>VeryLarge</term>
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
@@ -6353,7 +6353,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>Small</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -6409,7 +6409,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>VeryLarge</term>
+                    <term>Large</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -6441,7 +6441,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>L-Medium</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -6449,7 +6449,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>VerySmall</term>
+                    <term>Small</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -6513,7 +6513,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>Small</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -6557,7 +6557,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>VeryLarge</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
@@ -6637,7 +6637,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>Small</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
@@ -6825,7 +6825,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>Small</term>
+                    <term>Large</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -6909,7 +6909,7 @@
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
-                    <term>S-Medium</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
@@ -6945,7 +6945,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>L-Medium</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -7025,7 +7025,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>Large</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -7113,7 +7113,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>Large</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -7329,7 +7329,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>VerySmall</term>
+                    <term>VeryLarge</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -7349,7 +7349,7 @@
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
-                    <term>S-Medium</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
@@ -7393,7 +7393,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>VeryLarge</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -7481,7 +7481,7 @@
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
-                    <term>Large</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
@@ -7517,7 +7517,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>Large</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>
@@ -7665,7 +7665,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>Large</term>
+                    <term>S-Medium</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -7749,7 +7749,7 @@
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
-                    <term>Large</term>
+                    <term>VeryLarge</term>
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
@@ -7945,11 +7945,11 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>S-Medium</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
-                    <term>Small</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
@@ -8129,7 +8129,7 @@
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
-                    <term>L-Medium</term>
+                    <term>S-Medium</term>
                 </clause>
             </antecedent>
             <tskConsequent>
@@ -8145,7 +8145,7 @@
             <antecedent>
                 <clause>
                     <variable>MoveNo</variable>
-                    <term>S-Medium</term>
+                    <term>VeryLarge</term>
                 </clause>
                 <clause>
                     <variable>DBSN</variable>
@@ -8365,7 +8365,7 @@
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
-                    <term>Large</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
@@ -8393,7 +8393,7 @@
                 </clause>
                 <clause>
                     <variable>DWSN</variable>
-                    <term>VeryLarge</term>
+                    <term>VerySmall</term>
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
@@ -8565,7 +8565,7 @@
                 </clause>
                 <clause>
                     <variable>DBTMR</variable>
-                    <term>Large</term>
+                    <term>Small</term>
                 </clause>
                 <clause>
                     <variable>DWTMR</variable>
@@ -8757,7 +8757,7 @@
                 </clause>
                 <clause>
                     <variable>DBWR</variable>
-                    <term>VerySmall</term>
+                    <term>L-Medium</term>
                 </clause>
                 <clause>
                     <variable>DWWR</variable>

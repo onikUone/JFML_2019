@@ -10,6 +10,7 @@ public class FMLpopulation implements Serializable{
 
 	//field
 	float[][][] fuzzyParams;
+	boolean[][] mutationFlg;
 
 	public ArrayList<FS> currentFS = new ArrayList<FS>();
 	public ArrayList<FS> newFS = new ArrayList<FS>();
@@ -22,7 +23,7 @@ public class FMLpopulation implements Serializable{
 	int tstDataSize;
 
 	float[][] contribute;
-	float fitness;	//TODO contributeの総和？
+	float fitness;	//contributeの総和
 
 	MersenneTwisterFast uniqueRnd;
 
@@ -36,7 +37,9 @@ public class FMLpopulation implements Serializable{
 		this.uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
 
 		this.fuzzyParams = new float[Ndim][Fdiv][2];	//各属性にFdiv種類のファジィ集合を定める（mとs）
+		this.mutationFlg = new boolean[Ndim][Fdiv];
 	}
+
 
 	//Deep Copy
 	public FMLpopulation(FMLpopulation oldFML, SettingForGA setting) {
@@ -47,13 +50,20 @@ public class FMLpopulation implements Serializable{
 		this.tstDataSize = oldFML.tstDataSize;
 
 		this.fuzzyParams = new float[Ndim][Fdiv][2];
+		this.mutationFlg = new boolean[Ndim][Fdiv];
+		this.contribute = new float[Ndim][Fdiv];
 		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
 			for(int div_i = 0; div_i < Fdiv; div_i++) {
 				this.fuzzyParams[dim_i][div_i][0] = oldFML.fuzzyParams[dim_i][div_i][0];
 				this.fuzzyParams[dim_i][div_i][1] = oldFML.fuzzyParams[dim_i][div_i][1];
+
+				this.mutationFlg[dim_i][div_i] = oldFML.mutationFlg[dim_i][div_i];
+
+				this.contribute[dim_i][div_i] = oldFML.contribute[dim_i][div_i];
 			}
 		}
 		this.uniqueRnd = new MersenneTwisterFast(oldFML.uniqueRnd.nextInt());
+		this.fitness = oldFML.fitness;
 
 		int popSize = oldFML.currentFS.size();
 		this.currentFS.clear();
@@ -101,6 +111,7 @@ public class FMLpopulation implements Serializable{
 
 	}
 
+	//Deep Copy
 	public void setFuzzyParams(float[][][] _fuzzyParams) {
 		int Ndim = _fuzzyParams.length;
 		int Fdiv = _fuzzyParams[0].length;
@@ -112,6 +123,52 @@ public class FMLpopulation implements Serializable{
 				this.fuzzyParams[dim_i][div_i][1] = _fuzzyParams[dim_i][div_i][1];
 			}
 		}
+
+	}
+
+	//DeepCopy
+	public void setMutationFlg(boolean[][] _mutationFlg) {
+		int Ndim = _mutationFlg.length;
+		int Fdiv = _mutationFlg[0].length;
+		this.mutationFlg = new boolean[Ndim][Fdiv];
+
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			for(int div_i = 0; div_i < Fdiv; div_i++) {
+				this.mutationFlg[dim_i][div_i] = _mutationFlg[dim_i][div_i];
+			}
+		}
+
+	}
+
+	//fuzzyParams[dim][div]の突然変異
+	public void mutationParams(SettingForGA setting, int dim, int div) {
+		int direction = 1;	//中心を左右どちらに移動させるか
+		int contraction = 1;	//分散の収縮方向
+		if(uniqueRnd.nextBoolean()) {
+			direction = -1;
+		}
+		if(uniqueRnd.nextBoolean()) {
+			contraction = -1;
+		}
+
+		float deltaM;	//中心変位(0.2以下)
+		float deltaS;	//分散変位(0.1以下)
+
+		if(uniqueRnd.nextBoolean()) {
+			//分散だけ変更
+			deltaM = 0f;
+			deltaS = uniqueRnd.nextFloatII() / 10; //[0, 0.1]の範囲の乱数
+		} else {
+			//中心・分散どちらも変更
+			deltaM = uniqueRnd.nextFloatII() * 2 / 10;	//[0, 0.2]の範囲の乱数
+			deltaS = uniqueRnd.nextFloatII() / 10;
+		}
+
+		deltaM *= direction;
+		deltaS *= contraction;
+
+		this.fuzzyParams[dim][div][0] += deltaM;
+		this.fuzzyParams[dim][div][1] += deltaS;
 
 	}
 
@@ -237,16 +294,16 @@ public class FMLpopulation implements Serializable{
 		}
 		this.currentFS.clear();
 		this.newFS.clear();
-		//fitnessの低い順にソート
+		//fitnessの値が低い順にソート
 		this.margeFS.sort(comparing(FS::getFitness));
 
 		//fitnessの値が良い順にpopFSだけ次世代に個体を格納
 		for(int pop_i = 0; pop_i < setting.popFS; pop_i++) {
-			currentFS.add( new FS(this.margeFS.get(pop_i), setting) );
+			this.currentFS.add( new FS(this.margeFS.get(pop_i), setting) );
 		}
 	}
 
-	public class margeComparator implements Comparator<FS>{
+	public class fsComparator implements Comparator<FS>{
 		@Override
 		public int compare(FS a, FS b) {
 			float no1 = a.getFitness();

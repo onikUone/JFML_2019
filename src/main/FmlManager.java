@@ -1,8 +1,12 @@
 package main;
 
-import java.util.ArrayList;
+import static java.util.Comparator.*;
 
-public class FmlManager {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class FmlManager implements Serializable{
 
 	//field
 	MersenneTwisterFast uniqueRnd;
@@ -49,21 +53,21 @@ public class FmlManager {
 		int popSize = setting.popFML;
 		for(int child_i = 0; child_i < popSize; child_i++) {
 			//1. currentFMLからcontribute(もしくはFMLpopulation.fitness)によるバイナリトーナメントで親個体を二つ選択する
-			this.crossOver(setting);
-			//2. 親個体から一点交叉によってfuzzyParamsを生成する
-			//3. 突然変異操作
+			this.crossover(setting);
+			//2. 突然変異操作
+			this.mutation(this.newFML, setting);
 		}
 	}
 
-
 	//子個体生成
-	public void crossOver(SettingForGA setting) {
+	public void crossover(SettingForGA setting) {
 		int mom, dad;
 		int Nmom, Ndad;
 
 		this.newFML.clear();
 
 		int popSize = setting.popFML;
+		int Ndim = setting.Ndim;
 		int Fdiv = setting.Fdiv;
 
 		for(int  child_i = 0; child_i < popSize; child_i++) {
@@ -71,7 +75,7 @@ public class FmlManager {
 			mom = binaryT4(setting);	//mom個体のインデックス
 			dad = binaryT4(setting);	//dad個体のインデックス
 
-			if(uniqueRnd.nextDoubleIE() < setting.rateCrossOver) {
+			if(uniqueRnd.nextDoubleIE() > setting.rateCrossOver) {
 				//交叉操作を行わない場合
 				int parent;
 				if(uniqueRnd.nextBoolean()) {
@@ -82,17 +86,156 @@ public class FmlManager {
 				//子個体生成
 				this.newFML.add( new FMLpopulation(this.currentFML.get(parent), setting) );
 			} else {
-				Nmom = uniqueRnd.nextInt(Fdiv); //momから受け継ぐfuzzyParamsの数
-				Ndad = Fdiv - Nmom;	//dadから受け継ぐfuzzyParamsの数
 
-				int[] pmom = sampringWithout();
+				//新しいfuzzyParamsの生成
+				float[][][] newFuzzyParams = new float[Ndim][Fdiv][2];
+				boolean[][] mutationFlg = new boolean[Ndim][Fdiv];
 
-				//2親のfuzzyParamsからcontributeによるバイナリトーナメントで受け継ぐfuzzyParamsを決定する
-				float[][][] newFuzzyParams = makeNewFuzzyParams(setting, this.currentFML.get(mom), this.currentFML.get(dad));
+				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+					Nmom = uniqueRnd.nextInt(Fdiv); //momから受け継ぐfuzzyParamsの数
+					Ndad = Fdiv - Nmom;	//dadから受け継ぐfuzzyParamsの数
 
+					//親から, contributeによるバイナリトーナメントで非復元抽出
+					int[] pmom = sampringWithoutBinaryT4(setting, Nmom, dim_i, this.currentFML.get(mom));
+					int[] pdad = sampringWithoutBinaryT4(setting, Ndad, dim_i, this.currentFML.get(dad));
+
+					for(int mom_i = 0; mom_i < Nmom; mom_i++) {
+						if(pmom[mom_i] < 0) {
+							// 強制mutationは、-Fdivしているから、+Fdivすることで元のインデックスを復元できる
+							newFuzzyParams[dim_i][mom_i][0] = this.currentFML.get(mom).fuzzyParams[dim_i][pmom[mom_i] + Fdiv][0];
+							newFuzzyParams[dim_i][mom_i][1] = this.currentFML.get(mom).fuzzyParams[dim_i][pmom[mom_i] + Fdiv][1];
+							mutationFlg[dim_i][mom_i] = true;
+						} else {
+							newFuzzyParams[dim_i][mom_i][0] = this.currentFML.get(mom).fuzzyParams[dim_i][pmom[mom_i]][0];
+							newFuzzyParams[dim_i][mom_i][1] = this.currentFML.get(mom).fuzzyParams[dim_i][pmom[mom_i]][1];
+							mutationFlg[dim_i][mom_i] = false;
+						}
+					}
+					for(int dad_i = 0; dad_i < Ndad; dad_i++) {
+						if(pdad[dad_i] < 0) {
+							newFuzzyParams[dim_i][dad_i + Nmom][0] = this.currentFML.get(dad).fuzzyParams[dim_i][pdad[dad_i] + Fdiv][0];
+							newFuzzyParams[dim_i][dad_i + Nmom][1] = this.currentFML.get(dad).fuzzyParams[dim_i][pdad[dad_i] + Fdiv][1];
+							mutationFlg[dim_i][dad_i + Nmom] = true;
+						} else {
+							newFuzzyParams[dim_i][dad_i + Nmom][0] = this.currentFML.get(dad).fuzzyParams[dim_i][pdad[dad_i]][0];
+							newFuzzyParams[dim_i][dad_i + Nmom][1] = this.currentFML.get(dad).fuzzyParams[dim_i][pdad[dad_i]][1];
+							mutationFlg[dim_i][dad_i + Nmom] = false;
+						}
+					}
+				}
+
+				FMLpopulation newPop = new FMLpopulation(setting);
+				newPop.setFuzzyParams(newFuzzyParams);
+				newPop.setMutationFlg(mutationFlg);
+				newPop.generateFS(setting);
+				this.newFML.add(newPop);
 			}
 
 		}
+	}
+
+	//突然変異
+	//同じfuzzyParamsを持っている場合(mutationFlg == true)は強制的に突然変異を行う
+	public void mutation(ArrayList<FMLpopulation> fmlList, SettingForGA setting) {
+		int popSize = fmlList.size();
+		int Ndim = setting.Ndim;
+		int Fdiv = setting.Fdiv;
+
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+			for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+				for(int div_i = 0; div_i < Fdiv; div_i++) {
+					if(fmlList.get(pop_i).mutationFlg[dim_i][div_i]) {
+						fmlList.get(pop_i).mutationParams(setting, dim_i, div_i);
+					} else if(uniqueRnd.nextDoubleIE() < setting.rateMutation) {
+						fmlList.get(pop_i).mutationParams(setting, dim_i, div_i);
+					}
+				}
+			}
+		}
+
+	}
+
+	public void populationUpdate(SettingForGA setting) {
+		//現世代 + 子世代 を marge
+		this.margeFML.clear();
+		for(int pop_i = 0; pop_i < this.currentFML.size(); pop_i++) {
+			this.margeFML.add(this.currentFML.get(pop_i));
+		}
+		for(int pop_i = 0; pop_i < this.newFML.size(); pop_i++) {
+			this.margeFML.add(this.newFML.get(pop_i));
+		}
+		this.currentFML.clear();
+		this.newFML.clear();
+		//fitnessの値が高い順にソート
+		this.margeFML.sort(comparing(FMLpopulation::getFitness).reversed());
+
+		//fitnessの値が良い順にpopFMLだけ次世代に個体を格納
+		for(int pop_i = 0; pop_i < setting.popFML; pop_i++) {
+			this.currentFML.add( new FMLpopulation(this.margeFML.get(pop_i), setting) );
+		}
+	}
+
+	public class fmlComparator implements Comparator<FMLpopulation>{
+		@Override
+		public int compare(FMLpopulation a, FMLpopulation b) {
+			float no1 = a.getFitness();
+			float no2 = b.getFitness();
+
+			//降順でソート
+			if(no1 > no2) {
+				return 1;
+			} else if(no1 == no2) {
+				return 0;
+			} else {
+				return -1;
+			}
+		}
+	}
+
+	//
+	public int[] sampringWithoutBinaryT4(SettingForGA setting, int num, int dim, FMLpopulation parent) {
+		int[] ans = new int[num];
+		int count = 0;
+
+		for(int i = 0; i < num; i++) {
+
+			boolean isSame = false;
+
+			//binary tournament
+			int winner = 0;
+			int select1, select2;
+			select1 = uniqueRnd.nextInt(setting.Fdiv);
+			select2 = uniqueRnd.nextInt(setting.Fdiv);
+			int optimizer = -1;	//最小化:1, 最大化:-1
+			if( (optimizer * parent.contribute[dim][select1]) < (optimizer * parent.contribute[dim][select2])) {
+				winner = select1;
+			} else {
+				winner = select2;
+			}
+			ans[i] = winner;
+
+			for(int j = 0; j < i; j++) {
+				if(ans[i] == ans[j]) {
+					isSame = true;
+				}
+			}
+
+			if(count > 10) {
+				//10回探したら強制的にそのままにしておく
+				//同じファジィ集合の時は強制的に突然変異すること
+				isSame = false;
+				ans[i] -= setting.Fdiv;
+			}
+
+			if(isSame) {
+				i--;
+				count++;
+			} else {
+				count = 0;
+			}
+		}
+
+		return ans;
 	}
 
 	public float[][][]  makeNewFuzzyParams(SettingForGA setting, FMLpopulation mom, FMLpopulation dad) {
@@ -145,8 +288,8 @@ public class FmlManager {
 		int select1, select2;
 
 		//トーナメント出場者
-		select1 = uniqueRnd.nextInt(setting.popFS);
-		select2 = uniqueRnd.nextInt(setting.popFS);
+		select1 = uniqueRnd.nextInt(setting.popFML);
+		select2 = uniqueRnd.nextInt(setting.popFML);
 
 		int optimizer = -1;	//最小化:1, 最大化:-1
 		if( (optimizer * currentFML.get(select1).getFitness()) < (optimizer * currentFML.get(select2).getFitness()) ) {

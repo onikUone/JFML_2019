@@ -174,13 +174,24 @@ public class FS{
 
 		//inputVariable
 		FuzzyVariableType[] inputVariable = new FuzzyVariableType[Ndim];
-		inputVariable[0] = new FuzzyVariableType("MoveNo", 0, 1);
-		inputVariable[1] = new FuzzyVariableType("DBSN", 0, 1);
-		inputVariable[2] = new FuzzyVariableType("DWSN", 0, 1);
-		inputVariable[3] = new FuzzyVariableType("DBWR", 0, 1);
-		inputVariable[4] = new FuzzyVariableType("DWWR", 0, 1);
-		inputVariable[5] = new FuzzyVariableType("DBTMR", 0, 1);
-		inputVariable[6] = new FuzzyVariableType("DWTMR", 0, 1);
+
+		if(Ndim == 7) {
+			inputVariable[0] = new FuzzyVariableType("MoveNo", 0, 1);
+			inputVariable[1] = new FuzzyVariableType("DBSN", 0, 1);
+			inputVariable[2] = new FuzzyVariableType("DWSN", 0, 1);
+			inputVariable[3] = new FuzzyVariableType("DBWR", 0, 1);
+			inputVariable[4] = new FuzzyVariableType("DWWR", 0, 1);
+			inputVariable[5] = new FuzzyVariableType("DBTMR", 0, 1);
+			inputVariable[6] = new FuzzyVariableType("DWTMR", 0, 1);
+		} else if(Ndim == 6) {
+			//Ndim = 6 , MoveNo無しversion
+			inputVariable[0] = new FuzzyVariableType("DBSN", 0, 1);
+			inputVariable[1] = new FuzzyVariableType("DWSN", 0, 1);
+			inputVariable[2] = new FuzzyVariableType("DBWR", 0, 1);
+			inputVariable[3] = new FuzzyVariableType("DWWR", 0, 1);
+			inputVariable[4] = new FuzzyVariableType("DBTMR", 0, 1);
+			inputVariable[5] = new FuzzyVariableType("DWTMR", 0, 1);
+		}
 
 		//outputVariable
 		TskVariableType EBWR = new TskVariableType("EBWR");
@@ -190,7 +201,7 @@ public class FS{
 
 		//Fuzzy Set for Input Variable (= FuzzyTerm)
 		FuzzyTermType[][] gaussians = new FuzzyTermType[Ndim][Fdiv];
-		String[] name = {"VerySmall", "Small", "S-Medium", "L-Medium", "Large", "VeryLarge"};
+		String[] name = setting.fuzzySetName;
 
 		FuzzyTermType dontCare = new FuzzyTermType("Don't Care", FuzzyTermType.TYPE_rectangularShape, new float[] {0f, 1f});
 
@@ -266,30 +277,58 @@ public class FS{
 		KnowledgeBaseVariable[] input = new KnowledgeBaseVariable[Ndim];
 		KnowledgeBaseVariable output;
 
-		input[0] = this.fs.getVariable("MoveNo");
-		input[1] = this.fs.getVariable("DBSN");
-		input[2] = this.fs.getVariable("DWSN");
-		input[3] = this.fs.getVariable("DBWR");
-		input[4] = this.fs.getVariable("DWWR");
-		input[5] = this.fs.getVariable("DBTMR");
-		input[6] = this.fs.getVariable("DWTMR");
+		if(Ndim == 7) {
+			input[0] = this.fs.getVariable("MoveNo");
+			input[1] = this.fs.getVariable("DBSN");
+			input[2] = this.fs.getVariable("DWSN");
+			input[3] = this.fs.getVariable("DBWR");
+			input[4] = this.fs.getVariable("DWWR");
+			input[5] = this.fs.getVariable("DBTMR");
+			input[6] = this.fs.getVariable("DWTMR");
+		} else if(Ndim == 6) {
+			//Ndim = 6 , MoveNo無しversion
+			input[0] = this.fs.getVariable("DBSN");
+			input[1] = this.fs.getVariable("DWSN");
+			input[2] = this.fs.getVariable("DBWR");
+			input[3] = this.fs.getVariable("DWWR");
+			input[4] = this.fs.getVariable("DBTMR");
+			input[5] = this.fs.getVariable("DWTMR");
+		}
 
 		for(int data_i = 0; data_i < dataSize; data_i++) {
 			lines[data_i] = tra.getPattern(data_i);
 
-			if(lines[data_i].getDimValue(2) >= 0) {
-				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
-					input[dim_i].setValue(lines[data_i].getDimValue(dim_i));
+			if(Ndim == 7) {
+				if(lines[data_i].getDimValue(2) >= 0) {
+					for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+						input[dim_i].setValue(lines[data_i].getDimValue(dim_i));
+					}
+				} else {
+					input[0].setValue(lines[data_i].getDimValue(0));
+					input[1].setValue(lines[data_i].getDimValue(1));
+					input[2].setValue(lines[data_i].getDimValue(1));
+					input[3].setValue(lines[data_i].getDimValue(3));
+					input[4].setValue(1f - lines[data_i].getDimValue(3));
+					input[5].setValue(lines[data_i].getDimValue(5));
+					input[6].setValue(lines[data_i].getDimValue(5));
 				}
-			} else {
-				input[0].setValue(lines[data_i].getDimValue(0));
-				input[1].setValue(lines[data_i].getDimValue(1));
-				input[2].setValue(lines[data_i].getDimValue(1));
-				input[3].setValue(lines[data_i].getDimValue(3));
-				input[4].setValue(1f - lines[data_i].getDimValue(3));
-				input[5].setValue(lines[data_i].getDimValue(5));
-				input[6].setValue(lines[data_i].getDimValue(5));
+			} else if(Ndim == 6) {
+				if(lines[data_i].getDimValue(1) >= 0) {
+					for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+						input[dim_i].setValue(lines[data_i].getDimValue(dim_i));
+					}
+				} else {
+					//Ndim = 6 , MoveNo無しversion
+					input[0].setValue(lines[data_i].getDimValue(0));
+					input[1].setValue(lines[data_i].getDimValue(0));
+					input[2].setValue(lines[data_i].getDimValue(2));
+					input[3].setValue(1f - lines[data_i].getDimValue(2));
+					input[4].setValue(lines[data_i].getDimValue(4));
+					input[5].setValue(lines[data_i].getDimValue(4));
+				}
 			}
+
+
 
 			this.fs.evaluate();
 			for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
@@ -337,28 +376,55 @@ public class FS{
 		KnowledgeBaseVariable output;
 		Pattern line;
 
-		input[0] = this.fs.getVariable("MoveNo");
-		input[1] = this.fs.getVariable("DBSN");
-		input[2] = this.fs.getVariable("DWSN");
-		input[3] = this.fs.getVariable("DBWR");
-		input[4] = this.fs.getVariable("DWWR");
-		input[5] = this.fs.getVariable("DBTMR");
-		input[6] = this.fs.getVariable("DWTMR");
+		if(Ndim == 7) {
+			input[0] = this.fs.getVariable("MoveNo");
+			input[1] = this.fs.getVariable("DBSN");
+			input[2] = this.fs.getVariable("DWSN");
+			input[3] = this.fs.getVariable("DBWR");
+			input[4] = this.fs.getVariable("DWWR");
+			input[5] = this.fs.getVariable("DBTMR");
+			input[6] = this.fs.getVariable("DWTMR");
+		} else if(Ndim == 6) {
+			//Ndim = 6 , MoveNo無しversion
+			input[0] = this.fs.getVariable("DBSN");
+			input[1] = this.fs.getVariable("DWSN");
+			input[2] = this.fs.getVariable("DBWR");
+			input[3] = this.fs.getVariable("DWWR");
+			input[4] = this.fs.getVariable("DBTMR");
+			input[5] = this.fs.getVariable("DWTMR");
+		}
 
 		for(int data_i = 0; data_i < dataSize; data_i++) {
 			line = dataset.getPattern(data_i);
-			if(line.getDimValue(2) >= 0) {
-				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
-					input[dim_i].setValue( line.getDimValue(dim_i) );
+
+			if(Ndim == 7) {
+				if(line.getDimValue(2) >= 0) {
+					for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+						input[dim_i].setValue( line.getDimValue(dim_i) );
+					}
+				} else {
+					input[0].setValue(line.getDimValue(0));
+					input[1].setValue(line.getDimValue(1));
+					input[2].setValue(line.getDimValue(1));
+					input[3].setValue(line.getDimValue(3));
+					input[4].setValue(1f - line.getDimValue(3));
+					input[5].setValue(line.getDimValue(5));
+					input[6].setValue(line.getDimValue(5));
 				}
-			} else {
-				input[0].setValue(line.getDimValue(0));
-				input[1].setValue(line.getDimValue(1));
-				input[2].setValue(line.getDimValue(1));
-				input[3].setValue(line.getDimValue(3));
-				input[4].setValue(1f - line.getDimValue(3));
-				input[5].setValue(line.getDimValue(5));
-				input[6].setValue(line.getDimValue(5));
+			} else if(Ndim == 6) {
+				if(line.getDimValue(1) >= 0) {
+					for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+						input[dim_i].setValue( line.getDimValue(dim_i) );
+					}
+				} else {
+					//Ndim = 6 , MoveNo無しversion
+					input[0].setValue(line.getDimValue(0));
+					input[1].setValue(line.getDimValue(0));
+					input[2].setValue(line.getDimValue(2));
+					input[3].setValue(1f - line.getDimValue(2));
+					input[4].setValue(line.getDimValue(4));
+					input[5].setValue(line.getDimValue(4));
+				}
 			}
 
 			this.fs.evaluate();

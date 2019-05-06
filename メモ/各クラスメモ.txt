@@ -27,9 +27,29 @@
 + class FmlManager
 	- void generateInitialFML(SettingForGA setting)
 	
-	
+
+・各種時間
+	Fdiv = 6
+	Ndim = 7
+	popFS = 5
+	fsGeneration = 5
+	epoch = 50
+	→ 約６分
+
+	Fdiv = 5
+	Ndim = 7
+	popFS = 5
+	fsGeneration = 5
+	epoch = 50
+	→ 約３分３０秒
+
+	Fdiv = 5
+	Ndim = 6
+	popFS = 5
+	fsGeneration = 5
+	epoch = 50
+	→ 約２分２０秒
+
+
 TODO
-	evaをランダムに作成する
-	FuzzyParamsの最適化GAの評価方法を考える
-	一定のタイミングでFMLpoulationのfuzzyParamsを更新して、currentFSに反映させる
-		このとき、あまり使われていないファジィ集合を更新する？
+	contributeが良いfuzzyParamsを集めて、突然変異だけで子個体（newFuzzyParams）を生成する方法
