@@ -56,10 +56,10 @@ public class FmlManager implements Serializable{
 
 			//20190508_first
 			//1. currentFMLからバイナリトーナメントで親個体を二つ選択し，fuzzyParamsの実数値交叉を行う
-			this.crossOver(setting);
+//			this.crossOver(setting);
 
 			//20190508_second
-//			this.uniformCrossover(setting);
+			this.uniformCrossover(setting);
 
 			//2. 突然変異操作
 			this.mutation(this.newFML, setting);

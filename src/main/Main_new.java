@@ -9,11 +9,11 @@ public class Main_new {
 //		String traFileName = "DataSets/traData_raw_3.csv";	//evaをもともと抜いている
 
 		//Ndim = 6
-		String traFileName = "DataSets/traData_raw_Ndim6.csv";	//moveNo無し
-		String tstFileName = "DataSets/tstData_raw_Ndim6.csv";	//moveNo無し
+//		String traFileName = "DataSets/traData_raw_Ndim6.csv";	//moveNo無し
+//		String tstFileName = "DataSets/tstData_raw_Ndim6.csv";	//moveNo無し
 		//Ndim = 7
-//		String traFileName = "DataSets/traData_raw_2.csv";	//evaを抜いていない
-//		String tstFileName = "DataSets/tstData_raw_2.csv";
+		String traFileName = "DataSets/traData_raw_2.csv";	//evaを抜いていない
+		String tstFileName = "DataSets/tstData_raw_2.csv";
 
 //		String evaFileName = "DataSets/evaData_raw_2.csv";
 //		DataSetInfo eva = new DataSetInfo(evaFileName);

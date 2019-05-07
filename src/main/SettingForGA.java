@@ -28,8 +28,8 @@ public class SettingForGA {
 	int fmlGeneration = 100;	//ファジィ集合最適化 世代数
 	public int calcGeneration = 50;	//結論部学習エポック数
 	int popFML = 10;
-//	int popFS = 30;
-	int popFS = 10;
+	int popFS = 30;
+//	int popFS = 10;
 	int ruleMax = 500;
 	int ruleMin = 100;
 
@@ -38,7 +38,7 @@ public class SettingForGA {
 //	int popFS = 5;
 
 	public float eta = 0.5f;
-	int seed = 2019;
+	int seed = 2020;
 
 	//GA設定
 	float rateCrossOver = 0.9f;
@@ -88,7 +88,7 @@ public class SettingForGA {
 		this.rnd = new MersenneTwisterFast(this.seed);
 		this.resultMaster = new ResultMaster(this.resultFileName);
 
-		this.resultFileName = "results/20190509_first" +
+		this.resultFileName = "results/20190509_second" +
 							"_popFS" + String.valueOf(popFS) +
 							"_Ndim" + String.valueOf(Ndim) +
 							"_evaSize" + String.valueOf(evaSize) +
