@@ -19,7 +19,7 @@ import jfml.term.TskTermType;
 public class FS{
 
 	//field
-	FuzzyInferenceSystem fs;
+	public FuzzyInferenceSystem fs;
 	int ruleNum = 100;
 	float[][][] fuzzyParams;
 	public ArrayList<int[]> rules = new ArrayList<int[]>();
@@ -365,6 +365,110 @@ public class FS{
 		this.makeFS(setting);
 	}
 
+	public void calcContinueConclusion(SettingForGA setting, int interval, DataSetInfo tra) {
+		int dataSize = tra.getDataSize();
+		int Ndim = setting.Ndim;
+		int ruleNum = this.rules.size();
+
+		Pattern[] lines = new Pattern[dataSize];
+		float[] y = new float[dataSize];
+		float diff;
+		float memberSum;
+		float[][] memberships = new float[dataSize][ruleNum];
+		float[] newConcList = new float[ruleNum];
+
+		KnowledgeBaseVariable[] input = new KnowledgeBaseVariable[Ndim];
+		KnowledgeBaseVariable output;
+
+		if(Ndim == 7) {
+			input[0] = this.fs.getVariable("MoveNo");
+			input[1] = this.fs.getVariable("DBSN");
+			input[2] = this.fs.getVariable("DWSN");
+			input[3] = this.fs.getVariable("DBWR");
+			input[4] = this.fs.getVariable("DWWR");
+			input[5] = this.fs.getVariable("DBTMR");
+			input[6] = this.fs.getVariable("DWTMR");
+		} else if(Ndim == 6) {
+			//Ndim = 6 , MoveNo無しversion
+			input[0] = this.fs.getVariable("DBSN");
+			input[1] = this.fs.getVariable("DWSN");
+			input[2] = this.fs.getVariable("DBWR");
+			input[3] = this.fs.getVariable("DWWR");
+			input[4] = this.fs.getVariable("DBTMR");
+			input[5] = this.fs.getVariable("DWTMR");
+		}
+
+		for(int data_i = 0; data_i < dataSize; data_i++) {
+			lines[data_i] = tra.getPattern(data_i);
+
+			if(Ndim == 7) {
+				if(lines[data_i].getDimValue(2) >= 0) {
+					for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+						input[dim_i].setValue(lines[data_i].getDimValue(dim_i));
+					}
+				} else {
+					input[0].setValue(lines[data_i].getDimValue(0));
+					input[1].setValue(lines[data_i].getDimValue(1));
+					input[2].setValue(lines[data_i].getDimValue(1));
+					input[3].setValue(lines[data_i].getDimValue(3));
+					input[4].setValue(1f - lines[data_i].getDimValue(3));
+					input[5].setValue(lines[data_i].getDimValue(5));
+					input[6].setValue(lines[data_i].getDimValue(5));
+				}
+			} else if(Ndim == 6) {
+				if(lines[data_i].getDimValue(1) >= 0) {
+					for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+						input[dim_i].setValue(lines[data_i].getDimValue(dim_i));
+					}
+				} else {
+					//Ndim = 6 , MoveNo無しversion
+					input[0].setValue(lines[data_i].getDimValue(0));
+					input[1].setValue(lines[data_i].getDimValue(0));
+					input[2].setValue(lines[data_i].getDimValue(2));
+					input[3].setValue(1f - lines[data_i].getDimValue(2));
+					input[4].setValue(lines[data_i].getDimValue(4));
+					input[5].setValue(lines[data_i].getDimValue(4));
+				}
+			}
+
+
+
+			this.fs.evaluate();
+			for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+				//読み込んだデータに対してのメンバシップ値を保持
+				memberships[data_i][rule_i] = ((TskVariableType) this.fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getW();
+				//現在の結論部の値を保持
+				newConcList[rule_i] = ((TskVariableType) this.fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getZ();
+			}
+		}
+
+		//学習計算開始
+		for(int gene_i = 0; gene_i < interval; gene_i++) {
+			for(int data_i = 0; data_i < dataSize; data_i++) {
+				memberSum = 0f;
+				y[data_i] = 0f;
+				for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+					memberSum += memberships[data_i][rule_i];
+					y[data_i] += memberships[data_i][rule_i] * newConcList[rule_i];
+				}
+				y[data_i] /= memberSum;
+
+				//修正量計算
+				diff = lines[data_i].getY() - y[data_i];
+				for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+					newConcList[rule_i] += setting.eta * diff * memberships[data_i][rule_i] / memberSum;
+				}
+			}
+		}
+
+		//concList更新
+		for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+			this.concList[rule_i] = newConcList[rule_i];
+		}
+		this.makeFS(setting);
+	}
+
+
 	//与えられたdatasetの推論値y[dataset.dataSize]を返すメソッド
 	public float[] reasoning(SettingForGA setting, DataSetInfo dataset) {
 		int dataSize = dataset.DataSize;
@@ -434,6 +538,42 @@ public class FS{
 
 		return y;
 	}
+
+	public void readFML(FuzzyInferenceSystem xml, float[][][] fuzzyParams, SettingForGA setting) {
+		this.fs = xml;
+		this.ruleNum = xml.getKnowledgeBase().getVariable("EBWR").getTerms().size();
+		this.concList = new float[ruleNum];
+		for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+			this.concList[rule_i] = ((TskVariableType) this.fs.getKnowledgeBase().getVariable("EBWR")).getTerms().get(rule_i).getTskValue().get(0);
+		}
+		this.setFuzzyParams(fuzzyParams);
+
+		//rulesを読み取る
+		int Ndim = fs.getKnowledgeBase().getVariables().size() - 1;	//EBWRがマイナス1
+		int Fdiv = fs.getKnowledgeBase().getVariable("DBSN").getTerms().size() - 1;	//don't careがマイナス1
+		int ruleNum = fs.getKnowledgeBase().getVariable("EBWR").getTerms().size();
+		String[] fuzzyName = new String[Fdiv];
+		for(int div_i = 0; div_i < Fdiv; div_i++) {
+			fuzzyName[div_i] = ((FuzzyTermType)fs.getKnowledgeBase().getVariable("DBSN").getTerms().get(div_i)).getName();
+		}
+
+		this.rules.clear();
+		for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+			int[] ruleIdx = new int[Ndim];
+			TskFuzzyRuleType rule = ((TskRuleBaseType)fs.getRuleBase(0)).getTskRules().get(rule_i);
+			for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+				String termName = ((FuzzyTermType)rule.getAntecedent().getClauses().get(dim_i).getTerm()).getName();
+				for(int div_i = 0; div_i < Fdiv; div_i++) {
+					if(termName.equals(fuzzyName[div_i])) {
+						ruleIdx[dim_i] = div_i;
+						break;
+					}
+				}
+			}
+			this.rules.add(ruleIdx);
+		}
+	}
+
 
 	public void setFitness(float _fitness) {
 		this.fitness = _fitness;

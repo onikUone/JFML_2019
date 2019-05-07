@@ -14,10 +14,10 @@ public class SettingForGA {
 	//Fields ********************************************
 	MersenneTwisterFast rnd;
 	ResultMaster resultMaster;
-	int Ndim;
+	public int Ndim;
 
 	int Fdiv = 5;
-	String[] fuzzySetName = {"VerySmall", "Small", "Medium", "Large", "VeryLarge"};
+	public String[] fuzzySetName = {"VerySmall", "Small", "Medium", "Large", "VeryLarge"};
 
 	int gaGeneration = 1000;	//GA世代数
 	int popSize = 100;
@@ -26,7 +26,7 @@ public class SettingForGA {
 	int evaSize = 500;
 	int fsGeneration = 20;	//ルール最適化 世代数
 	int fmlGeneration = 100;	//ファジィ集合最適化 世代数
-	int calcGeneration = 50;	//結論部学習エポック数
+	public int calcGeneration = 50;	//結論部学習エポック数
 	int popFML = 10;
 	int popFS = 30;
 //	int popFS = 10;
@@ -37,7 +37,7 @@ public class SettingForGA {
 //	int popFML = 3;
 //	int popFS = 5;
 
-	float eta = 0.5f;
+	public float eta = 0.5f;
 	int seed = 2019;
 
 	//GA設定
@@ -270,6 +270,10 @@ public class SettingForGA {
 		}
 	}
 
+
+	public void setNdim(int _Ndim) {
+		this.Ndim = _Ndim;
+	}
 	// **************************************************
 }
 
