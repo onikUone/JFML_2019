@@ -66,7 +66,9 @@ public class FmlGaManager {
 			System.out.print(".");
 
 			//1. 子個体生成
-			fmlPopulation.crossOver(setting);
+//			fmlPopulation.crossOver(setting);
+			//20190508_third
+			fmlPopulation.crossOver2(setting);	//membership値が0のルールを選ばないようにする
 			fmlPopulation.mutation(setting);
 
 			//2. 子個体の個体評価 = evaのMSE計算

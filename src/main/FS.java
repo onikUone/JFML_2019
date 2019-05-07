@@ -24,6 +24,7 @@ public class FS{
 	float[][][] fuzzyParams;
 	public ArrayList<int[]> rules = new ArrayList<int[]>();
 	float[] concList;
+	boolean[] coveredFlg;
 	int[][] count;
 
 	float fitness = 100f;
@@ -44,9 +45,12 @@ public class FS{
 		setFuzzyParams(oldFS.fuzzyParams);
 		setRuleNum(oldFS.ruleNum);
 		this.concList = new float[oldFS.ruleNum];
+		this.coveredFlg = new boolean[oldFS.ruleNum];
 		for(int rule_i = 0; rule_i < oldFS.ruleNum; rule_i++) {
 			deepAddRule(oldFS.rules.get(rule_i));
 			this.concList[rule_i] = oldFS.concList[rule_i];
+
+			this.coveredFlg[rule_i] = oldFS.coveredFlg[rule_i];
 		}
 		this.count = new int[oldFS.count.length][oldFS.count[0].length];
 		for(int dim_i = 0; dim_i < this.count.length; dim_i++) {
@@ -121,6 +125,7 @@ public class FS{
 	public void resetConcList() {
 		this.concList = new float[this.ruleNum];
 		Arrays.fill(this.concList, 0.5f);
+		this.coveredFlg = new boolean[this.ruleNum];
 	}
 
 	public void mutation(int rule_i, int mutDim, SettingForGA setting) {
@@ -154,6 +159,7 @@ public class FS{
 
 		this.concList = new float[ruleNum];
 		Arrays.fill(this.concList, 0.5f);
+		this.coveredFlg = new boolean[ruleNum];
 	}
 
 
@@ -333,6 +339,9 @@ public class FS{
 			for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
 				//読み込んだデータに対してのメンバシップ値を保持
 				memberships[data_i][rule_i] = ((TskVariableType) this.fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getW();
+				if(memberships[data_i][rule_i] > setting.alphaCut) {
+					this.coveredFlg[rule_i] = true;
+				}
 				//現在の結論部の値を保持
 				newConcList[rule_i] = ((TskVariableType) this.fs.getKnowledgeBase().getVariable("EBWR")).getWZ().get(rule_i).getZ();
 			}

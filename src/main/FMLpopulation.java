@@ -227,7 +227,7 @@ public class FMLpopulation implements Serializable{
 			mom = binaryT4(setting);	//mom個体のインデックス
 			dad = binaryT4(setting);	//dad個体のインデックス
 
-			if(uniqueRnd.nextDoubleIE() < setting.rateCrossOver) {
+			if(uniqueRnd.nextDoubleIE() > setting.rateCrossOver) {
 				//交叉操作を行わない場合
 				int parent;
 				if(uniqueRnd.nextBoolean()) {
@@ -278,6 +278,139 @@ public class FMLpopulation implements Serializable{
 				this.newFS.get(child_i).makeFS(setting);
 			}
 		}
+	}
+
+	public void crossOver2(SettingForGA setting) {
+		int mom, dad;
+		int Nmom, Ndad;
+
+		this.newFS.clear();
+
+		int popSize = setting.popFS;
+		for(int child_i = 0; child_i < popSize; child_i++) {
+			//親選択
+			mom = binaryT4(setting);
+			dad = binaryT4(setting);
+
+			if(uniqueRnd.nextDoubleIE() > setting.rateCrossOver) {
+				//交叉操作を行わない場合
+				int parent;
+				if(uniqueRnd.nextBoolean()) {
+					parent = mom;
+				} else {
+					parent = dad;
+				}
+				//子個体生成
+				this.newFS.add( new FS(this.currentFS.get(parent), setting) );	//DeepCopy
+			} else {
+				//交叉操作を行う
+				int momCovered = 0;
+				int dadCovered = 0;
+				for(int rule_i = 0; rule_i < this.currentFS.get(mom).ruleNum; rule_i++) {
+					if(this.currentFS.get(mom).coveredFlg[rule_i]) {
+						momCovered++;
+					}
+				}
+				for(int rule_i = 0; rule_i < this.currentFS.get(dad).ruleNum; rule_i++) {
+					if(this.currentFS.get(dad).coveredFlg[rule_i]) {
+						dadCovered++;
+					}
+				}
+
+				if(momCovered < setting.ruleMin) {
+					Nmom = momCovered;
+				} else {
+					Nmom = uniqueRnd.nextInt(momCovered - (int)(setting.ruleMin/2)) + (int)(setting.ruleMin/2);
+				}
+				if(dadCovered < setting.ruleMin) {
+					Ndad = dadCovered;
+				} else {
+					Ndad = uniqueRnd.nextInt(dadCovered - (int)(setting.ruleMin/2)) + (int)(setting.ruleMin/2);
+				}
+
+				if(Ndad == 0 && Nmom == 0) {
+					Nmom = uniqueRnd.nextInt(this.currentFS.get(mom).ruleNum) + 1;
+					Ndad = uniqueRnd.nextInt(this.currentFS.get(dad).ruleNum) + 1;
+				}
+
+				//子個体のルール数がruleMaxを超えないように調整
+				if( (Nmom + Ndad) > setting.ruleMax ) {
+					int delNum = Nmom + Ndad -  setting.ruleMin;	//減らすルール数
+					for(int i = 0; i < delNum; i++) {
+						if(Ndad <= 0) {
+							Nmom--;
+							continue;
+						} else if(Nmom <= 0) {
+							Ndad--;
+							continue;
+						}
+						if(uniqueRnd.nextBoolean()) {
+							Nmom--;
+						} else {
+							Ndad--;
+						}
+					}
+				}
+
+				int[] pmom = sampringCovered(Nmom, momCovered, this.currentFS.get(mom));
+				int[] pdad = sampringCovered(Ndad, dadCovered, this.currentFS.get(dad));
+
+
+				//子個体生成
+				this.newFS.add( new FS(setting) );
+				this.newFS.get(child_i).setFuzzyParams(this.currentFS.get(mom).fuzzyParams);
+				this.newFS.get(child_i).setRuleNum(Nmom + Ndad);
+				this.newFS.get(child_i).resetConcList();
+				for(int mom_i = 0; mom_i< Nmom; mom_i++) {
+					this.newFS.get(child_i).deepAddRule(this.currentFS.get(mom).rules.get(pmom[mom_i]));
+				}
+				for(int dad_i = 0; dad_i < Ndad; dad_i++) {
+					this.newFS.get(child_i).deepAddRule(this.currentFS.get(dad).rules.get(pdad[dad_i]));
+				}
+				this.newFS.get(child_i).makeFS(setting);
+
+			}
+		}
+	}
+
+
+	public int[] sampringCovered(int num, int coveredNum, FS parent) {
+		int[] ans = new int[num];
+
+		if(num == coveredNum) {
+			int count = 0;
+			for(int rule_i = 0; rule_i < parent.ruleNum; rule_i++) {
+				if(parent.coveredFlg[rule_i]) {
+					ans[count] = rule_i;
+					count++;
+				}
+			}
+			return ans;
+		}
+
+		for(int i = 0; i < num; i++) {
+			boolean isSame = false;
+			int idx = uniqueRnd.nextInt(coveredNum);
+			int count = 0;
+			for(int rule_i = 0; rule_i < parent.ruleNum; rule_i++) {
+				if(parent.coveredFlg[rule_i]) {
+					count++;
+				}
+				if(count == idx) {
+					ans[i] = rule_i;
+				}
+			}
+			for(int j = 0; j < i; j++) {
+				if(ans[i] == ans[j]) {
+					isSame = true;
+				}
+			}
+			if(isSame) {
+				i--;
+			}
+		}
+
+		return ans;
 	}
 
 	public void mutation(SettingForGA setting) {
