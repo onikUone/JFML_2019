@@ -54,12 +54,70 @@ public class FmlManager implements Serializable{
 //			//1. currentFMLからcontribute(もしくはFMLpopulation.fitness)によるバイナリトーナメントで親個体を二つ選択する
 //			this.binaryT4Choice(setting);
 
-			//20190507_second
+			//20190508_first
 			//1. currentFMLからバイナリトーナメントで親個体を二つ選択し，fuzzyParamsの実数値交叉を行う
-			this.crossOver(setting);
+//			this.crossOver(setting);
+
+			//20190508_second
+			this.uniformCrossover(setting);
 
 			//2. 突然変異操作
 			this.mutation(this.newFML, setting);
+		}
+	}
+
+	//子個体生成（一様交叉）
+	public void uniformCrossover(SettingForGA setting) {
+		int mom, dad;
+
+		this.newFML.clear();
+
+		int popSize = setting.popFML;
+		int Ndim = setting.Ndim;
+		int Fdiv = setting.Fdiv;
+
+		for(int child_i = 0; child_i < popSize; child_i++) {
+			//親選択
+			mom = binaryT4(setting);
+			dad = binaryT4(setting);
+
+			if(uniqueRnd.nextDoubleIE() > setting.rateCrossOver) {
+				//交叉操作を行わない場合
+				int parent;
+				if(uniqueRnd.nextBoolean()) {
+					parent = mom;
+				} else {
+					parent = dad;
+				}
+				//子個体生成
+				this.newFML.add( new FMLpopulation(this.currentFML.get(parent), setting) );
+			} else {
+				float[][][] newFuzzyParams = new float[Ndim][Fdiv][2];
+				boolean[][] mutationFlg = new boolean[Ndim][Fdiv];
+				int parent;
+
+				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+					//一様交叉
+					if(uniqueRnd.nextBoolean()) {
+						parent = mom;
+					} else {
+						parent = dad;
+					}
+
+					for(int div_i = 0; div_i < Fdiv; div_i++) {
+						newFuzzyParams[dim_i][div_i][0] = this.currentFML.get(parent).fuzzyParams[dim_i][div_i][0];
+						newFuzzyParams[dim_i][div_i][1] = this.currentFML.get(parent).fuzzyParams[dim_i][div_i][1];
+						mutationFlg[dim_i][div_i] = false;
+					}
+				}
+
+				FMLpopulation newPop = new FMLpopulation(setting);
+				newPop.setFuzzyParams(newFuzzyParams);
+				newPop.setMutationFlg(mutationFlg);
+				newPop.generateFS(setting);
+				this.newFML.add(newPop);
+			}
+
 		}
 	}
 

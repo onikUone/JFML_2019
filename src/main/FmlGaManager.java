@@ -76,8 +76,13 @@ public class FmlGaManager {
 			fmlPopulation.populationUpdate(setting);
 
 			//4. 現世代出力
-			outputFML(fmlPopulation.currentFS, dirName + "/fsGene_" + String.valueOf(gene_i+1) + "/FML", gene_i+1, setting);
-			outputMSE(fmlPopulation.currentFS, dirName + "/fsGene_" + String.valueOf(gene_i+1) + "/MSE", gene_i+1, tst, setting);
+			if( gene_i == 0  ||
+				gene_i == 4  ||
+				gene_i == 9 ||
+				gene_i == 19 ) {
+				outputFML(fmlPopulation.currentFS, dirName + "/fsGene_" + String.valueOf(gene_i+1) + "/FML", gene_i+1, setting);
+				outputMSE(fmlPopulation.currentFS, dirName + "/fsGene_" + String.valueOf(gene_i+1) + "/MSE", gene_i+1, tst, setting);
+			}
 		}
 		System.out.println();
 

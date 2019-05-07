@@ -68,7 +68,6 @@ public class FS{
 		int ruleNum = fs.rules.size();
 		int Ndim = setting.Ndim;
 
-		//rulesの一時保存
 		for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
 			//don't careに変更
 			if(fs.rules.get(rule_i)[_dim] == _div) {

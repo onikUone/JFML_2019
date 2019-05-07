@@ -92,7 +92,7 @@ public class FMLpopulation implements Serializable{
 				this.fuzzyParams[dim_i][div_i][0] = rnd;
 				//分散値
 				rnd = this.uniqueRnd.nextFloatIE();
-				while(rnd <= 0 || rnd >= 0.5) {
+				while(rnd <= 0 || rnd >= 0.4) {
 					rnd = this.uniqueRnd.nextFloatIE();
 				}
 				this.fuzzyParams[dim_i][div_i][1] = rnd;
@@ -158,11 +158,11 @@ public class FMLpopulation implements Serializable{
 		if(uniqueRnd.nextBoolean()) {
 			//分散だけ変更
 			deltaM = 0f;
-			deltaS = uniqueRnd.nextFloatII() / 10; //[0, 0.1]の範囲の乱数
+			deltaS = uniqueRnd.nextFloatII() / 100; //[0, 0.01]の範囲の乱数
 		} else {
 			//中心・分散どちらも変更
 			deltaM = uniqueRnd.nextFloatII() / 10;	//[0, 0.1]の範囲の乱数
-			deltaS = uniqueRnd.nextFloatII() / 10;	//[0, 0.1]の範囲の乱数
+			deltaS = uniqueRnd.nextFloatII() / 100;	//[0, 0.01]の範囲の乱数
 		}
 
 		deltaM *= direction;
@@ -170,6 +170,18 @@ public class FMLpopulation implements Serializable{
 
 		this.fuzzyParams[dim][div][0] += deltaM;
 		this.fuzzyParams[dim][div][1] += deltaS;
+
+		if(this.fuzzyParams[dim][div][0] < 0f) {
+			this.fuzzyParams[dim][div][0] = 0f;
+		} else if(this.fuzzyParams[dim][div][0] > 1f) {
+			this.fuzzyParams[dim][div][0] = 1f;
+		}
+		if(this.fuzzyParams[dim][div][1] < 0f) {
+			this.fuzzyParams[dim][div][1] = 0f;
+		} else if(this.fuzzyParams[dim][div][1] > 0.4f) {
+			this.fuzzyParams[dim][div][1] = 0.4f;
+		}
+
 
 	}
 
