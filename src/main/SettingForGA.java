@@ -24,18 +24,18 @@ public class SettingForGA {
 	int ruleNum = 100;	//1個体あたりのルール数
 
 	int evaSize = 500;
-//	int fsGeneration = 20;	//ルール最適化 世代数
+	int fsGeneration = 20;	//ルール最適化 世代数
 	int fmlGeneration = 100;	//ファジィ集合最適化 世代数
 	int calcGeneration = 50;	//結論部学習エポック数
-//	int popFML = 10;
-//	int popFS = 30;
+	int popFML = 10;
+	int popFS = 30;
 //	int popFS = 10;
 	int ruleMax = 500;
 	int ruleMin = 100;
 
-	int fsGeneration = 5;	//ルール最適化 世代数
-	int popFML = 3;
-	int popFS = 5;
+//	int fsGeneration = 5;	//ルール最適化 世代数
+//	int popFML = 3;
+//	int popFS = 5;
 
 	float eta = 0.5f;
 	int seed = 2019;
@@ -80,12 +80,14 @@ public class SettingForGA {
 	// **************************************************
 
 	//Constructor ***************************************
+	public SettingForGA() {}
+
 	public SettingForGA(DataSetInfo tra) {
 		this.Ndim = tra.getNdim();
 		this.rnd = new MersenneTwisterFast(this.seed);
 		this.resultMaster = new ResultMaster(this.resultFileName);
 
-		this.resultFileName = "results/20190508_second" +
+		this.resultFileName = "results/20190508_firstEX" +
 							"_popFS" + String.valueOf(popFS) +
 							"_Ndim" + String.valueOf(Ndim) +
 							"_evaSize" + String.valueOf(evaSize) +

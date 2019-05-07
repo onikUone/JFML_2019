@@ -74,6 +74,7 @@ public class DataSetInfo {
 			this.patterns.add(new Pattern(x, y));
 			datasize++;
 		}
+		in.close();
 		this.DataSize = datasize;
 		this.Ndim = patterns.get(0).getNdim();
 	}

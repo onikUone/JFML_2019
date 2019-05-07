@@ -34,7 +34,7 @@
 20190507_third : popFS = 10に変更
 
 20190508_first : crossOverメソッド使用, popFS = 10 or 30, 分散値範囲[0, 0.4]に変更, 分散のmutation幅を[0, 0.01]に変更, fsGeneの出力間隔を変更(1, 5, 10, 20)
-20190508_second : uniformCrossoverメソッド使用
+20190508_second : uniformCrossover,     popFS = 10 or 30, 
 
 ・各種時間
 	Fdiv = 6
@@ -57,6 +57,20 @@
 	fsGeneration = 5
 	epoch = 50
 	→ 約２分２０秒
+
+	Fdiv = 5
+	Ndim = 6
+	popFS = 10
+	fsGeneration = 20
+	epoch = 50
+	→ 約１４分
+
+	Fdiv = 5
+	Ndim = 6
+	popFS = 30
+	fsGeneration = 20
+	epoch = 50
+	→ 約４５分
 
 
 TODO
