@@ -41,6 +41,7 @@
 20190509_first : gaFsFrame.crossOver2, makeNewFML.crossOver
 20190509_second : gaFsFrame.crossOver2, makeNewFML.uniformCrossover,     popFS = 10 or 30, 
 20190509_third：gaFsFrame.crossOver2, makeNewFML.binaryT4Choice(バイナリトーナメントで受け継ぐfuzzyParamsを決定する)
+20190509_fourth : fuzzyParamsの評価値として最終世代の最良個体の評価値を追加して2目的にする
 
 
 ・各種時間
