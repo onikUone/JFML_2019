@@ -17,11 +17,12 @@ public class SettingForGA {
 	public int Ndim;
 
 	int Fdiv = 5;
-	public String[] fuzzySetName = {"VerySmall", "Small", "Medium", "Large", "VeryLarge"};
+	public String[] dimName = {"DBSN", "DWSN", "DBWR", "DWWR", "DBTMR", "DWTMR"};
+	public String[] fuzzySetName = {"VerySmall", "Small", "Medium", "Large", "VeryLarge", "Don't Care"};
 
 	int gaGeneration = 1000;	//GA世代数
 	int popSize = 100;
-	int ruleNum = 100;	//1個体あたりのルール数
+	int ruleNum = 500;	//1個体あたりのルール数
 
 	int evaSize = 500;
 	int fsGeneration = 20;	//ルール最適化 世代数
@@ -36,6 +37,15 @@ public class SettingForGA {
 //	int fsGeneration = 5;	//ルール最適化 世代数
 //	int popFML = 3;
 //	int popFS = 5;
+
+	int generation = 2;
+	int rbGeneration = 2;
+	int popRB = 3;	//RuleBase個体数
+	int kbGeneration = 2;
+	int popKB = 3;	//KnowledgeBase個体数
+	String resultRoot = "results/abcdefg";
+	float alpha = 0.5f;
+	float dcRate = 0.8f;
 
 	public float eta = 0.5f;
 	int seed = 2020;
@@ -88,7 +98,7 @@ public class SettingForGA {
 		this.rnd = new MersenneTwisterFast(this.seed);
 		this.resultMaster = new ResultMaster(this.resultFileName);
 
-		this.resultFileName = "results/20190509_second" +
+		this.resultFileName = "results/20190509_third" +
 							"_popFS" + String.valueOf(popFS) +
 							"_Ndim" + String.valueOf(Ndim) +
 							"_evaSize" + String.valueOf(evaSize) +
@@ -238,10 +248,20 @@ public class SettingForGA {
 
 	}
 
+	public void setArgument(String[] args) {
+		this.seed = Integer.parseInt(args[0]);
+		this.resultRoot = args[1];
+		this.rbGeneration = Integer.parseInt(args[2]);
+		this.popRB = Integer.parseInt(args[3]);
+		this.kbGeneration = Integer.parseInt(args[4]);
+		this.popKB = Integer.parseInt(args[5]);
+		this.generation = Integer.parseInt(args[6]);
+	}
+
 	public void outputSetting() {
 		//ディレクトリ作成
 		String sep = File.separator;
-		String dirName = resultFileName + sep + "$setting";
+		String dirName = resultRoot + sep + "$setting";
 		File newdir = new File(dirName);
 		newdir.mkdirs();
 
@@ -264,6 +284,7 @@ public class SettingForGA {
 			pw.println("seed" + "," + seed);
 			pw.println("rateCrossOver" + "," + rateCrossOver);
 			pw.println("rateMutation" + "," + rateMutation);
+			pw.println("alphaCunt" + "," + alphaCut);
 
 			pw.close();
 		} catch (IOException e) {

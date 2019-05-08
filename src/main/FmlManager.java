@@ -50,20 +50,29 @@ public class FmlManager implements Serializable{
 	public void makeNewFML(SettingForGA setting) {
 		int popSize = setting.popFML;
 		for(int child_i = 0; child_i < popSize; child_i++) {
-			//20190506_first
+			//20190509_third
 //			//1. currentFMLからcontribute(もしくはFMLpopulation.fitness)によるバイナリトーナメントで親個体を二つ選択する
-//			this.binaryT4Choice(setting);
+			this.binaryT4Choice(setting);
 
 			//20190508_first
 			//1. currentFMLからバイナリトーナメントで親個体を二つ選択し，fuzzyParamsの実数値交叉を行う
 //			this.crossOver(setting);
 
 			//20190508_second
-			this.uniformCrossover(setting);
+			//1. 一様交叉
+//			this.uniformCrossover(setting);
+
+			//20190509_fourth
+			this.nsga2crossOver(setting);
 
 			//2. 突然変異操作
 			this.mutation(this.newFML, setting);
 		}
+	}
+
+	//TODO 2目的最適化子個体生成
+	public void nsga2crossOver(SettingForGA setting) {
+
 	}
 
 	//子個体生成（一様交叉）
@@ -427,6 +436,114 @@ public class FmlManager implements Serializable{
 		}
 
 		return winner;
+	}
+
+	public void calcRank(ArrayList<FMLpopulation> fmlList) {
+		ArrayList<FMLpopulation> rankedList = new ArrayList<FMLpopulation>();
+
+		int popSize = fmlList.size();
+
+		//n_i[pop_i] : pop_i を 優越する個体の数
+		int[] n_i = new int[popSize];
+
+		@SuppressWarnings("unchecked")
+
+		//S_i[pop_i] : pop_i が 優越する個体のインデックスをリストで保持
+		ArrayList<Integer>[] S_i = new ArrayList[popSize];
+
+		//rankが昇順になるようなruleSetsのインデックスリスト
+		ArrayList<Integer> F_i = new ArrayList<Integer>();
+
+		//優越ランク計算開始
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+			n_i[pop_i] = 0;
+			S_i[pop_i] = new ArrayList<Integer>();
+
+			for(int pop_j = 0; pop_j < popSize; pop_j++) {
+				if(pop_i != pop_j) {
+					if( isDominate(pop_i, pop_j, fmlList) ) {
+						//pop_i が pop_j を優越する
+						S_i[pop_i].add(pop_j);
+					} else if(isDominate(pop_j, pop_i, fmlList)) {
+						n_i[pop_i]++;
+					}
+				}
+			}
+			if(n_i[pop_i] == 0) {
+				//pop_i を 優越する個体が存在しない
+				fmlList.get(pop_i).setRank(0);
+				rankedList.add(fmlList.get(pop_i));
+				F_i.add(pop_i);
+			}
+		}
+
+		//Crowding Distance 計算開始
+		double firstMax = 0;
+		double firstMin = 100;
+		boolean isNormalize = false;
+		ArrayList<Float> firstObj = new ArrayList<Float>();
+		ArrayList<Float> nowFirst = new ArrayList<Float>();
+
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+			firstObj.add(fmlList.get(pop_i).getFitnesses(0));
+		}
+
+		//全ランクについてCrowding Distanceを計算する
+		int i = 0;
+		calcDistance(rankedList);
+		rankedList.clear();
+		ArrayList<Integer> Q = new ArrayList<Integer>();	//対象とするランクの個体群を保持するリスト
+		while(F_i.size() != 0) {
+			for(int p = 0; p < F_i.size(); p++) {
+				for(int q = 0; q < S_i[F_i.get(p)].size(); q++) {
+					n_i[S_i[F_i.get(p)].get(q)] -= 1;
+					if(n_i[S_i[F_i.get(p)].get(q)] == 0) {
+						fmlList.get( S_i[F_i.get(p)].get(q) ).setRank(i + 1);
+						Q.add(S_i[F_i.get(p)].get(q));
+						rankedList.add(fmlList.get( S_i[F_i.get(p)].get(q) ));
+					}
+				}
+			}
+			if(rankedList.size() != 0) {
+				calcDistance(rankedList);
+			}
+			rankedList.clear();
+			i++;
+			F_i.clear();
+			for(int k = 0; k < Q.size(); k++) {
+				F_i.add(Q.get(k));
+			}
+			Q.clear();
+		}
+
+	}
+
+	public void calcDistance(ArrayList<FMLpopulation> fmlList) {
+		int popSize = fmlList.size();
+		//TODO
+	}
+
+	//pがqを優越しているかどうか
+	protected boolean isDominate(int p, int q, ArrayList<FMLpopulation> fmlPop) {
+		// Minimize fitness
+		//if p dominate q then true
+		//	else false
+
+		boolean ans = false;
+		//Minimize したい目的関数には i = 1, Maximize したい目的関数には i = -1, とすれば不等号をこのまま使える
+		int[] i = new int[2];
+		i[0] = -1;
+		i[1] = 1;
+		for(int o = 0; o < 2; o++) {
+			if( i[o] * fmlPop.get(p).getFitnesses(o) > i[o] * fmlPop.get(q).getFitnesses(o)) {
+				// どこか一つでも「p > q」 ならば pはqを優越しない
+				ans = false;
+				break;
+			} else if(i[o] * fmlPop.get(p).getFitnesses(o) < i[o] * fmlPop.get(q).getFitnesses(o)) {
+				ans = true;
+			}
+		}
+		return ans;
 	}
 
 //	//子個体生成(親個体のcontributeが高いfuzzyParamsを基準に突然変異で探索)

@@ -1,7 +1,5 @@
 package main;
 
-import static java.util.Comparator.*;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,6 +9,10 @@ public class FMLpopulation implements Serializable{
 	//field
 	float[][][] fuzzyParams;
 	boolean[][] mutationFlg;
+
+	FuzzySet[][] current;
+	public ArrayList<FuzzySet> newSet = new ArrayList<FuzzySet>();
+	public ArrayList<FuzzySet> margeSet = new ArrayList<FuzzySet>();
 
 	public ArrayList<FS> currentFS = new ArrayList<FS>();
 	public ArrayList<FS> newFS = new ArrayList<FS>();
@@ -24,6 +26,10 @@ public class FMLpopulation implements Serializable{
 
 	float[][] contribute;
 	float fitness;	//contributeの総和
+	float[] fitnesses = new float[2];	//[0]:contributeの総和 , [1]:最良個体のfitness(evaMSE)
+
+	int rank;
+	float crowding;
 
 	MersenneTwisterFast uniqueRnd;
 
@@ -64,6 +70,11 @@ public class FMLpopulation implements Serializable{
 		}
 		this.uniqueRnd = new MersenneTwisterFast(oldFML.uniqueRnd.nextInt());
 		this.fitness = oldFML.fitness;
+		for(int i = 0; i < oldFML.fitnesses.length; i++) {
+			this.fitnesses[i] = oldFML.fitnesses[i];
+		}
+
+		this.rank = oldFML.rank;
 
 		int popSize = oldFML.currentFS.size();
 		this.currentFS.clear();
@@ -99,6 +110,31 @@ public class FMLpopulation implements Serializable{
 			}
 		}
 	}
+
+	public void generateInitialKnowledgeBase(SettingForGA setting) {
+		int Ndim = setting.Ndim;
+		int Fdiv = setting.Fdiv;
+		float[] initialM = {0f, 0.25f, 0.5f, 0.75f, 1f};
+		float initialS = 0.105f;
+		float[][][] newFuzzyParams = new float[Ndim][Fdiv][2];
+
+
+		this.current = new FuzzySet[Ndim][Fdiv];
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			for(int div_i = 0; div_i < Fdiv; div_i++) {
+				this.current[dim_i][div_i] = new FuzzySet();
+				this.current[dim_i][div_i].setFuzzyParam(initialM[div_i], initialS);
+
+				newFuzzyParams[dim_i][div_i][0] = initialM[div_i];
+				newFuzzyParams[dim_i][div_i][1] = initialS;
+
+			}
+		}
+
+		this.setFuzzyParams(newFuzzyParams);
+
+	}
+
 
 	public void generateFS(SettingForGA setting) {
 		int popSize = setting.popFS;
@@ -208,10 +244,21 @@ public class FMLpopulation implements Serializable{
 				this.fitness += this.contribute[dim_i][div_i];
 			}
 		}
+
+		this.fitnesses[0] = this.fitness;
+		this.fitnesses[1] = this.currentFS.get(0).getFitness();	//現世代の最良個体の評価値
 	}
 
 	public float getFitness() {
 		return this.fitness;
+	}
+
+	public float getFitnesses(int objectiveNum) {
+		return this.fitnesses[objectiveNum];
+	}
+
+	public void setRank(int _rank) {
+		this.rank = _rank;
 	}
 
 	//子個体生成
@@ -278,6 +325,79 @@ public class FMLpopulation implements Serializable{
 				this.newFS.get(child_i).makeFS(setting);
 			}
 		}
+	}
+
+	//子個体生成
+	public void crossOverRuleBase(SettingForGA setting, DataSetInfo tra) {
+		int mom, dad;
+		int Nmom, Ndad;
+
+		this.newFS.clear();
+
+		int popSize = setting.popRB;
+		for(int child_i = 0; child_i < popSize; child_i++) {
+			//親選択
+			mom = binaryT42(setting);	//mom個体のインデックス
+			dad = binaryT42(setting);	//dad個体のインデックス
+
+			if(uniqueRnd.nextDoubleIE() > setting.rateCrossOver || mom == dad) {
+				//交叉操作を行わない場合
+				int parent;
+				if(uniqueRnd.nextBoolean()) {
+					parent = mom;
+				} else {
+					parent = dad;
+				}
+				//子個体生成
+				this.newFS.add( new FS(this.currentFS.get(parent), setting) );	//DeepCopy
+			} else {
+				//交叉操作を行う(Pittsburgh型)
+				Nmom = uniqueRnd.nextInt(this.currentFS.get(mom).ruleNum) + 1;	//momから取り出すルールの個数を選択
+				Ndad = uniqueRnd.nextInt(this.currentFS.get(mom).ruleNum) + 1;	//dadから取り出すルールの個数を選択
+
+				//子個体のルール数がruleMaxを超えないように調整
+				if( (Nmom + Ndad) > setting.ruleNum ) {
+					int delNum = Nmom + Ndad -  setting.ruleNum;	//減らすルール数
+					for(int i = 0; i < delNum; i++) {
+						if(Ndad <= 0) {
+							Nmom--;
+							continue;
+						} else if(Nmom <= 0) {
+							Ndad--;
+							continue;
+						}
+						if(uniqueRnd.nextBoolean()) {
+							Nmom--;
+						} else {
+							Ndad--;
+						}
+					}
+				}
+
+				int[] pmom = sampringWithout(Nmom, this.currentFS.get(mom).ruleNum);
+				int[] pdad = sampringWithout(Ndad, this.currentFS.get(dad).ruleNum);
+
+				//子個体生成
+				this.newFS.add( new FS(setting) );
+				this.newFS.get(child_i).setFuzzyParams(this.currentFS.get(mom).fuzzyParams);
+				this.newFS.get(child_i).setRuleNum(Nmom + Ndad);
+				this.newFS.get(child_i).resetConcList();
+				for(int mom_i = 0; mom_i < Nmom; mom_i++) {
+					this.newFS.get(child_i).deepAddRule(this.currentFS.get(mom).rules.get(pmom[mom_i]));
+				}
+				for(int dad_i = 0; dad_i < Ndad; dad_i++) {
+					this.newFS.get(child_i).deepAddRule(this.currentFS.get(dad).rules.get(pdad[dad_i]));
+				}
+				//足りない分はヒューリスティック生成
+				this.newFS.get(child_i).heuristicGenerateRules(setting, tra);
+				this.newFS.get(child_i).resetConcList();
+//				this.newFS.get(child_i).makeFS(setting);
+			}
+		}
+	}
+
+	public void heuristicGenerateRule() {
+
 	}
 
 	public void crossOver2(SettingForGA setting) {
@@ -429,6 +549,23 @@ public class FMLpopulation implements Serializable{
 		}
 	}
 
+	public void mutation2(SettingForGA setting) {
+		int popSize = this.newFS.size();
+
+		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+			int ruleNum = this.newFS.get(pop_i).ruleNum;
+
+			for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+				if(uniqueRnd.nextDoubleIE() < setting.rateMutation) {
+					int mutDim = uniqueRnd.nextInt(setting.Ndim);
+					this.newFS.get(pop_i).mutation2(rule_i, mutDim, setting);
+				}
+			}
+
+		}
+	}
+
+
 	public void populationUpdate(SettingForGA setting) {
 		//現世代 + 子世代 を marge
 		this.margeFS.clear();
@@ -441,10 +578,10 @@ public class FMLpopulation implements Serializable{
 		this.currentFS.clear();
 		this.newFS.clear();
 		//fitnessの値が低い順にソート
-		this.margeFS.sort(comparing(FS::getFitness));
+		this.margeFS.sort(java.util.Comparator.comparing(FS::getFitness));
 
 		//fitnessの値が良い順にpopFSだけ次世代に個体を格納
-		for(int pop_i = 0; pop_i < setting.popFS; pop_i++) {
+		for(int pop_i = 0; pop_i < setting.popRB; pop_i++) {
 			this.currentFS.add( new FS(this.margeFS.get(pop_i), setting) );
 		}
 	}
@@ -493,6 +630,24 @@ public class FMLpopulation implements Serializable{
 		//トーナメント出場者
 		select1 = uniqueRnd.nextInt(setting.popFS);
 		select2 = uniqueRnd.nextInt(setting.popFS);
+
+		int optimizer = 1;	//最小化:1, 最大化:-1
+		if( (optimizer * currentFS.get(select1).getFitness()) < (optimizer * currentFS.get(select2).getFitness()) ) {
+			winner = select1;
+		} else {
+			winner = select2;
+		}
+
+		return winner;
+	}
+
+	public int binaryT42(SettingForGA setting) {
+		int winner = 0;
+		int select1, select2;
+
+		//トーナメント出場者
+		select1 = uniqueRnd.nextInt(setting.popRB);
+		select2 = uniqueRnd.nextInt(setting.popRB);
 
 		int optimizer = 1;	//最小化:1, 最大化:-1
 		if( (optimizer * currentFS.get(select1).getFitness()) < (optimizer * currentFS.get(select2).getFitness()) ) {

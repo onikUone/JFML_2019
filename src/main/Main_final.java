@@ -2,7 +2,7 @@ package main;
 
 import java.util.Date;
 
-public class Main_new {
+public class Main_final {
 
 	public static void main(String[] args) {
 		//読み込みファイル名
@@ -22,7 +22,9 @@ public class Main_new {
 		DataSetInfo tra = new DataSetInfo(traFileName);
 		DataSetInfo tst = new DataSetInfo(tstFileName);
 		SettingForGA setting = new SettingForGA(tra);
+		setting.setArgument(args);
 		setting.outputSetting();
+
 
 		FmlGaManager gaManager = new FmlGaManager();
 		DataSetInfo eva = gaManager.pickEva(setting, tra);
@@ -32,12 +34,13 @@ public class Main_new {
 		Date start = new Date();
 		System.out.println(start);
 
-		gaManager.gaFrame(setting, fmlManager, tra, tst, eva);
-
+		FMLpopulation fmlPopulation = new FMLpopulation(setting);
+		gaManager.gaFrame2(setting, fmlPopulation, tra, eva, tst);
 
 		Date end = new Date();
 		System.out.println(end);
 		System.out.println("");
+
 	}
 
 }

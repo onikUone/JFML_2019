@@ -20,7 +20,7 @@ public class FS{
 
 	//field
 	public FuzzyInferenceSystem fs;
-	int ruleNum = 100;
+	int ruleNum;
 	float[][][] fuzzyParams;
 	public ArrayList<int[]> rules = new ArrayList<int[]>();
 	float[] concList;
@@ -28,6 +28,8 @@ public class FS{
 	int[][] count;
 
 	float fitness = 100f;
+
+	ArrayList<Pattern> heuristicList = new ArrayList<Pattern>();
 
 	MersenneTwisterFast uniqueRnd;
 
@@ -52,12 +54,12 @@ public class FS{
 
 			this.coveredFlg[rule_i] = oldFS.coveredFlg[rule_i];
 		}
-		this.count = new int[oldFS.count.length][oldFS.count[0].length];
-		for(int dim_i = 0; dim_i < this.count.length; dim_i++) {
-			for(int div_i = 0; div_i < this.count[0].length; div_i++) {
-				this.count[dim_i][div_i] = oldFS.count[dim_i][div_i];
-			}
-		}
+//		this.count = new int[oldFS.count.length][oldFS.count[0].length];
+//		for(int dim_i = 0; dim_i < this.count.length; dim_i++) {
+//			for(int div_i = 0; div_i < this.count[0].length; div_i++) {
+//				this.count[dim_i][div_i] = oldFS.count[dim_i][div_i];
+//			}
+//		}
 		this.fitness = oldFS.fitness;
 		makeFS(setting);
 	}
@@ -143,10 +145,24 @@ public class FS{
 
 	}
 
+	public void mutation2(int rule_i, int mutDim, SettingForGA setting) {
+		int newFuzzySet = 0;
+		int count = 0;
+		do {
+			if(count > 10) {
+				break;
+			}
+
+			newFuzzySet = uniqueRnd.nextInt(setting.Fdiv + 1);	//Don't Careを含む
+		} while(newFuzzySet == this.rules.get(rule_i)[mutDim]);
+
+		this.rules.get(rule_i)[mutDim] = newFuzzySet;
+
+	}
+
 	public void generateRuleIdx(SettingForGA setting) {
 		//[ruleMin, ruleMax]のランダム値
 		this.ruleNum = this.uniqueRnd.nextInt(setting.ruleMax - setting.ruleMin) + setting.ruleMin;
-
 
 		for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
 			int[] rule = new int[setting.Ndim];
@@ -156,6 +172,33 @@ public class FS{
 			}
 			this.rules.add(rule);
 		}
+
+		this.concList = new float[ruleNum];
+		Arrays.fill(this.concList, 0.5f);
+		this.coveredFlg = new boolean[ruleNum];
+	}
+
+	public void generateRuleIdx2(SettingForGA setting) {
+		this.ruleNum = setting.ruleNum;
+
+		for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+			int[] rule = new int[setting.Ndim];
+			//ruleIdx 生成
+			for(int dim_i = 0; dim_i < setting.Ndim; dim_i++) {
+				rule[dim_i] = this.uniqueRnd.nextInt(setting.Fdiv + 1);	//Don't care含む
+			}
+			this.rules.add(rule);
+		}
+
+		this.concList = new float[ruleNum];
+		Arrays.fill(this.concList, 0.5f);
+		this.coveredFlg = new boolean[ruleNum];
+	}
+
+	public void generateRuleIdx3(SettingForGA setting, DataSetInfo tra) {
+		this.ruleNum = 0;
+
+		this.heuristicGenerateRules(setting, tra);
 
 		this.concList = new float[ruleNum];
 		Arrays.fill(this.concList, 0.5f);
@@ -228,6 +271,9 @@ public class FS{
 		this.fs.setKnowledgeBase(kb);
 		// ************************************************************
 
+		if(this.rules.size() == 0) {
+			return;
+		}
 		//RuleBase ****************************************************
 		TskRuleBaseType ruleBase = new TskRuleBaseType();
 		ruleBase.setActivationMethod("PROD");
@@ -241,7 +287,7 @@ public class FS{
 			//前件部 生成
 			ant = new AntecedentType();
 			for(int dim_i = 0; dim_i < Ndim; dim_i++) {
-				if(this.rules.get(rule_i)[dim_i] == -1) {
+				if(this.rules.get(rule_i)[dim_i] == -1 || this.rules.get(rule_i)[dim_i] == Fdiv) {
 					ant.addClause(new ClauseType(inputVariable[dim_i], dontCare));
 					continue;
 				}
@@ -265,12 +311,13 @@ public class FS{
 	}
 
 
-
 	//結論部の学習メソッド
 	public void calcConclusion(SettingForGA setting, DataSetInfo tra) {
 		int dataSize = tra.getDataSize();
 		int Ndim = setting.Ndim;
 		int ruleNum = this.rules.size();
+
+		boolean[][][] alphaFlg = new boolean[dataSize][ruleNum][Ndim];
 
 		Pattern[] lines = new Pattern[dataSize];
 		float[] y = new float[dataSize];
@@ -372,6 +419,206 @@ public class FS{
 		}
 
 		this.makeFS(setting);
+	}
+
+	public void alphaCut(SettingForGA setting, DataSetInfo tra) {
+		int dataSize = tra.getDataSize();
+		int Ndim = setting.Ndim;
+		int ruleNum = this.rules.size();
+
+//		//test
+//		int dataSize = 2;
+//		int Ndim = 3;
+//		int ruleNum = 3;
+//		boolean[][][] alphaFlg = {	//Pattern1
+//		{{true, true, true},	//rule1
+//		 {true, true, true},	//rule2
+//		 {true, true, true}},	//rule3
+//
+//		//Pattern2
+//		{{false, false, false},	//rule1
+//		 {true, true, false},	//rule2
+//		 {true, true, true}}	//rule3
+//		 };
+
+		boolean[][][] alphaFlg = new boolean[dataSize][ruleNum][Ndim];
+
+		float membership;
+
+		Pattern[] lines = new Pattern[dataSize];
+
+		for(int data_i = 0; data_i < dataSize; data_i++) {
+			lines[data_i] = tra.getPattern(data_i);
+			float[] x = new float[Ndim];
+
+			if(lines[data_i].getDimValue(1) >= 0) {
+				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+					x[dim_i] = lines[data_i].getDimValue(dim_i);
+				}
+			} else {	//欠損値処理
+				x[0] = lines[data_i].getDimValue(0);
+				x[1] = lines[data_i].getDimValue(0);
+				x[2] = lines[data_i].getDimValue(2);
+				x[3] = lines[data_i].getDimValue(2);
+				x[4] = lines[data_i].getDimValue(4);
+				x[5] = lines[data_i].getDimValue(4);
+			}
+
+			for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+				for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+					membership = this.fs.getKnowledgeBase()
+							.getVariable(setting.dimName[dim_i])
+							.getTerm(setting.fuzzySetName[this.rules.get(rule_i)[dim_i]])
+							.getMembershipValue(x[dim_i]);
+					alphaFlg[data_i][rule_i][dim_i] = (membership >= setting.alpha);
+				}
+			}
+		}
+
+		boolean[][] alphaTable = new boolean[dataSize][ruleNum];
+		for(int data_i = 0; data_i < dataSize; data_i++) {
+			for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+				alphaTable[data_i][rule_i] = alphaFlg[data_i][rule_i][0];
+				for(int dim_i = 1; dim_i < Ndim; dim_i++) {
+					alphaTable[data_i][rule_i] = (alphaTable[data_i][rule_i] && alphaFlg[data_i][rule_i][dim_i]);
+				}
+			}
+		}
+
+		//削除するルールのインデックス保持
+		ArrayList<Integer> delRuleIdx = new ArrayList<Integer>();
+		for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+			boolean delRuleFlg = alphaTable[0][rule_i];
+			for(int data_i = 1; data_i < dataSize; data_i++) {
+				delRuleFlg = (delRuleFlg || alphaTable[data_i][rule_i]);
+			}
+			delRuleFlg = !delRuleFlg;
+
+			if(delRuleFlg) {
+				delRuleIdx.add(rule_i);
+			}
+		}
+
+		ArrayList<int[]> newRules = new ArrayList<int[]>();
+		for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
+			if(delRuleIdx.size() != 0) {
+				if(rule_i == delRuleIdx.get(0)) {
+					//rule_iが消すルールだったとき
+					delRuleIdx.remove(0);
+					this.ruleNum--;
+				} else {
+					//rule_iが消さないルールだった時
+					newRules.add(this.rules.get(rule_i));
+				}
+			} else {
+				//rule_iが消さないルールだった時
+				newRules.add(this.rules.get(rule_i));
+			}
+		}
+		this.rules = newRules;
+
+		//ヒューリスティック生成する必要のあるパターン保持
+		this.heuristicList = new ArrayList<Pattern>();
+		for(int data_i = 0; data_i < dataSize; data_i++) {
+			boolean savePatternFlg = alphaTable[data_i][0];
+			for(int rule_i = 1; rule_i < ruleNum; rule_i++) {
+				savePatternFlg = (savePatternFlg || alphaTable[data_i][rule_i]);
+			}
+			savePatternFlg = !savePatternFlg;
+
+			if(savePatternFlg) {
+				this.heuristicList.add(lines[data_i]);
+			}
+		}
+
+		//新しいルール集合でFuzzyInferenceSystemを生成しておく
+//		resetConcList();
+//		makeFS(setting);
+
+	}
+
+	public void heuristicGenerateRules(SettingForGA setting, DataSetInfo tra) {
+		int Nrule;
+		float dcRate = 2f / (float)setting.Ndim;	//don't care確率
+		if(this.ruleNum < setting.ruleNum) {
+			Nrule = setting.ruleNum - this.ruleNum;
+			this.makeFS(setting);
+
+
+//			int[] pPattern = sampringWithout(Nrule, heuristicList.size());
+			int[] pPattern;
+			Pattern line;
+
+			for(int rule_i = 0; rule_i < Nrule; rule_i++) {
+				int idx;
+				if(this.heuristicList.size() != 0) {
+					idx = uniqueRnd.nextInt(this.heuristicList.size());
+					line = this.heuristicList.get(idx);
+					this.heuristicList.remove(idx);
+				} else {
+					idx = uniqueRnd.nextInt(tra.getDataSize());
+					line = tra.getPattern(idx);
+				}
+
+				int[] newRule = heuristicRule(line, setting);
+				for(int dim_i = 0; dim_i < setting.Ndim; dim_i++) {
+					if(uniqueRnd.nextDoubleIE() < dcRate) {
+						newRule[dim_i] = setting.Fdiv;	//don't careにする
+					}
+				}
+				this.rules.add(newRule);
+				this.ruleNum++;
+			}
+		}
+	}
+
+	public int[] heuristicRule(Pattern pattern, SettingForGA setting) {
+		int Ndim = setting.Ndim;
+		int Fdiv = setting.Fdiv;
+		int[] newRule = new int[Ndim];
+		float max;
+		float membership;
+		int maxIdx;
+
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			max = this.fs.getKnowledgeBase()
+					.getVariable(setting.dimName[dim_i])
+					.getTerm(setting.fuzzySetName[0])
+					.getMembershipValue(pattern.getDimValue(dim_i));
+			maxIdx = 0;
+			for(int div_i = 1; div_i < Fdiv; div_i++) {
+				membership = this.fs.getKnowledgeBase()
+						.getVariable(setting.dimName[dim_i])
+						.getTerm(setting.fuzzySetName[div_i])
+						.getMembershipValue(pattern.getDimValue(dim_i));
+				if(membership > max) {
+					max = membership;
+					maxIdx = div_i;
+				}
+			}
+			newRule[dim_i] = maxIdx;
+		}
+
+		return newRule;
+	}
+
+	public int[] sampringWithout(int num, int ruleNum) {
+		int[] ans = new int[num];
+
+		for(int i = 0; i < num; i++) {
+			boolean isSame = false;
+			ans[i] = uniqueRnd.nextInt(ruleNum);
+			for(int j = 0; j < i; j++) {
+				if(ans[i] == ans[j]) {
+					isSame = true;
+				}
+			}
+			if(isSame) {
+				i--;
+			}
+		}
+
+		return ans;
 	}
 
 	public void calcContinueConclusion(SettingForGA setting, int interval, DataSetInfo tra) {
