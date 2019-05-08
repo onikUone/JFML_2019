@@ -135,6 +135,28 @@ public class FMLpopulation implements Serializable{
 
 	}
 
+	public void setNextKnowledge(SettingForGA setting, FS bestFS, KnowledgeBasePop nextKB) {
+		int Ndim = setting.Ndim;
+		int Fdiv = setting.Fdiv;
+
+		float[][][] newFuzzyParams = new float[Ndim][Fdiv][2];
+
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			for(int div_i = 0; div_i < Fdiv; div_i++) {
+				newFuzzyParams[dim_i][div_i][0] = nextKB.fuzzyParams[dim_i][div_i][0];
+				newFuzzyParams[dim_i][div_i][1] = nextKB.fuzzyParams[dim_i][div_i][1];
+			}
+		}
+
+		this.setFuzzyParams(newFuzzyParams);
+
+		this.currentFS.clear();
+		this.currentFS.add(new FS(bestFS, setting));
+		this.currentFS.get(0).setFuzzyParams(newFuzzyParams);
+		this.currentFS.get(0).resetConcList();
+		this.currentFS.get(0).makeFS(setting);
+
+	}
 
 	public void generateFS(SettingForGA setting) {
 		int popSize = setting.popFS;

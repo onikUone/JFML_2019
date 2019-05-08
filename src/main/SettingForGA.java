@@ -46,6 +46,7 @@ public class SettingForGA {
 	String resultRoot = "results/abcdefg";
 	float alpha = 0.5f;
 	float dcRate = 0.8f;
+	float perturbationRate = 0.8f;
 
 	public float eta = 0.5f;
 	int seed = 2020;
@@ -256,6 +257,7 @@ public class SettingForGA {
 		this.kbGeneration = Integer.parseInt(args[4]);
 		this.popKB = Integer.parseInt(args[5]);
 		this.generation = Integer.parseInt(args[6]);
+		this.evaSize = Integer.parseInt(args[7]);
 	}
 
 	public void outputSetting() {
@@ -285,6 +287,12 @@ public class SettingForGA {
 			pw.println("rateCrossOver" + "," + rateCrossOver);
 			pw.println("rateMutation" + "," + rateMutation);
 			pw.println("alphaCunt" + "," + alphaCut);
+
+			pw.println("rbGeneration" + "," + rbGeneration);
+			pw.println("popRB" + "," + popRB);
+			pw.println("kbGeneration" + "," + kbGeneration);
+			pw.println("popKB" + "," + popKB);
+			pw.println("generation" + "," + generation);
 
 			pw.close();
 		} catch (IOException e) {

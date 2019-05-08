@@ -210,6 +210,19 @@ public class FS{
 		this.fuzzyParams = _fuzzyParams;
 	}
 
+	public void deepFuzzyParams(float[][][] _fuzzyParams) {
+		int Ndim = _fuzzyParams.length;
+		int Fdiv = _fuzzyParams[0].length;
+		this.fuzzyParams = new float[Ndim][Fdiv][2];
+
+		for(int dim_i = 0; dim_i < Ndim; dim_i++) {
+			for(int div_i = 0; div_i < Fdiv; div_i++) {
+				this.fuzzyParams[dim_i][div_i][0] = _fuzzyParams[dim_i][div_i][0];
+				this.fuzzyParams[dim_i][div_i][1] = _fuzzyParams[dim_i][div_i][1];
+			}
+		}
+	}
+
 	//this.rules:ArrayList<int[]>からFMLを生成するメソッド
 	public void makeFS(SettingForGA setting) {
 		int Ndim = setting.Ndim;

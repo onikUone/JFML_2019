@@ -108,7 +108,52 @@ public class FmlGaManager {
 		for(int gene_i = 0; gene_i < setting.generation; gene_i++) {
 			//ルールベース最適化
 			optimizeRuleBaseFrame(setting, gene_i+1, fmlPopulation, tra, eva, tst);
+			//KnowledgeBase最適化
+			optimizeKnowledgeBaseFrame(setting, gene_i+1, fmlPopulation, tra, eva, tst);
 		}
+	}
+
+	public void optimizeKnowledgeBaseFrame(SettingForGA setting, int nowGene, FMLpopulation fmlPopulation, DataSetInfo tra, DataSetInfo eva, DataSetInfo tst) {
+		System.out.println();
+		int generation = setting.kbGeneration;
+		int popSize = setting.popKB;
+		int Ndim = setting.Ndim;
+		int Fdiv = setting.Ndim;
+
+		String dirName = "/Gene" + nowGene + "/KnowledgeBaseOptimize";
+
+		System.out.println("------ KnowledgeBase Optimize: gene " + nowGene + " ------");
+		Date start = new Date();
+		System.out.println(start);
+
+		FS bestFS = fmlPopulation.currentFS.get(0);	//最良個体
+		KbManager kbManager = new KbManager(setting);
+		kbManager.setBestFS(bestFS);
+
+		//初期KowledgeBase個体
+		kbManager.generateInitialKB(setting);
+		kbManager.evaluate(kbManager.currentKB, setting, tra, eva);
+
+		//探索開始
+		for(int gene_i = 0; gene_i < generation; gene_i++) {
+
+			//子個体生成（摂動によって子個体生成）
+			kbManager.perturbation(setting);
+			//子個体群評価
+			kbManager.evaluate(kbManager.newKB, setting, tra, eva);
+			//個体群更新
+			kbManager.populationUpdate(setting);
+		}
+
+		//出力
+		kbManager.outputFuzzyParams(dirName, kbManager.currentKB.get(0).fuzzyParams, setting);
+
+		//最良個体（最良KnowledgeBase）をfmlPopulationに返す
+		fmlPopulation.setNextKnowledge(setting, bestFS, kbManager.currentKB.get(0));
+
+		Date end = new Date();
+		System.out.println(end);
+		System.out.println("--------------------------------------------");
 	}
 
 	public void optimizeRuleBaseFrame(SettingForGA setting, int nowGene, FMLpopulation fmlPopulation, DataSetInfo tra, DataSetInfo eva, DataSetInfo tst) {
@@ -123,7 +168,7 @@ public class FmlGaManager {
 		System.out.println(start);
 
 		//初期ルールベース個体群生成
-		for(int pop_i = 0; pop_i < popSize; pop_i++) {
+		for(int pop_i = fmlPopulation.currentFS.size(); pop_i < popSize; pop_i++) {
 			fmlPopulation.currentFS.add(new FS(setting));
 			fmlPopulation.currentFS.get(pop_i).setFuzzyParams(fmlPopulation.fuzzyParams);
 			fmlPopulation.currentFS.get(pop_i).resetConcList();
@@ -167,7 +212,7 @@ public class FmlGaManager {
 
 		Date end = new Date();
 		System.out.println(end);
-		System.out.println("------------------------------");
+		System.out.println("---------------------------------------");
 
 	}
 
@@ -334,7 +379,7 @@ public class FmlGaManager {
 	public void outputEVA(DataSetInfo eva, String folderName, SettingForGA setting) {
 		//ディレクトリ生成
 		String sep = File.separator;
-		String dirName = setting.resultFileName + sep + folderName;
+		String dirName = setting.resultRoot + sep + folderName;
 		File newdir = new File(dirName);
 		newdir.mkdirs();
 
@@ -361,7 +406,7 @@ public class FmlGaManager {
 	public void outputTRA(DataSetInfo tra, String folderName, SettingForGA setting) {
 		//ディレクトリ生成
 		String sep = File.separator;
-		String dirName = setting.resultFileName + sep + folderName;
+		String dirName = setting.resultRoot + sep + folderName;
 		File newdir = new File(dirName);
 		newdir.mkdirs();
 
