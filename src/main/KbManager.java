@@ -161,7 +161,7 @@ public class KbManager implements Serializable{
 		this.margeKB.sort(java.util.Comparator.comparing(KnowledgeBasePop::getFitness));
 
 		//fitnessの値が良い順にpopFSだけ次世代に個体を格納
-		for(int pop_i = 0; pop_i < setting.popRB; pop_i++) {
+		for(int pop_i = 0; pop_i < setting.popKB; pop_i++) {
 			this.currentKB.add( new KnowledgeBasePop(this.margeKB.get(pop_i)) );
 		}
 	}

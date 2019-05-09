@@ -118,7 +118,7 @@ public class FmlGaManager {
 		int generation = setting.kbGeneration;
 		int popSize = setting.popKB;
 		int Ndim = setting.Ndim;
-		int Fdiv = setting.Ndim;
+		int Fdiv = setting.Fdiv;
 
 		String dirName = "/Gene" + nowGene + "/KnowledgeBaseOptimize";
 
@@ -210,6 +210,7 @@ public class FmlGaManager {
 			}
 		}
 
+		System.out.println();
 		Date end = new Date();
 		System.out.println(end);
 		System.out.println("---------------------------------------");
