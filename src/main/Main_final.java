@@ -27,7 +27,13 @@ public class Main_final {
 
 
 		FmlGaManager gaManager = new FmlGaManager();
-		DataSetInfo eva = gaManager.pickEva(setting, tra);
+		DataSetInfo eva;
+		if(setting.useEVA) {
+			eva = gaManager.pickEva(setting, tra);
+		} else {
+			eva = new DataSetInfo();
+		}
+
 
 		FmlManager fmlManager = new FmlManager(tra, tst, eva, setting);
 

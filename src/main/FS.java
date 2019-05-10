@@ -809,9 +809,11 @@ public class FS{
 	}
 
 	public void readFML(FuzzyInferenceSystem xml, float[][][] fuzzyParams, SettingForGA setting) {
+		this.uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
 		this.fs = xml;
 		this.ruleNum = xml.getKnowledgeBase().getVariable("EBWR").getTerms().size();
 		this.concList = new float[ruleNum];
+//		Arrays.fill(this.concList, 0.5f);
 		for(int rule_i = 0; rule_i < ruleNum; rule_i++) {
 			this.concList[rule_i] = ((TskVariableType) this.fs.getKnowledgeBase().getVariable("EBWR")).getTerms().get(rule_i).getTskValue().get(0);
 		}
@@ -838,9 +840,13 @@ public class FS{
 						break;
 					}
 				}
+				if(termName.equals("Don't Care")) {
+					ruleIdx[dim_i] = Fdiv;
+				}
 			}
 			this.rules.add(ruleIdx);
 		}
+		this.makeFS(setting);
 	}
 
 

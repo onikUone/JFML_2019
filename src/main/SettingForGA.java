@@ -44,6 +44,7 @@ public class SettingForGA {
 	int kbGeneration = 2;
 	int popKB = 3;	//KnowledgeBase個体数
 	String resultRoot = "results/abcdefg";
+	boolean useEVA = true;
 	float alpha = 0.5f;
 	float dcRate = 0.8f;
 	float perturbationRate = 0.8f;
@@ -258,6 +259,9 @@ public class SettingForGA {
 		this.popKB = Integer.parseInt(args[5]);
 		this.generation = Integer.parseInt(args[6]);
 		this.evaSize = Integer.parseInt(args[7]);
+		this.ruleNum = Integer.parseInt(args[8]);
+		this.eta = Float.parseFloat(args[9]);
+		this.useEVA = Boolean.parseBoolean(args[10]);
 	}
 
 	public void outputSetting() {
@@ -293,6 +297,7 @@ public class SettingForGA {
 			pw.println("kbGeneration" + "," + kbGeneration);
 			pw.println("popKB" + "," + popKB);
 			pw.println("generation" + "," + generation);
+			pw.println("ruleNum" + "," + ruleNum);
 
 			pw.close();
 		} catch (IOException e) {

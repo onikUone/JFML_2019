@@ -110,7 +110,33 @@ public class FmlGaManager {
 			optimizeRuleBaseFrame(setting, gene_i+1, fmlPopulation, tra, eva, tst);
 			//KnowledgeBase最適化
 			optimizeKnowledgeBaseFrame(setting, gene_i+1, fmlPopulation, tra, eva, tst);
+
+			if(setting.useEVA) {
+				//evaDataSet更新
+				updateEVA(tra, eva, setting);
+				outputEVA(eva, "Gene" + String.valueOf(gene_i+1 + 1), setting);
+			}
+
 		}
+	}
+
+	public void updateEVA(DataSetInfo tra, DataSetInfo eva, SettingForGA setting) {
+		int evaSize = setting.evaSize;
+		int swapSize = evaSize / 10;
+
+		MersenneTwisterFast uniqueRnd = new MersenneTwisterFast(setting.rnd.nextInt());
+		for(int data_i = 0; data_i < swapSize; data_i++) {
+			int traIdx = uniqueRnd.nextInt(tra.getPatterns().size());
+			int evaIdx = uniqueRnd.nextInt(eva.getPatterns().size());
+
+			Pattern traPattern = tra.removePick(traIdx);
+			Pattern evaPattern = eva.removePick(evaIdx);
+
+			tra.addPattern(evaPattern);
+			eva.addPattern(traPattern);
+
+		}
+
 	}
 
 	public void optimizeKnowledgeBaseFrame(SettingForGA setting, int nowGene, FMLpopulation fmlPopulation, DataSetInfo tra, DataSetInfo eva, DataSetInfo tst) {
@@ -178,7 +204,7 @@ public class FmlGaManager {
 
 		//初期個体群評価
 		evaluateFS2(fmlPopulation.currentFS, setting, tra, eva);
-		outputFML2(fmlPopulation.currentFS, dirName + "/fsGene_0/FML", 0, setting);
+		outputFML2(fmlPopulation.currentFS, dirName + "/fsGene_0", 0, setting);
 		outputMSE2(fmlPopulation.currentFS, dirName + "/fsGene_0", 0, tst, setting);
 
 		for(int gene_i = 0; gene_i < generation; gene_i++) {
@@ -205,7 +231,7 @@ public class FmlGaManager {
 				gene_i == 199||
 				gene_i == 499||
 				gene_i == (setting.rbGeneration - 1) ) {
-				outputFML2(fmlPopulation.currentFS, dirName + "/fsGene_" + String.valueOf(gene_i+1) + "/FML", gene_i+1, setting);
+				outputFML2(fmlPopulation.currentFS, dirName + "/fsGene_" + String.valueOf(gene_i+1), gene_i+1, setting);
 				outputMSE2(fmlPopulation.currentFS, dirName + "/fsGene_" + String.valueOf(gene_i+1), gene_i+1, tst, setting);
 			}
 		}
@@ -289,10 +315,20 @@ public class FmlGaManager {
 			fsList.get(pop_i).makeFS(setting);
 			//結論部学習（世代：setting.calcGeneration）
 			fsList.get(pop_i).calcConclusion(setting, tra);
-			//evaに対する推論値
-			y = fsList.get(pop_i).reasoning(setting, eva);
-			//yとevaのMSE
-			mse = calcMSE(y, eva);
+
+			if(setting.useEVA) {
+
+				y = fsList.get(pop_i).reasoning(setting, eva);
+				//yとevaのMSE
+				mse = calcMSE(y, eva);
+			} else {
+				y = fsList.get(pop_i).reasoning(setting, tra);
+				mse = calcMSE(y, tra);
+			}
+
+
+
+
 			//mseをFS個体の評価値としてセット
 			fsList.get(pop_i).setFitness(mse);
 		}
@@ -520,14 +556,18 @@ public class FmlGaManager {
 		File newdir = new File(dirName);
 		newdir.mkdirs();
 
-		for(int pop_i = 0; pop_i < fsList.size(); pop_i++) {
-			String fileName = dirName + sep +
-							"gene" + String.valueOf(nowGene) +
-							"_pop" + String.valueOf(pop_i) +
-							".xml";
-			File xml = new File(fileName);
-			JFML.writeFSTtoXML(fsList.get(pop_i).fs, xml);
-		}
+		String fileName = dirName + sep + "gene" + String.valueOf(nowGene) + "_pop0.xml";
+		File xml = new File(fileName);
+		JFML.writeFSTtoXML(fsList.get(0).fs, xml);
+
+//		for(int pop_i = 0; pop_i < fsList.size(); pop_i++) {
+//			String fileName = dirName + sep +
+//							"gene" + String.valueOf(nowGene) +
+//							"_pop" + String.valueOf(pop_i) +
+//							".xml";
+//			File xml = new File(fileName);
+//			JFML.writeFSTtoXML(fsList.get(pop_i).fs, xml);
+//		}
 	}
 
 	public void outputFIT(ArrayList<FS> fsList, String folderName, int nowGene, SettingForGA setting) {

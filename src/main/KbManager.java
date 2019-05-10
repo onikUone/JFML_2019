@@ -123,7 +123,7 @@ public class KbManager implements Serializable{
 			kbPop = new KnowledgeBasePop(setting);
 			kbPop.setFuzzyParams(fuzzyParams);
 			this.newKB.add(kbPop);
-			System.out.println("perturbation : " + count);
+			System.out.println("perturbation pop" + pop_i + " : " + count);
 		}
 		System.out.println();
 	}
@@ -196,8 +196,13 @@ public class KbManager implements Serializable{
 			fs.makeFS(setting);
 
 			fs.calcConclusion(setting, tra);
-			y = fs.reasoning(setting, eva);
-			mse = FmlGaManager.calcMSE(y, eva);
+			if(setting.useEVA) {
+				y = fs.reasoning(setting, eva);
+				mse = FmlGaManager.calcMSE(y, eva);
+			} else {
+				y = fs.reasoning(setting, tra);
+				mse = FmlGaManager.calcMSE(y, tra);
+			}
 
 			kbList.get(pop_i).setFitness(mse);
 		}

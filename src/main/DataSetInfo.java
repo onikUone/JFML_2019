@@ -16,7 +16,9 @@ public class DataSetInfo {
 	// ************************************************
 
 	//Constructor *************************************
-	public DataSetInfo() {}
+	public DataSetInfo() {
+		this.DataSize = 0;
+	}
 
 	public DataSetInfo(String _filePath) {
 		try {
@@ -53,6 +55,13 @@ public class DataSetInfo {
 		}
 	}
 
+
+	public Pattern removePick(int idx) {
+		Pattern pattern = this.patterns.get(idx);
+		this.patterns.remove(idx);
+		return pattern;
+	}
+
 	public void inputFile(String _filePath) throws IOException {
 		int datasize = 0;
 
@@ -71,6 +80,7 @@ public class DataSetInfo {
 				x[i] = line.split(",")[i];
 			}
 			y = line.split(",")[Ndim];
+//			y = line.split(",")[Ndim + 1];
 			this.patterns.add(new Pattern(x, y));
 			datasize++;
 		}
